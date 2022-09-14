@@ -24,12 +24,10 @@ steps:
     volumes:
       - name: 'ssh'
         path: /root/.ssh
-  - name: 'gcr.io/cloud-builders/npm'
+  - name: 'node'
     id: 'npm build'
-    entrypoint: 'bash'
-    args:
-      - -c
-      - ./npm run build
+    entrypoint: 'npm'
+    args: ['build']
   - name: 'gcr.io/cloud-builders/docker'
     id: 'build docker image'
     entrypoint: '/bin/sh'
