@@ -12,7 +12,7 @@ steps:
       - name: 'ssh'
         path: /root/.ssh
   - name: 'gcr.io/cloud-builders/git'
-    args: [ 'fetch', '--unshallow', 'git@github.com:5thfloor-luva/poker-fight' ]
+    args: [ 'fetch', '--unshallow', 'git@github.com:5thfloor-be/poker-fight' ]
     volumes:
       - name: 'ssh'
         path: /root/.ssh
@@ -24,7 +24,7 @@ steps:
     volumes:
       - name: 'ssh'
         path: /root/.ssh
-  - name: 'npm'
+  - name: 'gcr.io/cloud-builders/npm'
     id: 'npm build'
     entrypoint: 'bash'
     args:
