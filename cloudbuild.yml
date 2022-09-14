@@ -1,0 +1,41 @@
+steps:
+  - name: 'gcr.io/cloud-builders/git'
+    secretEnv: ['SSH_KEY']
+    entrypoint: 'bash'
+    args:
+      - -c
+      - |
+        echo "$$SSH_KEY" >> /root/.ssh/id_rsa
+        chmod 400 /root/.ssh/id_rsa
+        cp known_hosts.github /root/.ssh/known_hosts
+    volumes:
+      - name: 'ssh'
+        path: /root/.ssh
+  - name: 'gcr.io/cloud-builders/git'
+    args: [ 'fetch', '--unshallow', 'git@github.com:5thfloor-be/poker-fight' ]
+    volumes:
+      - name: 'ssh'
+        path: /root/.ssh
+  - name: 'gcr.io/cloud-builders/git'
+    entrypoint: '/bin/sh'
+    args:
+      - -c
+      - git rev-list --count master && echo $(git rev-list --count master) > VERSION
+    volumes:
+      - name: 'ssh'
+        path: /root/.ssh
+  - name: 'npm'
+    id: 'npm build'
+    entrypoint: 'bash'
+    args:
+      - -c
+      - ./npm run build
+substitutions:
+options:
+  substitution_option: 'ALLOW_LOOSE'
+  machineType: 'N1_HIGHCPU_8'
+availableSecrets:
+  secretManager:
+    - versionName: projects/19299723894/secrets/github-secret/versions/latest
+      env: 'SSH_KEY'
+
