@@ -12,7 +12,7 @@ steps:
       - name: 'ssh'
         path: /root/.ssh
   - name: 'gcr.io/cloud-builders/git'
-    args: [ 'fetch', '--unshallow', 'git@github.com:5thfloor-luva/poker-fight' ]
+    args: [ 'fetch', '--unshallow', 'git@github.com:5thfloor-be/poker-fight' ]
     volumes:
       - name: 'ssh'
         path: /root/.ssh
@@ -24,16 +24,13 @@ steps:
     volumes:
       - name: 'ssh'
         path: /root/.ssh
-  - name: 'npm'
+  - name: 'node'
     id: 'npm build'
-    entrypoint: 'bash'
-    args:
-      - -c
-      - ./npm run build
+    entrypoint: 'npm'
+    args: ['run', 'build']
   - name: 'gcr.io/cloud-builders/docker'
     id: 'build docker image'
     entrypoint: '/bin/sh'
-    dir: 'api'
     args:
       - -c
       - docker build -t ${_DOCKER_IMAGE}:$(cat /workspace/VERSION) .
