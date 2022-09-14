@@ -38,9 +38,19 @@ steps:
     args:
       - -c
       - docker build -t ${_DOCKER_IMAGE}:$(cat /workspace/VERSION) .
+  - name: 'gcr.io/cloud-builders/docker'
+    id: 'push docker image'
+    entrypoint: '/bin/sh'
+    dir: 'api'
+    args:
+      - -c
+      - docker push ${_DOCKER_IMAGE}:$(cat /workspace/VERSION)
+
 options:
   substitution_option: 'ALLOW_LOOSE'
   machineType: 'E2_HIGHCPU_8'
+substitutions:
+  _DOCKER_IMAGE: 'europe-west1-docker.pkg.dev/pocker-fight/registry/pocker-fight-app'
 availableSecrets:
   secretManager:
     - versionName: projects/poker-fight/secrets/github-secret/versions/latest
