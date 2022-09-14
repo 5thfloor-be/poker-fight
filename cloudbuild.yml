@@ -27,11 +27,10 @@ steps:
   - name: 'node'
     id: 'npm build'
     entrypoint: 'npm'
-    args: ['build']
+    args: ['run', 'build']
   - name: 'gcr.io/cloud-builders/docker'
     id: 'build docker image'
     entrypoint: '/bin/sh'
-    dir: 'api'
     args:
       - -c
       - docker build -t ${_DOCKER_IMAGE}:$(cat /workspace/VERSION) .
