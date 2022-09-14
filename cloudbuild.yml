@@ -12,7 +12,7 @@ steps:
       - name: 'ssh'
         path: /root/.ssh
   - name: 'gcr.io/cloud-builders/git'
-    args: [ 'fetch', '--unshallow', 'git@github.com:5thfloor-be/poker-fight' ]
+    args: [ 'fetch', '--unshallow', 'git@github.com:5thfloor-luva/poker-fight' ]
     volumes:
       - name: 'ssh'
         path: /root/.ssh
@@ -30,11 +30,18 @@ steps:
     args:
       - -c
       - ./npm run build
+  - name: 'gcr.io/cloud-builders/docker'
+    id: 'build docker image'
+    entrypoint: '/bin/sh'
+    dir: 'api'
+    args:
+      - -c
+      - docker build -t ${_DOCKER_IMAGE}:$(cat /workspace/VERSION) .
 options:
   substitution_option: 'ALLOW_LOOSE'
   machineType: 'E2_HIGHCPU_8'
 availableSecrets:
   secretManager:
-    - versionName: projects/19299723894/secrets/github-secret/versions/latest
+    - versionName: projects/poker-fight/secrets/github-secret/versions/latest
       env: 'SSH_KEY'
 
