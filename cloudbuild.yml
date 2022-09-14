@@ -30,6 +30,13 @@ steps:
     args:
       - -c
       - ./npm run build
+  - name: 'gcr.io/cloud-builders/docker'
+    id: 'build docker image'
+    entrypoint: '/bin/sh'
+    dir: 'api'
+    args:
+      - -c
+      - docker build -t ${_DOCKER_IMAGE}:$(cat /workspace/VERSION) .
 options:
   substitution_option: 'ALLOW_LOOSE'
   machineType: 'E2_HIGHCPU_8'
