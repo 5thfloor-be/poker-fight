@@ -24,14 +24,14 @@ steps:
     volumes:
       - name: 'ssh'
         path: /root/.ssh
-  - name: 'node'
-    id: 'npm install'
-    entrypoint: 'npm'
-    args: [ 'install' ]
-  - name: 'node'
-    id: 'npm build'
-    entrypoint: 'npm'
-    args: ['run', 'build']
+#  - name: 'node'
+#    id: 'npm install'
+#    entrypoint: 'npm'
+#    args: [ 'install' ]
+#  - name: 'node'
+#    id: 'npm build'
+#    entrypoint: 'npm'
+#    args: ['run', 'build']
   - name: 'gcr.io/cloud-builders/docker'
     id: 'build docker image'
     entrypoint: '/bin/sh'
@@ -41,7 +41,6 @@ steps:
   - name: 'gcr.io/cloud-builders/docker'
     id: 'push docker image'
     entrypoint: '/bin/sh'
-    dir: 'api'
     args:
       - -c
       - docker push ${_DOCKER_IMAGE}:$(cat /workspace/VERSION)
