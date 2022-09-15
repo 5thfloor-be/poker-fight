@@ -65,7 +65,7 @@ const Home: NextPage = () => {
                     </div>
                     <div className="row d-flex justify-content-center pt-5">
                         <div className="col-sm-4">
-                            <h2>Doc Ract TS Hooks</h2>
+                            <h2>Doc React TS Hooks</h2>
                         </div>
                         <div className="col-sm-2">
                             <div className="row">
