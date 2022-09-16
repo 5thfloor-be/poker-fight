@@ -1,12 +1,22 @@
 import { useState, useEffect } from "react";
 
-function getStorageValue(key: string, defaultValue: any) {
-    const saved = localStorage.getItem(key);
-    const initial = saved ? JSON.parse(saved) : null;
-    return initial || defaultValue;
+export type Vars = "USERNAME" | "COLOR";
+
+export function getStorageValue(key: Vars, defaultValue: any) {
+    if (typeof window !== "undefined") {
+        const saved = localStorage.getItem(key);
+        const initial = saved ? JSON.parse(saved) : null;
+        return initial || defaultValue;
+    }
 }
 
-export const useLocalStorage = (key: string, defaultValue: any) => {
+export function setStorageValue(key: Vars, value: any) {
+    if (typeof window !== "undefined") {
+        localStorage.setItem(key, JSON.stringify(value));
+    }
+}
+
+export const useLocalStorage = (key: Vars, defaultValue: any) => {
     const [value, setValue] = useState(() => {
         return getStorageValue(key, defaultValue);
     });
