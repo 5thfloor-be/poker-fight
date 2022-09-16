@@ -1,5 +1,8 @@
 .container {
-  padding: 0 2rem;
+  background-image: url('/images/main-background.jpg');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 .main {
@@ -15,6 +18,22 @@
 .point{
   background-color: green;
 }
+
+.landingText {
+  text-align: center;
+  color: white !important;
+  background-color: rgba(255, 255, 255, 0.5);
+  padding-top: 20px;
+  padding-bottom: 20px;
+  margin-bottom: 50px;
+  font-size: large;
+  font-weight: bold;
+}
+
+.landingText a {
+  color: white;
+}
+
 .footer {
   display: flex;
   flex: 1;
@@ -111,7 +130,12 @@
   margin-left: 0.5rem;
 }
 
-@media (max-width: 600px) {
+@media (max-width: 576px) {
+  .landingText {
+    padding-left: 20px;
+    padding-right: 20px;
+    text-align: left;
+  }
   .grid {
     width: 100%;
     flex-direction: column;
