@@ -1,8 +1,6 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import styles from '../../styles/Home.module.css'
-import { Button } from '@mui/material';
-import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 
 const Help: NextPage = () => {
     return (
@@ -14,67 +12,57 @@ const Help: NextPage = () => {
             </Head>
 
             <main className={styles.main}>
-                <h1 className={styles.title}>
-                    Welcome to Poker Fight !
-                </h1>
 
-                <div className="container p-5">
-                    <div className="row d-flex justify-content-center">
-                        <div className="col-sm-4">
-                            <h2>Doc Material UI</h2>
-                        </div>
-                        <div className="col-sm-2">
-                            <div className="row">
-                                <Button variant="contained" target="_blank" endIcon={<OpenInNewIcon/>}
-                                        href="https://mui.com/material-ui/getting-started/usage/">Ici</Button>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="row d-flex justify-content-center pt-5">
-                        <div className="col-sm-4">
-                            <h2>Doc Bootstrap Grid</h2>
-                        </div>
-                        <div className="col-sm-2">
-                            <div className="row">
-                                <Button variant="contained" target="_blank"  endIcon={<OpenInNewIcon/>}
-                                        href="https://getbootstrap.com/docs/5.1/layout/grid/">Ici</Button>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="row d-flex justify-content-center pt-5">
-                        <div className="col-sm-4">
-                            <h2>Doc Flexbox</h2>
-                        </div>
-                        <div className="col-sm-2">
-                            <div className="row">
-                                <Button variant="contained" target="_blank" endIcon={<OpenInNewIcon/>}
-                                        href="https://css-tricks.com/snippets/css/a-guide-to-flexbox/">Ici</Button>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="row d-flex justify-content-center pt-5">
-                        <div className="col-sm-4">
-                            <h2>Doc Next JS</h2>
-                        </div>
-                        <div className="col-sm-2">
-                            <div className="row">
-                                <Button variant="contained" target="_blank" endIcon={<OpenInNewIcon/>}
-                                        href="https://nextjs.org/docs">Ici</Button>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="row d-flex justify-content-center pt-5">
-                        <div className="col-sm-4">
-                            <h2>Doc React TS Hooks</h2>
-                        </div>
-                        <div className="col-sm-2">
-                            <div className="row">
-                                <Button variant="contained" target="_blank"  endIcon={<OpenInNewIcon/>}
-                                        href="https://react-typescript-cheatsheet.netlify.app/docs/basic/getting-started/hooks/">Ici</Button>
-                            </div>
-                        </div>
-                    </div>
+                <div className="container py-5 mx-0 mw-100">
+                    <div className={styles.landingText}>
 
+                        <div className="row d-flex justify-content-center mb-5">
+                            <h1 className={styles.title}>
+                                Welcome to Poker Fight !
+                            </h1>
+                        </div>
+
+                        <div className="row d-flex justify-content-center pt-5">
+                            <div className="col-sm-4">
+                                <h2>Doc Bootstrap Grid</h2>
+                            </div>
+                            <div className="col-sm-2">
+                                <div className="row">
+                                    <input type="button" className="btn btn-primary" value="Ici" onClick={() => location.href = "https://getbootstrap.com/docs/5.1/layout/grid/" } />
+                                </div>
+                            </div>
+                        </div>
+                        <div className="row d-flex justify-content-center pt-5">
+                            <div className="col-sm-4">
+                                <h2>Doc Flexbox</h2>
+                            </div>
+                            <div className="col-sm-2">
+                                <div className="row">
+                                    <input type="button" className="btn btn-primary" value="Ici" onClick={() => location.href = "https://css-tricks.com/snippets/css/a-guide-to-flexbox/" } />
+                                </div>
+                            </div>
+                        </div>
+                        <div className="row d-flex justify-content-center pt-5">
+                            <div className="col-sm-4">
+                                <h2>Doc Next JS</h2>
+                            </div>
+                            <div className="col-sm-2">
+                                <div className="row">
+                                    <input type="button" className="btn btn-primary" value="Ici" onClick={() => location.href = "https://nextjs.org/docs" } />
+                                </div>
+                            </div>
+                        </div>
+                        <div className="row d-flex justify-content-center pt-5">
+                            <div className="col-sm-4">
+                                <h2>Doc React TS Hooks</h2>
+                            </div>
+                            <div className="col-sm-2">
+                                <div className="row">
+                                    <input type="button" className="btn btn-primary" value="Ici" onClick={() => location.href = "https://react-typescript-cheatsheet.netlify.app/docs/basic/getting-started/hooks/" } />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
                 </div>
             </main>
