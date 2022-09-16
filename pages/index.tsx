@@ -1,9 +1,12 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
+import { useState } from 'react';
 import styles from '../styles/Home.module.css'
 import Header from './header';
+import SubFooter from './subfooter';
 
 const Home: NextPage = () => {
+    const [isRoomActive, setIsRoomActive] = useState(true);
     return (
         <div className={styles.container}>
             <Head>
@@ -12,10 +15,10 @@ const Home: NextPage = () => {
                 <link rel="icon" href="/favicon.ico"/>
             </Head>
 
+            <Header isRoomActive={isRoomActive} />
             <main className={styles.main}>
 
                 <div className="container mx-0 mw-100" >
-                    <Header/>
 
                     <div className="row">
                         <div className="col">
@@ -37,7 +40,7 @@ const Home: NextPage = () => {
                     </div>
                 </div>
             </main>
-
+            {isRoomActive && <SubFooter />}
             <footer className={styles.footer}>
 
             </footer>
