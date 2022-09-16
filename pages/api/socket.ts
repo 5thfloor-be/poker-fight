@@ -2,7 +2,10 @@ import {IncomingMessage, ServerResponse} from "http";
 import {v4 as uuid} from 'uuid';
 import {Server} from 'Socket.IO'
 import Room from './model/room';
-import User from './model/user';
+import User, {Role} from './model/user';
+
+const rooms : Map<string, Room> = new Map([]);
+
 
 const SocketHandler = (req: IncomingMessage, res: ServerResponse) => {
 
@@ -25,31 +28,52 @@ function configIO(io: Server){
 
         socket.on("join_room", (data) => {
             console.log(`${socket.id} is joining ${data}`)
-            socket.join(data)
+            socket.join(data.roomId)
+            rooms.get(data.roomId)?.addUser(new User(socket.id,data.userInfo));
         })
 
         socket.on("leave_room", (data) => {
             console.log(`${socket.id} is leaving ${data}`)
-            socket.leave(data);
+            socket.leave(data.roomId);
+            rooms.get(data.roomId)?.removeUser(socket.id);
         })
         
-        socket.on("create_room", (userData, listener) =>{
+        socket.on("create_room", (data, listener) =>{
             const roomId = uuid();
             socket.join(roomId)
-            const room = new Room(roomId);
-            const user = new User(socket.id, userData);
-            console.log(userData)
+            const room = new Room(roomId, data.roomOptions, (room: Room) =>{
+                console.log(`room state update sent${JSON.stringify(room)}`)
+                socket.to(roomId).emit('room_state_update', room);
+            });
+            const user = new User(socket.id, data.userInfo);
+
+            rooms.set(roomId, room);
+            console.log(data.userInfo)
             room.addUser(user);
             listener(roomId);
         })
-    })
-}
 
-function generateId(){
-    const random = Math.random();
-    const string = Number(random).toString(32).slice(2).toUpperCase();
-    console.log(string);
-    return string;
+        socket.on("vote", data =>{
+            console.log(`register vote ${JSON.stringify(data)}`);
+            rooms.get(data.roomId)?.registerVote(data.userId, data.vote);
+        })
+
+        socket.on("reveal", data =>{
+            console.log(`reveal from scrum master ${JSON.stringify(data)}`);
+            socket.to(data.roomId).emit('reveal', rooms.get(data.roomId));
+        })
+
+        socket.on("cofee-break-vote", data =>{
+            console.log(`cofee-break-vote ${JSON.stringify(data)}`);
+            rooms.get(data.roomId)?.cofeeBreakVote(data.userId);
+        })
+
+        socket.on("buzz-break-vote", data =>{
+            console.log(`buzz-break-vote ${JSON.stringify(data)}`);
+            rooms.get(data.roomId)?.buzzBreakVote(data.userId);
+        })
+
+    })
 }
 
 export default SocketHandler;
