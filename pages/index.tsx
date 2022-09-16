@@ -3,7 +3,10 @@ import Head from 'next/head'
 import { useState } from 'react';
 import styles from '../styles/Home.module.css'
 import Header from './header';
+import { FaLinkedinIn } from 'react-icons/fa';
+import Image from 'next/image';
 import SubFooter from './subfooter';
+import Footer from './footer';
 
 const Home: NextPage = () => {
     const [isRoomActive, setIsRoomActive] = useState(true);
@@ -41,9 +44,7 @@ const Home: NextPage = () => {
                 </div>
             </main>
             {isRoomActive && <SubFooter />}
-            <footer className={styles.footer}>
-
-            </footer>
+            <Footer/>
         </div>
     )
 }
