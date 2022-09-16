@@ -2,6 +2,7 @@ import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { MdAccountCircle } from 'react-icons/md';
 import Alert from 'react-bootstrap/Alert';
+import Toast from 'react-bootstrap/Toast';
 
 export interface HeaderProps {
   isRoomActive: boolean;
