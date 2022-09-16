@@ -2,8 +2,6 @@ import { NextPage } from 'next';
 import { Col, Container, Row } from 'react-bootstrap';
 import Image from 'next/image'
 import  Head  from 'next/head';
-import styles from '../styles/Home.module.css'
-import { Button, TextField } from '@mui/material';
 
 
 const Header: NextPage = () => {
@@ -25,12 +23,10 @@ const Header: NextPage = () => {
                         <Col xs="4"  className="d-flex justify-content-center pt-2">
                             <Row>
                                 <Col>
-                                    <TextField
-                                        variant="standard"
-                                    />
+                                    <input type="text"/>
                                 </Col>
                                 <Col>
-                                    <Button variant="contained">Copy</Button>
+                                    <input type="button" className="btn btn-primary" value="Copy" />
                                 </Col>
                             </Row>
 
