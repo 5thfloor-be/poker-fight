@@ -34,11 +34,12 @@ function configIO(io: Server){
             socket.leave(data);
         })
         
-        socket.on("create_room", listener =>{
+        socket.on("create_room", (userData, listener) =>{
             const roomId = uuid();
             socket.join(roomId)
             const room = new Room(roomId);
-            const user = new User(socket.id);
+            const user = new User(socket.id, userData);
+            console.log(userData)
             room.addUser(user);
             listener(roomId);
         })

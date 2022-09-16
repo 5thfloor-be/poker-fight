@@ -8,7 +8,7 @@ const Home = () => {
     useEffect(() => () =>{
         fetch('/api/socket');
         socket = io()
-        socket.emit('create_room', (id: string) =>{
+        socket.emit('create_room', {name : "pol"}, (id: string) =>{
             console.log(id)
         });
 
