@@ -14,69 +14,7 @@ const Home: NextPage = () => {
             </Head>
 
             <main className={styles.main}>
-                <h1 className={styles.title}>
-                    Welcome to Poker Fight !
-                </h1>
-
-                <div className="container p-5">
-                    <div className="row d-flex justify-content-center">
-                        <div className="col-sm-4">
-                            <h2>Doc Material UI</h2>
-                        </div>
-                        <div className="col-sm-2">
-                            <div className="row">
-                                <Button variant="contained" target="_blank" endIcon={<OpenInNewIcon/>}
-                                        href="https://mui.com/material-ui/getting-started/usage/">Ici</Button>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="row d-flex justify-content-center pt-5">
-                        <div className="col-sm-4">
-                            <h2>Doc Bootstrap Grid</h2>
-                        </div>
-                        <div className="col-sm-2">
-                            <div className="row">
-                                <Button variant="contained" target="_blank"  endIcon={<OpenInNewIcon/>}
-                                        href="https://getbootstrap.com/docs/5.1/layout/grid/">Ici</Button>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="row d-flex justify-content-center pt-5">
-                        <div className="col-sm-4">
-                            <h2>Doc Flexbox</h2>
-                        </div>
-                        <div className="col-sm-2">
-                            <div className="row">
-                                <Button variant="contained" target="_blank" endIcon={<OpenInNewIcon/>}
-                                        href="https://css-tricks.com/snippets/css/a-guide-to-flexbox/">Ici</Button>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="row d-flex justify-content-center pt-5">
-                        <div className="col-sm-4">
-                            <h2>Doc Next JS</h2>
-                        </div>
-                        <div className="col-sm-2">
-                            <div className="row">
-                                <Button variant="contained" target="_blank" endIcon={<OpenInNewIcon/>}
-                                        href="https://nextjs.org/docs">Ici</Button>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="row d-flex justify-content-center pt-5">
-                        <div className="col-sm-4">
-                            <h2>Doc React TS Hooks</h2>
-                        </div>
-                        <div className="col-sm-2">
-                            <div className="row">
-                                <Button variant="contained" target="_blank"  endIcon={<OpenInNewIcon/>}
-                                        href="https://react-typescript-cheatsheet.netlify.app/docs/basic/getting-started/hooks/">Ici</Button>
-                            </div>
-                        </div>
-                    </div>
-
-
-                </div>
+            
             </main>
 
             <footer className={styles.footer}>
