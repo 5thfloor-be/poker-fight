@@ -1,7 +1,6 @@
-import type { NextApiRequest, NextApiResponse } from 'next'
 import {IncomingMessage, ServerResponse} from "http";
-import { v4 as uuid } from 'uuid';
-import { Server } from 'Socket.IO'
+import {v4 as uuid} from 'uuid';
+import {Server} from 'Socket.IO'
 import Room from './model/room';
 import User from './model/user';
 
