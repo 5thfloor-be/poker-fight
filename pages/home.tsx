@@ -3,40 +3,32 @@ import io from 'Socket.IO-client'
 let socket;
 
 const Home = () => {
-    const [input, setInput] = useState('')
+    const [roomId, setRoomId] = useState('')
 
     useEffect(() => () =>{
         fetch('/api/socket');
         socket = io()
         socket.emit('create_room', {name : "pol"}, (id: string) =>{
             console.log(id)
+            setRoomId(id)
         });
-
-        socket.on('connect', () => {
-            console.log('connected')
-        })
 
         socket.on('room_created', (data) => {
 
         })
 
-        socket.on('update-input', msg => {
-            setInput(msg)
-        })
     }, [])
 
 
-    const onChangeHandler = (e) => {
-        setInput(e.target.value)
-        socket.emit('input-change', e.target.value)
-    }
-
     return (
-        <input
-            placeholder="Type something"
-    value={input}
-    onChange={onChangeHandler}
-    />
+        <div>
+            <p >
+                Room id : {roomId}
+            </p>
+            <p >
+            Share this link : localhost:3000/room/{roomId}
+            </p>
+        </div>
 )
 }
 
