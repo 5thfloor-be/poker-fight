@@ -12,6 +12,9 @@
   align-items: center;
 }
 
+.point{
+  background-color: green;
+}
 .footer {
   display: flex;
   flex: 1;
