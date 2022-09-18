@@ -1,5 +1,5 @@
 .container {
-  background-image: url('/images/main-background.jpg');
+  background-image: url("/images/main-background.jpg");
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
@@ -15,14 +15,14 @@
   align-items: center;
 }
 
-.point{
+.point {
   background-color: green;
 }
 
 .landingText {
   text-align: center;
-  color: white !important;
-  background-color: rgba(255, 255, 255, 0.5);
+  color: rgb(24, 22, 141) !important;
+  background-color: rgba(255, 255, 255, 0.6);
   padding-top: 20px;
   padding-bottom: 20px;
   margin-bottom: 50px;
@@ -31,7 +31,7 @@
 }
 
 .landingText a {
-  color: white;
+  color: rgb(24, 22, 141);
 }
 
 .footer {
