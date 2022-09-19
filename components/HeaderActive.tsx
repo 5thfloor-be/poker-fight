@@ -1,15 +1,11 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { MdAccountCircle, MdOutlineCheck } from "react-icons/md";
-import Alert from "react-bootstrap/Alert";
-import Toast from "react-bootstrap/Toast";
-import { EditProfile } from "./_app";
+import EditProfile from "./EditProfile";
 
-export interface HeaderProps {
-  isRoomActive: boolean;
-}
+const isRoomActive = true;
 
-const Header = ({ isRoomActive }: HeaderProps) => {
+const HeaderActive = () => {
   const [widthScreen, setWidthScreen] = useState(0);
   const [urlValue, setUrlValue] = useState(
     "http://poker-fight.be/room/aid777jdjfdhjkds_"
@@ -61,8 +57,7 @@ const Header = ({ isRoomActive }: HeaderProps) => {
                 ) : (
                   <button
                     disabled
-                    style={{ opacity: "1" }}
-                    className=" btn btn-success rounded-5 px-sm-3"
+                    className=" btn btn-success rounded-5 px-sm-3 opacity-100"
                   >
                     <MdOutlineCheck color="white" className="me-1" />
                     Copied
@@ -75,8 +70,7 @@ const Header = ({ isRoomActive }: HeaderProps) => {
             {isRoomActive && (
               <div className="text-center">
                 <button
-                  style={{ opacity: "1", fontWeight: "bold" }}
-                  className=" btn btn-success rounded-5 form-control"
+                  className=" btn btn-success rounded-5 form-control fw-bold opacity-100"
                   disabled
                 >
                   Nombre de points: 20/60
@@ -101,4 +95,4 @@ const Header = ({ isRoomActive }: HeaderProps) => {
   );
 };
 
-export default Header;
+export default HeaderActive;
