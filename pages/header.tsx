@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import { MdAccountCircle } from "react-icons/md";
+import { MdAccountCircle, MdOutlineCheck } from "react-icons/md";
 import Alert from "react-bootstrap/Alert";
 import Toast from "react-bootstrap/Toast";
 import { EditProfile } from "./_app";
@@ -64,6 +64,7 @@ const Header = ({ isRoomActive }: HeaderProps) => {
                     style={{ opacity: "1" }}
                     className=" btn btn-success rounded-5 px-sm-3"
                   >
+                    <MdOutlineCheck color="white" className="me-1" />
                     Copied
                   </button>
                 )}
