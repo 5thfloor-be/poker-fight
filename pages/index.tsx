@@ -19,7 +19,7 @@ const Home: NextPage = () => {
           content="Discover a new voting system for your Poker Planning, with fun
                   and innovative features."
         />
-        <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" href="/images/favicon.png" />
       </Head>
 
       <Header isRoomActive={isRoomActive} />
