@@ -13,7 +13,7 @@ const Home: NextPage = () => {
   return (
     <div className={styles.container}>
       <Head>
-        <title>Poker-Fight.com</title>
+        <title>Poker Fight - A new voting system for your Poker Planning</title>
         <meta
           name="description"
           content="Discover a new voting system for your Poker Planning, with fun
