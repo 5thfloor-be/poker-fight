@@ -2,16 +2,12 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import { useState } from "react";
 import styles from "../styles/Home.module.css";
-import Header from "./header";
-import { FaLinkedinIn } from "react-icons/fa";
-import Image from "next/image";
-import SubFooter from "./subfooter";
-import Footer from "./footer";
+import FooterActiveMobile from "../components/FooterActiveMobile";
 
 const Home: NextPage = () => {
   const [isRoomActive, setIsRoomActive] = useState(true);
   return (
-    <div className={styles.container}>
+    <div>
       <Head>
         <title>Poker Fight - A new voting system for your Poker Planning</title>
         <meta
@@ -22,11 +18,10 @@ const Home: NextPage = () => {
         <link rel="icon" href="/images/favicon.png" />
       </Head>
 
-      <Header isRoomActive={isRoomActive} />
-      <main className={styles.main}>
-        <div className="container mx-0 mw-100">
+      <main>
+        <div className="container mx-0 mw-100" style={{ marginTop: "15%" }}>
           <div className="row">
-            <div className="col">
+            <div className="col px-0">
               <div className={styles.landingText}>
                 <p>
                   Discover a new voting system for your Poker Planning, with fun
@@ -66,8 +61,7 @@ const Home: NextPage = () => {
           </div>
         </div>
       </main>
-      {isRoomActive && <SubFooter />}
-      <Footer />
+      {isRoomActive && <FooterActiveMobile />}
     </div>
   );
 };
