@@ -71,13 +71,20 @@ function configIO(io: Server){
             console.log(`buzz-break-vote ${JSON.stringify(data)}`);
             rooms.get(data.roomId)?.buzzBreakVote(data.userId);
         })
-        
+
         socket.on('start-voting', data => {
             console.log(`start-voting ${JSON.stringify(data)}`);
             rooms.get(data.roomId)?.startVoting();
-            
+
             io.in(data.roomId).emit('start-voting', rooms.get(data.roomId));
         });
+
+        socket.on('get_room', (roomId,listener) => {
+            console.log(`get_room ${roomId}`);
+            const room = rooms.get(roomId);
+            console.log(`room : ${JSON.stringify(room)}`)
+            listener(room);
+        })
 
     })
 }

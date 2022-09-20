@@ -6,7 +6,7 @@ export default class Room{
     modified: Date = new Date();
     coffeBreak: Map<string, boolean> = new Map([]);
     buzzer: Map<string, boolean> = new Map([]);
-    currentVotes: Map<string, number> = new Map([]);
+    currentVotes: Map<string, string> = new Map([]);
     state: States = States.STARTING;
     currentPoints: number = 0;
     callback: RoomStateChanged;
@@ -27,7 +27,7 @@ export default class Room{
         this.callback(this);
     }
     
-    registerVote(userId: string, vote: number){
+    registerVote(userId: string, vote: string){
         this.currentVotes.set(userId, vote);
         //TODO : if everyone has voted, send event ?
         this.callback(this);
@@ -52,6 +52,10 @@ export default class Room{
     revealVotes() {
         this.state = States.VOTED;
         this.callback(this);
+    }
+
+    getCurrentVoteByUser(userId: string): string | undefined{
+        return this.currentVotes.get(userId);
     }
 
 }
