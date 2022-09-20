@@ -5,7 +5,7 @@ import { MdAccountCircle } from 'react-icons/md';
 export interface CardProps {
   value?: number;
   canClose: boolean;
-  color: string;
+  color?: string;
   selected?: boolean;
 }
 
