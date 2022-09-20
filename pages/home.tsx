@@ -1,14 +1,12 @@
 import { useEffect, useState, useCallback } from 'react'
-import io from 'Socket.IO-client'
+import { io } from 'socket.io-client';
 import { setStorageValue } from "../components/UseLocalStorage";
-//import SocketContext from './shared/context/SocketContext'
+import { Role } from './api/model/user';
 
 
 const Home = () => {
     const [roomId, setRoomId] = useState('')
     const [socket, setSocket] = useState(io())
-
-    //console.log("socket 2 ", {socket})
 
     useEffect(() => {
         console.log(`useEffect ${socket.id}`)
@@ -18,7 +16,7 @@ const Home = () => {
             setStorageValue("ROOM", data);
         });
         socket.emit('create_room',
-            {userInfo: {name: "pol"}},
+            {userInfo: {name: "pol", role: Role.SCRUM_MASTER}},
             (id: string) => {
                 console.log(id)
                 setRoomId(id)
@@ -35,7 +33,6 @@ const Home = () => {
             });
     }, [])
 
-    //console.log("socket ", {socket})
     return (
         <div className="bg-light">
             <button onClick={createRoom}></button>
@@ -55,8 +52,6 @@ export default Home;
 export async function getServerSideProps(){
     console.log('xxxxxxxxx');
     await fetch('http://localhost:3000/api/socket');
-    //let socket = io()
-    //console.log("socket ", {socket})
     return {
         props: {
             //socket: socket

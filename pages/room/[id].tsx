@@ -1,40 +1,73 @@
 import { NextPage } from 'next';
 import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
+import { io } from 'socket.io-client';
 import Card from '../../components/Card';
-import User, { Role } from '../api/model/user';
 import { States } from '../api/model/room';
-import { GiCardRandom } from 'react-icons/all';
+import User, { Role } from '../api/model/user';
 
 const Room: NextPage = () => {
-    const router = useRouter();
-    const roomId = router.query.id;
+    const socket = io();
 
-    const me = new User('20', {name: 'Gab', color: '#008000', role: Role.DEV});
-
-    const pedro = new User('10', {name: 'Pedro', color: '#ffff00', role: Role.DEV});
-    const estef = new User('30', {name: 'Estef', color: '#ffc0cb', role: Role.DEV});
-    const tbo = new User('40', {name: 'Tbo', color: '#ffa500', role: Role.DEV});
-    const alex = new User('50', {name: 'Alex', color: '#ffc0cb', role: Role.DEV});
-    const mathieu = new User('60', {name: 'Mathieu', color: '#808080', role: Role.DEV});
-    const renaud = new User('70', {name: 'Renaud', color: '#0000ff', role: Role.DEV});
-    const rachel = new User('80', {name: 'Rachel', color: '#808080', role: Role.DEV});
-    const michou = new User('90', {name: 'Michou', color: '#ff0000', role: Role.DEV});
-    const jerry = new User('100', {name: 'Jerry', color: '#0000ff', role: Role.DEV});
-
-    const room = {
+    const pedro = new User('10', { name: 'Pedro', color: '#ffff00', role: Role.DEV });
+    const estef = new User('30', { name: 'Estef', color: '#ffc0cb', role: Role.DEV });
+    const tbo = new User('40', { name: 'Tbo', color: '#ffa500', role: Role.DEV });
+    const alex = new User('50', { name: 'Alex', color: '#ffc0cb', role: Role.DEV });
+    const mathieu = new User('60', { name: 'Mathieu', color: '#808080', role: Role.DEV });
+    const renaud = new User('70', { name: 'Renaud', color: '#0000ff', role: Role.DEV });
+    const rachel = new User('80', { name: 'Rachel', color: '#808080', role: Role.DEV });
+    const michou = new User('90', { name: 'Michou', color: '#ff0000', role: Role.DEV });
+    const jerry = new User('100', { name: 'Jerry', color: '#0000ff', role: Role.DEV });
+    
+    const [room, setRoom] = useState({
         users: [pedro, estef, tbo, alex, mathieu, renaud, rachel, michou, jerry],
         modified: new Date(),
         coffeBreak: new Map([]),
         buzzer: new Map([]),
         currentVotes: new Map([]),
-        state: States.STARTING,
+        state: States.VOTING,
         currentPoints: 0,
         callback: {}
-    };
+    });
+
+    const router = useRouter();
+    const roomId = router.query.id;
+
+    const me = new User('20', { name: 'Gab', color: '#008000', role: Role.SCRUM_MASTER });
+    console.log('roomId', roomId);
+    
+    if (roomId !== '') {
+        socket.emit('join_room', {roomId});
+    }
+
+    useEffect(() => {
+        socket.on('reveal', (data) => {
+          console.log('reveeeeeeeal', data);
+          ;
+        })
+      }, [socket]);
 
     const cardValues = [1, 2, 3, 5, 8, 13];
 
-    // get room from server
+    const startVoting = () => {
+        console.log('start voting: Change status room to voting');
+    }
+    
+    const reveal = () => {
+        console.log('reveal: Change status room to voted');
+        socket.emit('reveal', { roomId }, (r) => {
+            console.log('room', r);
+            setRoom(r);
+        });
+    }
+
+    const redoVote = () => {
+        console.log('redo vote: Change status vote to voting');
+    }
+
+    const validate = () => {
+        console.log('Validate: Add points and change status room to voting');
+    }
 
     return (
         <div className="container">
@@ -48,8 +81,41 @@ const Room: NextPage = () => {
                     )
                 }
             </div>
-            <div className="row">
-
+            <div className="row my-3">
+                {(me.userInfo.role === Role.SCRUM_MASTER || me.userInfo.role === Role.VOTING_SCRUM_MASTER) 
+                    && room.state === States.STARTING 
+                    && <div className='offset-3 col-6 offset-sm-5 col-sm-2'>
+                        <button type='button' className='btn btn-primary fw-bold w-100'
+                            onClick={startVoting}>VOTE</button>
+                </div>}
+            </div>
+            <div className="row my-3">
+                {(me.userInfo.role === Role.SCRUM_MASTER || me.userInfo.role === Role.VOTING_SCRUM_MASTER) 
+                    && room.state === States.VOTING 
+                    && <>
+                        <div className='offset-1 col-5 offset-sm-4 col-sm-2'>
+                            <button type='button' className='btn btn-primary fw-bold w-100'
+                                onClick={reveal}>REVEAL</button>
+                            
+                        </div>
+                        <div className='col-5 col-sm-2'>
+                            <button type='button' className='btn btn-primary fw-bold w-100'
+                                    onClick={redoVote}>REDO VOTE</button>
+                        </div>
+                    </>}
+                {(me.userInfo.role === Role.SCRUM_MASTER || me.userInfo.role === Role.VOTING_SCRUM_MASTER) && room.state === States.VOTED && 
+                <>
+                     <div className='offset-1 col-5 offset-sm-4 col-sm-2'>
+                        <button type='button' className='btn btn-primary fw-bold w-100'
+                            onClick={validate}>VALIDATE</button>
+                        
+                    </div>
+                    <div className='col-5 col-sm-2'>
+                        <button type='button' className='btn btn-primary fw-bold w-100'
+                                onClick={redoVote}>REDO VOTE</button>
+                    </div>
+                </>
+                }
             </div>
             <div className="row d-none d-sm-inline-flex">
                 {
@@ -70,6 +136,7 @@ const Room: NextPage = () => {
                     </div>
                 }
             </div>
+            <br /><br /><br /><br /><br /><br />
         </div>
     )
 }

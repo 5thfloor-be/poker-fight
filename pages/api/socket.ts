@@ -1,11 +1,10 @@
 import {IncomingMessage, ServerResponse} from "http";
 import {v4 as uuid} from 'uuid';
-import {Server} from 'Socket.IO'
+import {Server} from 'socket.io'
 import Room from './model/room';
 import User, {Role} from './model/user';
 
-const rooms : Map<string, Room> = new Map([]);
-
+const rooms : Map<string, Room> = new Map();
 
 const SocketHandler = (req: IncomingMessage, res: ServerResponse) => {
 
@@ -61,6 +60,8 @@ function configIO(io: Server){
 
         socket.on("reveal", data =>{
             console.log(`reveal from scrum master ${JSON.stringify(data)}`);
+            rooms.get(data.roomId)?.revealVotes();
+            
             socket.to(data.roomId).emit('reveal', rooms.get(data.roomId));
         })
 
