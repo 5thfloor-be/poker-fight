@@ -45,11 +45,17 @@ export default class Room{
         this.callback(this);
     }
 
+    revealVotes() {
+        this.state = States.VOTED;
+        this.callback(this);
+    }
+
 }
 
 export enum States{
     STARTING,
     VOTING,
+    VOTED,
     FIGHTING,
     BREAK,
     BUZZ
