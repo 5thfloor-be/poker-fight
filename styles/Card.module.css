@@ -6,6 +6,10 @@
   /*width: 185px;*/
 }
 
+.customCardSelected {
+  background-color: yellow;
+}
+
 .logoBottom {
   transform: rotate(180deg);
 }

@@ -6,11 +6,12 @@ export interface CardProps {
   value?: number;
   canClose: boolean;
   color: string;
+  selected?: boolean;
 }
 
-const Card = ({ value, canClose, color }: CardProps) => {
+const Card = ({ value, canClose, color, selected = false }: CardProps) => {
   return (
-    <div className={`card ${styles.customCard}`}>
+    <div className={!selected ? `card ${styles.customCard}` : `card ${styles.customCard} ${styles.customCardSelected}`}>
         <div>
             <Image alt="card" src="/images/favicon.png" width={50} height={50} />
         </div>
@@ -25,4 +26,22 @@ const Card = ({ value, canClose, color }: CardProps) => {
   )
 }
 
+const style = {
+  fontSize: '150px',
+  color: 'blue'
+  // backgroundColor: 'white'
+}
+
+const backgoundNotSelectedStyle = {
+  backgroundImage: "url('/images/card-backgound.png')",
+  backgroundPosition: 'center',
+  backgroundRepeat: 'no-repeat',
+  backgroundSize: 'cover',
+  width: '185px'
+}
+
+const backgoundSelectedStyle = {
+  backgroundColor: 'yellow',
+  width: '185px'
+}
 export default Card
