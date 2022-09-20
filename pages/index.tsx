@@ -4,6 +4,8 @@ import { useState } from "react";
 import styles from "../styles/Home.module.css";
 import FooterActiveMobile from "../components/FooterActiveMobile";
 import CreateRoom from "../components/CreateRoom";
+import { Modal } from "react-bootstrap";
+import ScrumMasterActions from "../components/ScrumMasterActions";
 
 const Home: NextPage = () => {
   const [isRoomActive, setIsRoomActive] = useState(true);
@@ -49,6 +51,8 @@ const Home: NextPage = () => {
               </div>
             </div>
           </div>
+
+          <ScrumMasterActions minValue={1} maxValue={3} deck={[1, 3, 5, 8]} />
 
           <div className="row">
             <div className="offset-sm-3 col-sm-2 offset-1 col-10 my-1">
