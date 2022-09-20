@@ -7,7 +7,7 @@ export default class User {
         private id: string, 
         info: UserInfo
     ) {
-        this.canVote = info.role == Role.DEV || info.role == Role.VOTING_SCRUM_MASTER
+        this.canVote = info?.role == Role.DEV || info?.role == Role.VOTING_SCRUM_MASTER
         this.userInfo = info;
     }
 
