@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-export type Vars = "USERNAME" | "COLOR";
+export type Vars = "USERNAME" | "COLOR" | "ROOM" | "SOCKET";
 
 export function getStorageValue(key: Vars, defaultValue: any) {
     if (typeof window !== "undefined") {
