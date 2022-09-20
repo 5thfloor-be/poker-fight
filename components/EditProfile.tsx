@@ -7,6 +7,10 @@ import { useRouter } from "next/router";
 import { getStorageValue, setStorageValue } from "./UseLocalStorage";
 
 const EditProfile = () => {
+  const [user, setUser] = useState(
+    getStorageValue("USER", { username: "", color: "#ffffff" })
+  );
+
   const colors = new Map<string, string>([
     ["#0000ff", "blue"],
     ["#ffffff", "white"],
@@ -20,34 +24,32 @@ const EditProfile = () => {
 
   const router = useRouter();
 
-  const [username, setUsername] = useState("");
-  const [color, setColor] = useState("#ffffff");
-
   const [show, setShow] = useState(false);
 
   const handleShow = () => {
     if (router.pathname === "/") {
-      setUsername(getStorageValue("USERNAME", ""));
-      setColor(getStorageValue("COLOR", "#ffffff"));
       setShow(true);
     }
   };
 
   const save = () => {
     setShow(false);
-    setStorageValue("USERNAME", username);
-    setStorageValue("COLOR", color);
+    setStorageValue("USER", user);
   };
 
   const cancel = () => setShow(false);
 
+  console.log("color ", user && user.color);
+
   return (
-    <>
+    <div>
       <MdAccountCircle
-        color={getStorageValue("COLOR", "#ffffff")}
+        color={user && user.color}
         onClick={handleShow}
         size={60}
       />
+
+      {user && user.color}
 
       <Modal
         centered={true}
@@ -67,17 +69,19 @@ const EditProfile = () => {
                 <div className="col-12">
                   <MdAccountCircle
                     className="mb-3"
-                    color={color}
+                    color={user && user.color}
                     title="aze"
                     size={60}
                   />
                 </div>
                 <div className="col-12">
                   <input
-                    defaultValue={username}
+                    defaultValue={user && user.username}
                     type="text"
                     placeholder="Username"
-                    onChange={(e) => setUsername(e.target.value)}
+                    onChange={(e) =>
+                      setUser({ ...user, username: e.target.value })
+                    }
                   />
                 </div>
               </div>
@@ -85,14 +89,19 @@ const EditProfile = () => {
                 <div className="offset-3 offset-sm-2">
                   <CirclePicker
                     className="mx-0 px-0"
-                    onChangeComplete={(color) => setColor(color.hex)}
+                    onChangeComplete={(color) =>
+                      setUser({ ...user, color: color.hex })
+                    }
                     width="200px"
                     colors={Array.from(colors.keys())}
                     onSwatchHover={(color, event) => console.log(color)}
                   />
                 </div>
                 <div className="col-12">
-                  <p className="text-white mt-2"> Color: {colors.get(color)}</p>
+                  <p className="text-white mt-2">
+                    {" "}
+                    Color: {colors.get(user && user.color)}
+                  </p>
                 </div>
               </div>
             </div>
@@ -119,7 +128,7 @@ const EditProfile = () => {
           </div>
         </Modal.Footer>
       </Modal>
-    </>
+    </div>
   );
 };
 

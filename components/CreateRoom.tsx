@@ -14,7 +14,7 @@ const CreateRoom = (props: CreateRoomProps) => {
   const [show, setShow] = useState(props.show);
 
   const [user, setUser] = useState(
-    getStorageValue("USER", { username: "", color: "" })
+    getStorageValue("USER", { username: "", color: "#ffffff" })
   );
 
   const colors = new Map<string, string>([
@@ -32,7 +32,6 @@ const CreateRoom = (props: CreateRoomProps) => {
 
   const save = () => {
     setShow(false);
-
     setStorageValue("USER", user);
   };
 
@@ -58,14 +57,14 @@ const CreateRoom = (props: CreateRoomProps) => {
                 <div className="col-12">
                   <MdAccountCircle
                     className="mb-3"
-                    color={user.color}
+                    color={user && user.color}
                     title="aze"
                     size={60}
                   />
                 </div>
                 <div className="col-12">
                   <input
-                    defaultValue={user.username}
+                    defaultValue={user && user.username}
                     type="text"
                     placeholder="Username"
                     onChange={(e) => {
@@ -89,7 +88,7 @@ const CreateRoom = (props: CreateRoomProps) => {
                 <div className="col-12">
                   <p className="text-white mt-2">
                     {" "}
-                    Color: {colors.get(user.color)}
+                    Color: {colors.get(user && user.color)}
                   </p>
                 </div>
               </div>
