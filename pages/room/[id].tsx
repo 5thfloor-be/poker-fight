@@ -25,7 +25,7 @@ const Room: NextPage = () => {
         coffeBreak: new Map([]),
         buzzer: new Map([]),
         currentVotes: new Map([]),
-        state: States.VOTING,
+        state: States.STARTING,
         currentPoints: 0,
         callback: {}
     });
@@ -37,13 +37,17 @@ const Room: NextPage = () => {
     console.log('roomId', roomId);
     
     if (roomId !== '') {
-        socket.emit('join_room', {roomId});
+        socket.emit('join_room', {roomId, userInfo: me});
     }
 
     useEffect(() => {
         socket.on('reveal', (data) => {
           console.log('reveeeeeeeal', data);
-          ;
+          
+        });
+        socket.on('start-voting', data => {
+            console.log('startVotiiiiing', data);
+            setRoom(data);
         })
       }, [socket]);
 
@@ -51,6 +55,7 @@ const Room: NextPage = () => {
 
     const startVoting = () => {
         console.log('start voting: Change status room to voting');
+        socket.emit('start-voting', { roomId }, (r) => setRoom(r));
     }
     
     const reveal = () => {
