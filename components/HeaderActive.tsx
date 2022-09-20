@@ -2,10 +2,15 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import { MdAccountCircle, MdOutlineCheck } from "react-icons/md";
 import EditProfile from "./EditProfile";
+import { getStorageValue } from "./UseLocalStorage";
 
 const isRoomActive = true;
 
 const HeaderActive = () => {
+  const [user, setUser] = useState(
+    getStorageValue("USER", { username: "", color: "#ffffff" })
+  );
+
   const [widthScreen, setWidthScreen] = useState(0);
   const [urlValue, setUrlValue] = useState(
     "http://poker-fight.be/room/aid777jdjfdhjkds_"
@@ -32,7 +37,7 @@ const HeaderActive = () => {
             />
           </div>
           <div className="col-2 d-sm-none px-1 text-center">
-            <MdAccountCircle size={60} color="white" />
+            <MdAccountCircle size={60} color={user ? user.color : "#ffffff"} />
           </div>
           <div className="col-12 col-sm-4 mx-0 px-0 pt-2">
             {isRoomActive && (

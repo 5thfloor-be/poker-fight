@@ -6,20 +6,20 @@ import LayoutActive from "../components/LayoutActive";
 import LayoutNonActive from "../components/LayoutNonActive";
 
 function MyApp({ Component, pageProps }: AppProps) {
-  const [isRoomActive, setIsRoomActive] = useState(true);
+  const [isRoomActive, setIsRoomActive] = useState(false);
 
   return (
-      <>
-        {isRoomActive ? (
-            <LayoutActive>
-              <Component {...pageProps} />
-            </LayoutActive>
-        ) : (
-            <LayoutNonActive>
-              <Component {...pageProps} />
-            </LayoutNonActive>
-        )}
-      </>
+    <>
+      {isRoomActive ? (
+        <LayoutActive>
+          <Component {...pageProps} />
+        </LayoutActive>
+      ) : (
+        <LayoutNonActive>
+          <Component {...pageProps} />
+        </LayoutNonActive>
+      )}
+    </>
   );
 }
 
