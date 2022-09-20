@@ -9,18 +9,23 @@ export interface CardProps {
     color?: string;
     selected?: boolean;
     name?: string | null;
+    badgeConfig?: BadgeConfig;
+}
+
+export interface BadgeConfig {
     badgeText?: string | null;
     popupText?: any;
+    popupTitle?: string | null;
+    position?: string | null;
 }
 
 
-
-const Card = ({value, canClose, color, selected = false, name = null, badgeText = null, popupText = null}: CardProps) => {
+const Card = ({value, canClose, color, selected = false, name = null, badgeConfig = {}}: CardProps) => {
     const popover = (
             <Popover id="popover-basic">
-                <Popover.Header as="h3">Voters</Popover.Header>
+                {badgeConfig?.popupTitle && <Popover.Header as="h3">{badgeConfig?.popupTitle}</Popover.Header>}
                 <Popover.Body>
-                    {popupText}
+                    {badgeConfig?.popupText}
                 </Popover.Body>
             </Popover>
     )
@@ -41,9 +46,9 @@ const Card = ({value, canClose, color, selected = false, name = null, badgeText 
                 name && <p className="position-absolute top-100 start-100 translate-middle fw-bold pe-5 pt-3">{name}</p>
             }
             {
-                badgeText && <OverlayTrigger trigger="click" placement="right" overlay={popover}>
-                    <Badge bg={'danger'} pill={true}
-                           className="position-absolute top-0 start-100 translate-middle">{badgeText}</Badge>
+                badgeConfig && <OverlayTrigger trigger="click" placement={badgeConfig?.position} overlay={popover}>
+                        <Badge bg={'danger'} pill={true}
+                               className={ badgeConfig.position == "left" ? "position-absolute top-0 start-0 translate-middle" : "position-absolute top-0 start-100 translate-middle"}>{badgeConfig.badgeText}</Badge>
                 </OverlayTrigger>
             }
 
