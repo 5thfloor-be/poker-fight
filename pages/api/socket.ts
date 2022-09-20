@@ -28,6 +28,8 @@ function configIO(io: Server){
 
         socket.on("join_room", (data) => {
             console.log(`${socket.id} is joining ${data}`)
+            console.log(`${socket.id} is joining ${data.userInfo}`)
+            console.log(`${socket.id} is joining ${socket.id}`)
             socket.join(data.roomId)
             rooms.get(data.roomId)?.addUser(new User(socket.id,data.userInfo));
         })
@@ -40,16 +42,11 @@ function configIO(io: Server){
         
         socket.on("create_room", (data, listener) =>{
             const roomId = uuid();
-            socket.join(roomId)
-            const room = new Room(roomId, data.roomOptions, (room: Room) =>{
+            const room = new Room(roomId, data?.roomOptions, (room: Room) =>{
                 console.log(`room state update sent${JSON.stringify(room)}`)
                 socket.to(roomId).emit('room_state_update', room);
             });
-            const user = new User(socket.id, data.userInfo);
-
             rooms.set(roomId, room);
-            console.log(data.userInfo)
-            room.addUser(user);
             listener(roomId);
         })
 
@@ -74,6 +71,13 @@ function configIO(io: Server){
             console.log(`buzz-break-vote ${JSON.stringify(data)}`);
             rooms.get(data.roomId)?.buzzBreakVote(data.userId);
         })
+        
+        socket.on('start-voting', data => {
+            console.log(`start-voting ${JSON.stringify(data)}`);
+            rooms.get(data.roomId)?.startVoting();
+            
+            io.in(data.roomId).emit('start-voting', rooms.get(data.roomId));
+        });
 
     })
 }

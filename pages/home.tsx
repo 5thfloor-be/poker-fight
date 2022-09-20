@@ -16,7 +16,7 @@ const Home = () => {
             setStorageValue("ROOM", data);
         });
         socket.emit('create_room',
-            {userInfo: {name: "pol", role: Role.SCRUM_MASTER}},
+            {},
             (id: string) => {
                 console.log(id)
                 setRoomId(id)
@@ -26,7 +26,7 @@ const Home = () => {
 
     const createRoom = useCallback(() => {
         socket.emit('create_room',
-            {userInfo: {name: "pol"}},
+            {},
             (id: string) => {
                 console.log(id)
                 setRoomId(id)

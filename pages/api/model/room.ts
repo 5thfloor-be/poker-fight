@@ -45,6 +45,10 @@ export default class Room{
         this.callback(this);
     }
 
+    startVoting() {
+        this.state = States.VOTING;
+        this.callback(this);
+    }
     revealVotes() {
         this.state = States.VOTED;
         this.callback(this);
