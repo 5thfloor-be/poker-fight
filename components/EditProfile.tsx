@@ -39,17 +39,13 @@ const EditProfile = () => {
 
   const cancel = () => setShow(false);
 
-  console.log("color ", user && user.color);
-
   return (
     <div>
       <MdAccountCircle
-        color={user && user.color}
+        color={user ? user.color : "#ffffff"}
         onClick={handleShow}
         size={60}
       />
-
-      {user && user.color}
 
       <Modal
         centered={true}
@@ -69,7 +65,7 @@ const EditProfile = () => {
                 <div className="col-12">
                   <MdAccountCircle
                     className="mb-3"
-                    color={user && user.color}
+                    color={user ? user.color : "#ffffff"}
                     title="aze"
                     size={60}
                   />

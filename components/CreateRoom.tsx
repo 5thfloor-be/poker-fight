@@ -57,7 +57,7 @@ const CreateRoom = (props: CreateRoomProps) => {
                 <div className="col-12">
                   <MdAccountCircle
                     className="mb-3"
-                    color={user && user.color}
+                    color={user ? user.color : "#ffffff"}
                     title="aze"
                     size={60}
                   />
