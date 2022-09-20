@@ -3,19 +3,25 @@ import { useState } from "react";
 import { Button, Modal } from "react-bootstrap";
 import { MdAccountCircle } from "react-icons/md";
 import { CirclePicker } from "react-color";
-import { useRouter } from "next/router";
 import { getStorageValue, setStorageValue } from "./UseLocalStorage";
 
 type CreateRoomProps = {
   show: boolean;
+  setShowCreateRoomEdition: (val: any) => void;
 };
 
 const CreateRoom = (props: CreateRoomProps) => {
   const [show, setShow] = useState(props.show);
 
+  const [checked, setChecked] = useState(false);
+
   const [user, setUser] = useState(
     getStorageValue("USER", { username: "", color: "#ffffff" })
   );
+
+  const handleChangeCheckbox = () => {
+    setChecked(!checked);
+  };
 
   const colors = new Map<string, string>([
     ["#0000ff", "blue"],
@@ -28,11 +34,10 @@ const CreateRoom = (props: CreateRoomProps) => {
     ["#808080", "grey"],
   ]);
 
-  const router = useRouter();
-
   const save = () => {
+    setStorageValue("USER", { ...user, vote: checked });
+    props.setShowCreateRoomEdition(true);
     setShow(false);
-    setStorageValue("USER", user);
   };
 
   const cancel = () => setShow(false);
@@ -93,7 +98,11 @@ const CreateRoom = (props: CreateRoomProps) => {
                 </div>
               </div>
               <div className="col">
-                <input type="checkbox"></input>
+                <input
+                  type="checkbox"
+                  checked={checked}
+                  onChange={handleChangeCheckbox}
+                ></input>
                 <label className="text-white ps-2">Can vote</label>
                 <p>
                   <span className="text-white">

@@ -6,10 +6,12 @@ import FooterActiveMobile from "../components/FooterActiveMobile";
 import CreateRoom from "../components/CreateRoom";
 import { Modal } from "react-bootstrap";
 import ScrumMasterActions from "../components/ScrumMasterActions";
+import CreateRoomEdition from "../components/CreateRoomEdition";
 
 const Home: NextPage = () => {
   const [isRoomActive, setIsRoomActive] = useState(true);
   const [show, setShow] = useState(false);
+  const [showCreateRoomEdition, setShowCreateRoomEdition] = useState(false);
 
   return (
     <div>
@@ -72,7 +74,13 @@ const Home: NextPage = () => {
           </div>
         </div>
       </main>
-      {show && <CreateRoom show={show} />}
+      {show && (
+        <CreateRoom
+          show={show}
+          setShowCreateRoomEdition={() => setShowCreateRoomEdition(true)}
+        />
+      )}
+      {showCreateRoomEdition && <CreateRoomEdition />}
       {isRoomActive && <FooterActiveMobile />}
     </div>
   );
