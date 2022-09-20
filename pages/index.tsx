@@ -3,9 +3,12 @@ import Head from "next/head";
 import { useState } from "react";
 import styles from "../styles/Home.module.css";
 import FooterActiveMobile from "../components/FooterActiveMobile";
+import CreateRoom from "../components/CreateRoom";
 
 const Home: NextPage = () => {
   const [isRoomActive, setIsRoomActive] = useState(true);
+  const [show, setShow] = useState(false);
+
   return (
     <div>
       <Head>
@@ -49,7 +52,11 @@ const Home: NextPage = () => {
 
           <div className="row">
             <div className="offset-sm-3 col-sm-2 offset-1 col-10 my-1">
-              <button type="button" className="btn btn-primary w-100 fw-bold">
+              <button
+                type="button"
+                className="btn btn-primary w-100 fw-bold"
+                onClick={() => setShow(!show)}
+              >
                 CREATE ROOM
               </button>
             </div>
@@ -61,6 +68,7 @@ const Home: NextPage = () => {
           </div>
         </div>
       </main>
+      {show && <CreateRoom show={show} />}
       {isRoomActive && <FooterActiveMobile />}
     </div>
   );
