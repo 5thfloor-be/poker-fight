@@ -1,0 +1,24 @@
+.customCard {
+  backgroundImage: "url('/images/card-backgound.png')";
+  backgroundPosition: 'center';
+  backgroundRepeat: 'no-repeat';
+  backgroundSize: 'cover';
+  /*width: 185px;*/
+}
+
+.logoBottom {
+  transform: rotate(180deg);
+}
+
+@media (max-width: 576px) {
+  .customCard {
+    height: 170px !important;
+  }
+  .logoBottom {
+    transform: rotate(180deg);
+  }
+  .valueCard {
+    font-size: xx-large;
+  }
+}
+
