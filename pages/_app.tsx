@@ -9,17 +9,17 @@ function MyApp({ Component, pageProps }: AppProps) {
   const [isRoomActive, setIsRoomActive] = useState(true);
 
   return (
-    <>
-      {isRoomActive ? (
-        <LayoutActive>
-          <Component {...pageProps} />
-        </LayoutActive>
-      ) : (
-        <LayoutNonActive>
-          <Component {...pageProps} />
-        </LayoutNonActive>
-      )}
-    </>
+      <>
+        {isRoomActive ? (
+            <LayoutActive>
+              <Component {...pageProps} />
+            </LayoutActive>
+        ) : (
+            <LayoutNonActive>
+              <Component {...pageProps} />
+            </LayoutNonActive>
+        )}
+      </>
   );
 }
 

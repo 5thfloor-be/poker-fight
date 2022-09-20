@@ -25,6 +25,7 @@ const SocketHandler = (req: IncomingMessage, res: ServerResponse) => {
 function configIO(io: Server){
     io.on("connection", (socket) =>{
         console.log(`User connected ${socket.id}`);
+        console.log(`Current rooms ${JSON.stringify(rooms)}`);
 
         socket.on("join_room", (data) => {
             console.log(`${socket.id} is joining ${data}`)
