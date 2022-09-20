@@ -1,29 +1,28 @@
+import styles from "../styles/Card.module.css";
 import Image from "next/image";
+import { MdAccountCircle } from 'react-icons/md';
 
 export interface CardProps {
-  value: number;
+  value?: number;
   canClose: boolean;
+  color: string;
 }
 
-const Card = ({ value, canClose }: CardProps) => {
+const Card = ({ value, canClose, color }: CardProps) => {
   return (
-    <div style={{ backgroundImage: "url('/images/card-backgound.png')", backgroundPosition: 'center', backgroundRepeat: 'no-repeat', backgroundSize: 'cover', width: '185px'}}>
-      <div style={{ width: '50px', height: '50px' }}>
-        <Image alt="card" src="/favicon.ico" width={50} height={50} /> </div>
-      <div style={{ textAlign: 'center'}}>
-        <span style={style}>{value}</span>
-      </div>
-    <div style={{ transform: 'rotate(180deg)'}}>
-    <Image  alt="card" src="/favicon.ico" width={50} height={50} />
-      </div>
+    <div className={`card ${styles.customCard}`}>
+        <div>
+            <Image alt="card" src="/images/favicon.png" width={50} height={50} />
+        </div>
+        <div className='text-center'>
+            {value && <span className={`fw-bold text-success ${styles.valueCard}`}>{value}</span> }
+            {color && <MdAccountCircle color={color} size={60}/>}
+        </div>
+        <div className={styles.logoBottom}>
+            <Image  alt="card" src="/images/favicon.png" width={50} height={50} />
+        </div>
     </div>
   )
-}
-
-const style = {
-  fontSize: '150px',
-  color: 'blue'
-  // backgroundColor: 'white'
 }
 
 export default Card
