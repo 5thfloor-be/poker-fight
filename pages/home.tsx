@@ -1,19 +1,11 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import io from 'Socket.IO-client'
-let socket;
 const Home = () => {
     const [roomId, setRoomId] = useState('')
+    const [socket, setSocket] = useState(io())
 
     useEffect(() => () =>{
         fetch('/api/socket');
-        socket = io()
-        socket.emit('create_room',
-            {userInfo:{name : "pol"}},
-            (id: string) =>{
-            console.log(id)
-            setRoomId(id)
-        });
-
         socket.on('room_state_update', (data) => {
             console.log("room state update received")
             console.log(data)
@@ -21,9 +13,19 @@ const Home = () => {
 
     }, [])
 
+    const createRoom = useCallback(() => {
+        socket.emit('create_room',
+            {userInfo: {name: "pol"}},
+            (id: string) => {
+                console.log(id)
+                setRoomId(id)
+            })
+    }, [])
+
 
     return (
-        <div>
+        <div className="bg-light">
+            <button onClick={createRoom}></button>
             <p >
                 Room id : {roomId}
             </p>
