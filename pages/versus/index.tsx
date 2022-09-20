@@ -2,7 +2,7 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import { useEffect, useState } from "react";
 import styles from "../../styles/Home.module.css";
-import Card from "../Card";
+import Card from "../../components/Card";
 
 const Versus: NextPage = () => {
   const [widthScreen, setWidthScreen] = useState(0);
