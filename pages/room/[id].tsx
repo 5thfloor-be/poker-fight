@@ -4,7 +4,7 @@ import {useEffect, useState} from 'react';
 import {io} from 'socket.io-client';
 import Card from '../../components/Card';
 import User, {Role} from '../api/model/user';
-import {States} from '../api/model/room';
+import RoomModel, {States} from '../api/model/room';
 import {GiCardRandom} from 'react-icons/Gi';
 import {Deck} from "../../components/Deck";
 import Modal from 'react-bootstrap/Modal';
@@ -27,19 +27,11 @@ const Room: NextPage = () => {
     const michou = new User('90', {name: 'Michou', color: '#ff0000', role: Role.DEV});
     const jerry = new User('100', {name: 'Jerry', color: '#0000ff', role: Role.DEV});
 
-    const [room, setRoom] = useState({
-        users: [pedro, estef, tbo, alex, mathieu, renaud, rachel, michou, jerry],
-        modified: new Date(),
-        coffeBreak: new Map([]),
-        buzzer: new Map([]),
-        currentVotes: new Map([]),
-        state: States.STARTING,
-        currentPoints: 0,
-        callback: {}
-    });
+    const [room, setRoom] = useState<RoomModel>();
     console.log('roomId', roomId);
 
-    if (roomId !== '') {
+    if (roomId !== '' && !room) {
+        console.log(`joining ${roomId}`)
         socket.emit('join_room', {roomId, userInfo: me});
     }
 
@@ -51,6 +43,10 @@ const Room: NextPage = () => {
         socket.on('start-voting', data => {
             console.log('startVotiiiiing', data);
             setRoom(data);
+        });
+        socket.on('room_state_update', r =>{
+            console.log('room state update received ', r)
+            setRoom(r);
         })
     }, [socket]);
 
@@ -90,6 +86,11 @@ const Room: NextPage = () => {
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
+    if(!room){
+        return (
+            <div className="bg-light"> <h1>Room does not exist</h1></div>
+        );
+    }
 
     return (
 
