@@ -19,12 +19,9 @@ const SocketHandler = (req: IncomingMessage, res: ServerResponse) => {
     res.end()
 }
 
-
-
 function configIO(io: Server){
     io.on("connection", (socket) =>{
         console.log(`User connected ${socket.id}`);
-        console.log(`Current rooms ${JSON.stringify(rooms)}`);
 
         socket.on("join_room", (data) => {
             console.log(`${socket.id} is joining ${data}`)
@@ -42,10 +39,11 @@ function configIO(io: Server){
         
         socket.on("create_room", (data, listener) =>{
             const roomId = uuid();
-            const room = new Room(roomId, data?.roomOptions, (room: Room) =>{
+            const room = new Room(roomId, data?.roomOptions);
+            room.registerOnChangeCallback((room: Room) =>{
                 console.log(`room state update sent${JSON.stringify(room)}`)
-                socket.to(roomId).emit('room_state_update', room);
-            });
+                io.to(roomId).emit('room_state_update', room);
+            })
             rooms.set(roomId, room);
             listener(roomId);
         })
