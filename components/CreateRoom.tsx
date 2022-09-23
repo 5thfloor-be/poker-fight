@@ -1,4 +1,3 @@
-import "bootstrap/dist/css/bootstrap.min.css";
 import { useState } from "react";
 import { Button, Modal } from "react-bootstrap";
 import { MdAccountCircle } from "react-icons/md";
@@ -87,12 +86,10 @@ const CreateRoom = (props: CreateRoomProps) => {
                     }}
                     width="200px"
                     colors={Array.from(colors.keys())}
-                    onSwatchHover={(color, event) => console.log(color)}
                   />
                 </div>
                 <div className="col-12">
                   <p className="text-white mt-2">
-                    {" "}
                     Color: {colors.get(user && user.color)}
                   </p>
                 </div>
@@ -116,12 +113,12 @@ const CreateRoom = (props: CreateRoomProps) => {
         <Modal.Footer style={{ border: "none" }}>
           <div className="container">
             <div className="row">
-              <div className="sm-6">
+              <div className="col-sm-6">
                 <Button className="w-100 mb-3" variant="primary" onClick={save}>
-                  SAVE
+                  CREATE ROOM
                 </Button>
               </div>
-              <div className="sm-6">
+              <div className="col-sm-6">
                 <Button
                   className="w-100 mb-3"
                   variant="danger"

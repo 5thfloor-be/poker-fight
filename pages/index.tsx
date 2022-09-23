@@ -80,7 +80,9 @@ const Home: NextPage = () => {
           setShowCreateRoomEdition={() => setShowCreateRoomEdition(true)}
         />
       )}
-      {showCreateRoomEdition && <CreateRoomEdition />}
+      {showCreateRoomEdition && (
+        <CreateRoomEdition showCreateRoomEdition={showCreateRoomEdition} />
+      )}
       {isRoomActive && <FooterActiveMobile />}
     </div>
   );
