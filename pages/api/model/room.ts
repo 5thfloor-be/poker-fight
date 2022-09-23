@@ -9,53 +9,65 @@ export default class Room{
     currentVotes: Map<string, string> = new Map([]);
     state: States = States.STARTING;
     currentPoints: number = 0;
-    callback: RoomStateChanged;
+    roomOptions: RoomOptions
+    onChangeCallbacks: OnChangeCallback[] = [];
 
 
-    constructor(private id: string, roomOptions: RoomOptions, callback: RoomStateChanged) {
-        this.callback = callback;
+    constructor(private id: string, roomOptions: RoomOptions) {
+        this.roomOptions = roomOptions;
     }
 
     addUser(user: User){
         this.users.push(user);
-        this.callback(this)
+        this.stateUpdated()
     }
-    
+
     removeUser(userId: string){
         this.users = this.users.filter(u => u.getId());
         //TODO : close room when users is empty or no more scrum master
-        this.callback(this);
+        this.stateUpdated();
     }
-    
+
     registerVote(userId: string, vote: string){
         this.currentVotes.set(userId, vote);
         //TODO : if everyone has voted, send event ?
-        this.callback(this);
+        this.stateUpdated();
     }
-    
+
     cofeeBreakVote(userId: string){
         const currentVote = this.coffeBreak.get(userId) ? this.coffeBreak.get(userId) : false
         this.coffeBreak.set(userId, !currentVote);
-        this.callback(this);
+        this.stateUpdated();
     }
 
     buzzBreakVote(userId: string){
         const currentVote = this.buzzer.get(userId) ? this.buzzer.get(userId) : false
         this.buzzer.set(userId, !currentVote);
-        this.callback(this);
+        this.stateUpdated();
     }
 
     startVoting() {
         this.state = States.VOTING;
-        this.callback(this);
+        this.stateUpdated();
     }
     revealVotes() {
         this.state = States.VOTED;
-        this.callback(this);
+        this.stateUpdated();
     }
 
     getCurrentVoteByUser(userId: string): string | undefined{
         return this.currentVotes.get(userId);
+    }
+
+    private stateUpdated(){
+        this.onChangeCallbacks.forEach(callback => {
+            console.log('callback invoked')
+            callback(this);
+        });
+    }
+
+    registerOnChangeCallback(callback: OnChangeCallback) {
+        this.onChangeCallbacks.push(callback);
     }
 
 }
@@ -77,6 +89,6 @@ export interface RoomOptions{
     revealTimer: number;
 }
 
-export interface RoomStateChanged{
+export interface OnChangeCallback{
     (room: Room): void;
 }
