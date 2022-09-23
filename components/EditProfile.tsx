@@ -1,4 +1,3 @@
-import "bootstrap/dist/css/bootstrap.min.css";
 import { useState } from "react";
 import { Button, Modal } from "react-bootstrap";
 import { MdAccountCircle } from "react-icons/md";
@@ -90,7 +89,7 @@ const EditProfile = () => {
                     }
                     width="200px"
                     colors={Array.from(colors.keys())}
-                    onSwatchHover={(color, event) => console.log(color)}
+                    onSwatchHover={(color, event) => console.log("sex", color)}
                   />
                 </div>
                 <div className="col-12">

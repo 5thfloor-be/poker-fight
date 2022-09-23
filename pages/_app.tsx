@@ -6,7 +6,7 @@ import LayoutActive from "../components/LayoutActive";
 import LayoutNonActive from "../components/LayoutNonActive";
 
 function MyApp({ Component, pageProps }: AppProps) {
-  const [isRoomActive, setIsRoomActive] = useState(true);
+  const [isRoomActive, setIsRoomActive] = useState(false);
 
   return (
     <>
