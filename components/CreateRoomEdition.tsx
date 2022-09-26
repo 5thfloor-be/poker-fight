@@ -23,14 +23,16 @@ const CreateRoomEdition = (props: CreateRoomEditionProps) => {
     buzzer: "",
   });
 
-  const addCardView = () => {
-    setAddCard(true);
+  const deleteCard = (index: any) => {
+    setRoomSettings({
+      ...roomSettings,
+      deck: roomSettings.deck.filter((o, i) => index !== i),
+    });
   };
 
   const save = () => {
-    /* setStorageValue("USER", { ...user, vote: checked });
-    props.setShowCreateRoomEdition(true);
-    setShow(false); */
+    /* TODO LocalStorage Room */
+    setShowCreateRoomEdition(false);
   };
 
   const cancel = () => setShowCreateRoomEdition(false);
@@ -55,9 +57,20 @@ const CreateRoomEdition = (props: CreateRoomEditionProps) => {
           <div className="container">
             <div className="row">
               {roomSettings.deck.map((card, key) => (
-                <div className="col-2" key={key}>
-                  {card}
-                </div>
+                <>
+                  <div className="col-2" key={key}>
+                    {card}
+                    {roomSettings.deck.length > 3 && (
+                      <>
+                        <MdCancel
+                          color="red"
+                          size={"26"}
+                          onClick={() => deleteCard(key)}
+                        />
+                      </>
+                    )}
+                  </div>
+                </>
               ))}
               <div className="col-2">
                 {!addCard ? (
@@ -70,23 +83,29 @@ const CreateRoomEdition = (props: CreateRoomEditionProps) => {
                       pattern="[A-Za-z0-9-?_]{1,3}"
                       title="Letters, numbers, and ? only"
                       maxLength={3}
+                      size={1}
                       onChange={(e) => {
                         setValueNewCard(e.target.value);
                       }}
                     />
-                    <MdCheckCircle
-                      color="#3f51b5"
-                      size={"26"}
-                      onClick={() => {
-                        let tempoCardValue: string[];
-                        tempoCardValue = [...roomSettings.deck, valueNewCard];
 
-                        setRoomSettings({
-                          ...roomSettings,
-                          deck: tempoCardValue,
-                        });
-                      }}
-                    />
+                    {/* On teste si au moins un caractère est rentré */}
+                    {valueNewCard.length > 0 && (
+                      <MdCheckCircle
+                        color="#3f51b5"
+                        size={"26"}
+                        onClick={() => {
+                          let tempoCardValue: string[];
+                          tempoCardValue = [...roomSettings.deck, valueNewCard];
+
+                          setRoomSettings({
+                            ...roomSettings,
+                            deck: tempoCardValue,
+                          });
+                          setAddCard(!addCard);
+                        }}
+                      />
+                    )}
                     <MdCancel
                       color="red"
                       size={"26"}
