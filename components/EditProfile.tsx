@@ -14,8 +14,6 @@ const EditProfile = (props: EditProfileProps) => {
   const [user, setUser] = useState(props.user);
   const [showEditProfile, setShowEditProfile] = useState(props.showEditProfile);
 
-  console.log("showEditProfile", user && user.color);
-
   const colors = new Map<string, string>([
     ["#0000ff", "blue"],
     ["#ffffff", "white"],
