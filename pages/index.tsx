@@ -44,6 +44,7 @@ const Home: NextPage = () => {
                     className="text-decoration-none text-reset"
                     href="https://5thfloor.be/poker-fight"
                     target="_blank"
+                    rel="noreferrer"
                   >
                     here
                   </a>

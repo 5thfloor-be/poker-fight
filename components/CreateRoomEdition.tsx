@@ -18,9 +18,9 @@ const CreateRoomEdition = (props: CreateRoomEditionProps) => {
   const [roomSettings, setRoomSettings] = useState({
     deck: ["1", "2", "3", "5", "8", "13"],
     pointsachieved: "",
-    coffeebreak: "",
+    coffeebreak: false,
     timer: "",
-    buzzer: "",
+    buzzer: false,
   });
 
   const deleteCard = (index: any) => {
@@ -57,20 +57,16 @@ const CreateRoomEdition = (props: CreateRoomEditionProps) => {
           <div className="container">
             <div className="row">
               {roomSettings.deck.map((card, key) => (
-                <>
-                  <div className="col-2" key={key}>
-                    {card}
-                    {roomSettings.deck.length > 3 && (
-                      <>
-                        <MdCancel
-                          color="red"
-                          size={"26"}
-                          onClick={() => deleteCard(key)}
-                        />
-                      </>
-                    )}
-                  </div>
-                </>
+                <div className="col-2" key={key}>
+                  {card}
+                  {roomSettings.deck.length > 3 && (
+                    <MdCancel
+                      color="red"
+                      size={"26"}
+                      onClick={() => deleteCard(key)}
+                    />
+                  )}
+                </div>
               ))}
               <div className="col-2">
                 {!addCard ? (
@@ -80,9 +76,9 @@ const CreateRoomEdition = (props: CreateRoomEditionProps) => {
                     <input
                       type="text"
                       placeholder="Value"
-                      pattern="[A-Za-z0-9-?_]{1,3}"
+                      pattern="[A-Za-z0-9-?_]{1,2}"
                       title="Letters, numbers, and ? only"
-                      maxLength={3}
+                      maxLength={2}
                       size={1}
                       onChange={(e) => {
                         setValueNewCard(e.target.value);
@@ -113,6 +109,115 @@ const CreateRoomEdition = (props: CreateRoomEditionProps) => {
                     />
                   </div>
                 )}
+              </div>
+            </div>
+            <div className="row pt-3">
+              <div className="col text-center">
+                <input
+                  id="pointsachieved"
+                  type="text"
+                  placeholder="Value"
+                  value={roomSettings.pointsachieved}
+                  pattern="[0-9]{1,3}"
+                  title="Numbers only"
+                  maxLength={3}
+                  size={1}
+                  onChange={(e) => {
+                    setRoomSettings({
+                      ...roomSettings,
+                      pointsachieved: e.target.value,
+                    });
+                  }}
+                />
+                {roomSettings.pointsachieved.length > 0 && (
+                  <MdCancel
+                    color="red"
+                    size={"26"}
+                    onClick={() => {
+                      setRoomSettings({
+                        ...roomSettings,
+                        pointsachieved: "",
+                      });
+                    }}
+                  />
+                )}
+                <label className="ps-2">Number of points to achieve</label>
+              </div>
+            </div>
+            <div className="row text-center pt-3">
+              <div className="col form-switch">
+                <input
+                  className="form-check-input"
+                  type="checkbox"
+                  checked={roomSettings.coffeebreak}
+                  role="switch"
+                  id="flexSwitchCheckDefault"
+                  onChange={() => {
+                    setRoomSettings({
+                      ...roomSettings,
+                      coffeebreak: !roomSettings.coffeebreak,
+                    });
+                  }}
+                />
+                <label className="ps-2" htmlFor="flexSwitchCheckDefault">
+                  Allow players to initiate a break
+                </label>
+              </div>
+            </div>
+            <div className="row pt-3">
+              <div className="col text-center">
+                <input
+                  id="timer"
+                  type="text"
+                  placeholder="Value"
+                  value={roomSettings.timer}
+                  pattern="[0-9]{1,3}"
+                  title="Numbers only"
+                  maxLength={3}
+                  size={1}
+                  onChange={(e) => {
+                    setRoomSettings({
+                      ...roomSettings,
+                      timer: e.target.value,
+                    });
+                  }}
+                />
+                {roomSettings.timer.length > 0 && (
+                  <MdCancel
+                    color="red"
+                    size={"26"}
+                    onClick={() => {
+                      setRoomSettings({
+                        ...roomSettings,
+                        timer: "",
+                      });
+                    }}
+                  />
+                )}
+                <label className="ps-2">
+                  Automatically reveal the votes after X seconds. If empty no
+                  countdown
+                </label>
+              </div>
+            </div>
+            <div className="row text-center pt-3">
+              <div className="col form-switch">
+                <input
+                  className="form-check-input"
+                  type="checkbox"
+                  checked={roomSettings.buzzer}
+                  role="switch"
+                  id="flexSwitchBuzzer"
+                  onChange={() => {
+                    setRoomSettings({
+                      ...roomSettings,
+                      buzzer: !roomSettings.buzzer,
+                    });
+                  }}
+                />
+                <label className="ps-2" htmlFor="flexSwitchBuzzer">
+                  Allow players to speed up discussion
+                </label>
               </div>
             </div>
           </div>
