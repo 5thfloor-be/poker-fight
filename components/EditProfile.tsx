@@ -2,13 +2,19 @@ import { useState } from "react";
 import { Button, Modal } from "react-bootstrap";
 import { MdAccountCircle } from "react-icons/md";
 import { CirclePicker } from "react-color";
-import { useRouter } from "next/router";
-import { getStorageValue, setStorageValue } from "./UseLocalStorage";
+import { setStorageValue } from "./UseLocalStorage";
 
-const EditProfile = () => {
-  const [user, setUser] = useState(
-    getStorageValue("USER", { username: "", color: "#ffffff" })
-  );
+type EditProfileProps = {
+  user: any;
+  showEditProfile: boolean;
+  setShowEditProfile: (val: any) => void;
+};
+
+const EditProfile = (props: EditProfileProps) => {
+  const [user, setUser] = useState(props.user);
+  const [showEditProfile, setShowEditProfile] = useState(props.showEditProfile);
+
+  console.log("showEditProfile", user && user.color);
 
   const colors = new Map<string, string>([
     ["#0000ff", "blue"],
@@ -21,35 +27,19 @@ const EditProfile = () => {
     ["#808080", "grey"],
   ]);
 
-  const router = useRouter();
-
-  const [show, setShow] = useState(false);
-
-  const handleShow = () => {
-    if (router.pathname === "/") {
-      setShow(true);
-    }
-  };
-
   const save = () => {
-    setShow(false);
+    setShowEditProfile(false);
     setStorageValue("USER", user);
   };
 
-  const cancel = () => setShow(false);
+  const cancel = () => setShowEditProfile(false);
 
   return (
     <div>
-      <MdAccountCircle
-        color={user ? user.color : "#ffffff"}
-        onClick={handleShow}
-        size={60}
-      />
-
       <Modal
         centered={true}
         contentClassName="bg-dark"
-        show={show}
+        show={showEditProfile}
         onHide={cancel}
       >
         <Modal.Header style={{ border: "none" }}>
@@ -89,12 +79,10 @@ const EditProfile = () => {
                     }
                     width="200px"
                     colors={Array.from(colors.keys())}
-                    onSwatchHover={(color, event) => console.log("sex", color)}
                   />
                 </div>
                 <div className="col-12">
                   <p className="text-white mt-2">
-                    {" "}
                     Color: {colors.get(user && user.color)}
                   </p>
                 </div>
