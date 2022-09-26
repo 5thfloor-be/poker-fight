@@ -5,12 +5,13 @@ import { CirclePicker } from "react-color";
 import { getStorageValue, setStorageValue } from "./UseLocalStorage";
 
 type CreateRoomProps = {
-  show: boolean;
+  showCreateRoom: boolean;
+  setShowCreateRoom: (val: any) => void;
   setShowCreateRoomEdition: (val: any) => void;
 };
 
 const CreateRoom = (props: CreateRoomProps) => {
-  const [show, setShow] = useState(props.show);
+  const [showCreateRoom, setShowCreateRoom] = useState(props.showCreateRoom);
 
   const [checked, setChecked] = useState(false);
 
@@ -35,18 +36,18 @@ const CreateRoom = (props: CreateRoomProps) => {
 
   const save = () => {
     setStorageValue("USER", { ...user, vote: checked });
+    setShowCreateRoom(false);
     props.setShowCreateRoomEdition(true);
-    setShow(false);
   };
 
-  const cancel = () => setShow(false);
+  const cancel = () => setShowCreateRoom(false);
 
   return (
     <>
       <Modal
         centered={true}
         contentClassName="bg-dark"
-        show={show}
+        show={showCreateRoom}
         onHide={cancel}
       >
         <Modal.Header style={{ border: "none" }}>
