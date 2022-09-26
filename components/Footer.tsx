@@ -18,6 +18,7 @@ const Footer: NextPage = () => {
                       className="text-decoration-none text-reset"
                       href="https://www.linkedin.com/company/5th-floor-software"
                       target="_blank"
+                      rel="noreferrer"
                     >
                       <span
                         className="p-1"
@@ -34,6 +35,7 @@ const Footer: NextPage = () => {
                       className="text-decoration-none text-reset"
                       href="https://www.linkedin.com/company/5th-floor-software"
                       target="_blank"
+                      rel="noreferrer"
                     >
                       <span
                         className="p-1"
@@ -56,7 +58,7 @@ const Footer: NextPage = () => {
                   className="col-1"
                   style={{ position: "relative", height: "30px" }}
                 >
-                  <a href="https://5thfloor.be/poker-fight" target="_blank">
+                  <a href="https://5thfloor.be/poker-fight" target="_blank" rel="noreferrer">
                     <Image
                       className="text-white"
                       src="/images/5thFloor-logo-white.png"
