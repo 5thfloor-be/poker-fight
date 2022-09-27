@@ -9,6 +9,7 @@ export default class Room {
     buzzer: Map<string, boolean> = new Map();
     // currentVotes: Map<string, string> = new Map();
     currentVotes: UserVote[] = [];
+    wondrousVote: number = -1;
     state: States = States.STARTING;
     currentPoints: number = 0;
     roomOptions: RoomOptions
@@ -74,11 +75,17 @@ export default class Room {
         this.stateUpdated();
     }
 
-    resetCurrentVotes() {
-        this.currentVotes = [];
+    startFighting() {
+        this.state = States.FIGHTING;
+        this.stateUpdated();
     }
 
-    getCurrentVoteByUser(userId: string): string | undefined{
+    resetCurrentVotes() {
+        this.currentVotes = [];
+        this.wondrousVote = -1;
+    }
+
+    getCurrentVoteByUser(userId: string): number | undefined {
         return this.currentVotes.filter(userVote => userVote.userId === userId).at(0)?.vote;
     }
 
@@ -93,6 +100,10 @@ export default class Room {
         this.onChangeCallbacks.push(callback);
     }
 
+    vote(vote: number) {
+        this.wondrousVote = vote;
+        this.currentPoints += vote;
+    }
 }
 
 export enum States{

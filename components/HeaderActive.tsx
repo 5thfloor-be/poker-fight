@@ -8,7 +8,7 @@ const isRoomActive = true;
 
 const HeaderActive = () => {
   const [user, setUser] = useState(
-    getStorageValue("USER", { username: "", color: "#ffffff" })
+    getStorageValue("USER", { name: "", color: "#ffffff" })
   );
 
   const [widthScreen, setWidthScreen] = useState(0);
