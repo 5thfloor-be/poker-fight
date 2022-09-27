@@ -95,6 +95,12 @@ const Room: NextPage = () => {
     console.log('Validate: Add points and change status room to voting');
   }
 
+  const getVoteByUserId = (userId: string) => {
+    return room?.currentVotes.filter(userVote => userVote.userId === userId).at(0)?.vote ?
+        Number(room?.currentVotes.filter(userVote => userVote.userId === userId).at(0)?.vote) :
+        undefined;
+  };
+
   //modal
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
@@ -113,7 +119,7 @@ const Room: NextPage = () => {
           {
             room.users.map((user, key) =>
                 <div key={key} className="col">
-                  <Card value={room?.state === States.VOTED && !!user.id ? Number(room.getCurrentVoteByUser(user.id)) : undefined}
+                  <Card value={room?.state === States.VOTED && !!user.id ? getVoteByUserId(user.id) : undefined}
                         canClose={(myUser.userInfo.role === Role.SCRUM_MASTER || myUser.userInfo.role === Role.VOTING_SCRUM_MASTER)} color={user.userInfo.color}
                         name={user.userInfo.name}/>
                 </div>
