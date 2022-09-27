@@ -4,7 +4,7 @@ import {Server} from 'socket.io'
 import Room from './model/room';
 import User, {Role} from './model/user';
 
-const rooms : Map<string, Room> = new Map();
+const rooms: Map<string, Room> = new Map();
 
 const SocketHandler = (req: IncomingMessage, res: ServerResponse) => {
 
@@ -19,8 +19,8 @@ const SocketHandler = (req: IncomingMessage, res: ServerResponse) => {
     res.end()
 }
 
-function configIO(io: Server){
-    io.on("connection", (socket) =>{
+function configIO(io: Server) {
+    io.on("connection", (socket) => {
         console.log(`User connected ${socket.id}`);
 
         socket.on("join_room", (data, listener) => {
@@ -39,12 +39,12 @@ function configIO(io: Server){
             socket.leave(data.roomId);
             rooms.get(data.roomId)?.removeUser(socket.id);
         })
-        
-        socket.on("create_room", (data, listener) =>{
+
+        socket.on("create_room", (data, listener) => {
             console.log(`Creating room with data `, data)
             const roomId = uuid();
             const room = new Room(roomId, data?.roomOptions);
-            room.registerOnChangeCallback((room: Room) =>{
+            room.registerOnChangeCallback((room: Room) => {
                 console.log(`room state update sent${JSON.stringify(room)}`)
                 io.to(roomId).emit('room_state_update', room);
             })
@@ -55,17 +55,19 @@ function configIO(io: Server){
         socket.on("vote", (data, listener) => {
             console.log("AAAAAAAAAAAAAAAA");
             console.log(`register vot e ${JSON.stringify(data)}`);
-            rooms.get(data.roomId)?.registerVote(data.userId, data.vote);
-            console.log("register vot e", rooms.get(data.roomId));
+            if (data.vote !== -1) {
+                rooms.get(data.roomId)?.registerVote(data.userId, data.vote);
+                console.log("register vot e", rooms.get(data.roomId));
 
-            listener(rooms.get(data.roomId));
+                listener(rooms.get(data.roomId));
+            }
             // io.in(data.roomId).emit('room_update', rooms.get(data.roomId));
         })
 
-        socket.on("reveal", data =>{
+        socket.on("reveal", data => {
             console.log(`reveal from scrum master ${JSON.stringify(data)}`);
             rooms.get(data.roomId)?.revealVotes();
-            
+
             socket.to(data.roomId).emit('reveal', rooms.get(data.roomId));
         })
 
@@ -79,12 +81,12 @@ function configIO(io: Server){
             io.in(data.roomId).emit('start-voting', rooms.get(data.roomId));
         });
 
-        socket.on("cofee-break-vote", data =>{
+        socket.on("cofee-break-vote", data => {
             console.log(`cofee-break-vote ${JSON.stringify(data)}`);
             rooms.get(data.roomId)?.cofeeBreakVote(data.userId);
         })
 
-        socket.on("buzz-break-vote", data =>{
+        socket.on("buzz-break-vote", data => {
             console.log(`buzz-break-vote ${JSON.stringify(data)}`);
             rooms.get(data.roomId)?.buzzBreakVote(data.userId);
         })
@@ -96,7 +98,7 @@ function configIO(io: Server){
             io.in(data.roomId).emit('start-voting', rooms.get(data.roomId));
         });
 
-        socket.on('get_room', (data,listener) => {
+        socket.on('get_room', (data, listener) => {
             console.log(`get_room ${data.roomId}`);
             const room = rooms.get(data.roomId);
             console.log(`room : ${JSON.stringify(room)}`)
