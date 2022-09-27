@@ -1,10 +1,16 @@
-import {useState} from "react";
-import {Button, Modal, ToggleButton, ToggleButtonGroup} from "react-bootstrap";
-import {MdAccountCircle} from "react-icons/md";
-import {CirclePicker} from "react-color";
-import {getStorageValue, setStorageValue} from "./UseLocalStorage";
-import {useRouter} from "next/router";
-import {Role} from "../pages/api/model/user";
+import { useContext, useState } from "react";
+import {
+  Button,
+  Modal,
+  ToggleButton,
+  ToggleButtonGroup,
+} from "react-bootstrap";
+import { MdAccountCircle } from "react-icons/md";
+import { CirclePicker } from "react-color";
+import { getStorageValue, setStorageValue } from "./UseLocalStorage";
+import { useRouter } from "next/router";
+import { Role } from "../pages/api/model/user";
+import { UserContext } from "../context/UserContext";
 
 type JoinRoomProps = {
   showJoinRoom: boolean;
@@ -13,11 +19,15 @@ type JoinRoomProps = {
 };
 
 const JoinRoom = (props: JoinRoomProps) => {
-  const [user, setUser] = useState(getStorageValue("USER", {name: '', color: '#ffffff', role: Role.DEV}));
+  const [user, setUser] = useState(
+    getStorageValue("USER", { name: "", color: "#ffffff", role: Role.DEV })
+  );
   const [showJoinRoom, setShowJoinRoom] = useState(props.showJoinRoom);
   const [roomId, setRoomId] = useState(props.roomId);
   const [isDev, setIsDev] = useState(1);
   const router = useRouter();
+
+  const { isRoomActive, setIsRoomActive } = useContext(UserContext);
 
   const colors = new Map<string, string>([
     ["#0000ff", "blue"],
@@ -29,10 +39,15 @@ const JoinRoom = (props: JoinRoomProps) => {
     ["#ffa500", "orange"],
     ["#808080", "grey"],
   ]);
-console.log(user)
+  console.log(user);
   const save = () => {
+    //Activate the active header
+    setIsRoomActive(true);
     setShowJoinRoom(false);
-    setStorageValue("USER", {...user, role: isDev === 1? Role.DEV : Role.SPECTATOR});
+    setStorageValue("USER", {
+      ...user,
+      role: isDev === 1 ? Role.DEV : Role.SPECTATOR,
+    });
     router.push(`room/${roomId}`);
   };
 
@@ -72,9 +87,7 @@ console.log(user)
                     type="text"
                     placeholder="Username"
                     required={true}
-                    onChange={(e) =>
-                      setUser({ ...user, name: e.target.value })
-                    }
+                    onChange={(e) => setUser({ ...user, name: e.target.value })}
                   />
                 </div>
               </div>
@@ -98,19 +111,30 @@ console.log(user)
             </div>
             <div className="row">
               <div>
-                <input className="w-100"
-                       defaultValue={roomId || ''}
-                       type="text"
-                       placeholder="Room id"
-                       required={true}
-                       onChange={(e) => setRoomId(e.target.value)}
+                <input
+                  className="w-100"
+                  defaultValue={roomId || ""}
+                  type="text"
+                  placeholder="Room id"
+                  required={true}
+                  onChange={(e) => setRoomId(e.target.value)}
                 />
               </div>
             </div>
             <div className="row">
-              <ToggleButtonGroup type="radio" name="options" defaultValue={isDev} onChange={toggle} className="mt-3">
-                <ToggleButton id="dev" value={1} >Dev</ToggleButton>
-                <ToggleButton id="spec" value={2} >Spec</ToggleButton>
+              <ToggleButtonGroup
+                type="radio"
+                name="options"
+                defaultValue={isDev}
+                onChange={toggle}
+                className="mt-3"
+              >
+                <ToggleButton id="dev" value={1}>
+                  Dev
+                </ToggleButton>
+                <ToggleButton id="spec" value={2}>
+                  Spec
+                </ToggleButton>
               </ToggleButtonGroup>
             </div>
           </div>
