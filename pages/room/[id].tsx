@@ -27,7 +27,7 @@ const Room: NextPage = () => {
 
     console.log(`joining ${roomId}`)
 
-    if (!myUser.id) {
+    if (!myUser?.id) {
       socket.emit('join_room', {roomId, userInfo: myUser},
         (id: string) => {
           console.log('my user id : ', myUser)
@@ -40,6 +40,8 @@ const Room: NextPage = () => {
   useEffect(() => {
     socket.on('reveal', (data) => {
       console.log('reveeeeeeeal', data);
+      setRoom(data);
+      setShow(false);
     });
     socket.on('start-voting', data => {
       console.log('startVotiiiiing', data);
@@ -198,6 +200,7 @@ const Room: NextPage = () => {
               </div>
               <div className="row d-sm-none mt-5 mt-sm-0 ">
                 {
+                  room.state === States.VOTING &&
                   <div className="col text-center h-100">
                     <button className="btn btn-lg btn-light rounded-5 fw-bold" onClick={handleShow}>
                       <h1><GiCardRandom/></h1>
