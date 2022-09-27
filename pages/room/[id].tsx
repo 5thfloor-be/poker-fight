@@ -31,8 +31,8 @@ const Room: NextPage = () => {
   console.log('roomId', roomId);
 
   if (roomId !== '' && !room) {
-    console.log(`joining ${roomId}`)
-    socket.emit('join_room', {roomId, userInfo: me});
+    console.log(`displaying room ${roomId}`)
+    socket.emit('get_room', {roomId: roomId}, (room: RoomModel) => setRoom(room));
   }
 
   useEffect(() => {

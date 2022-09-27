@@ -9,11 +9,12 @@ const Home = () => {
     const [socket, setSocket] = useState(io())
 
     useEffect(() => {
+
         console.log(`useEffect ${socket.id}`)
         socket.on('room_state_update', (data) => {
             console.log("room state update received")
-            console.log(data)
-            setStorageValue("ROOM", data);
+            console.log(data.roomId)
+            setStorageValue("ROOM", data.roomId);
         });
         socket.emit('create_room',
             {},
