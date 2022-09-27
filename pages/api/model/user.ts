@@ -1,18 +1,16 @@
 export default class User {
 
-    canVote: boolean;
     userInfo: UserInfo;
+    id?: string;
+    canVote?: boolean;
 
     constructor(
-        private id: string, 
-        info: UserInfo
+        info: UserInfo,
+        id?: string
     ) {
         this.canVote = info?.role == Role.DEV || info?.role == Role.VOTING_SCRUM_MASTER
         this.userInfo = info;
-    }
-
-    getId(): string{
-        return this.id;
+        this.id = id;
     }
 }
 

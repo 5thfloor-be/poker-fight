@@ -23,12 +23,15 @@ function configIO(io: Server){
     io.on("connection", (socket) =>{
         console.log(`User connected ${socket.id}`);
 
-        socket.on("join_room", (data) => {
+        socket.on("join_room", (data, listener) => {
             console.log(`${socket.id} is joining ${data}`)
             console.log(`${socket.id} is joining ${data.userInfo}`)
             console.log(`${socket.id} is joining ${socket.id}`)
             socket.join(data.roomId)
-            rooms.get(data.roomId)?.addUser(new User(socket.id,data.userInfo));
+            const user = new User(data.userInfo, uuid());
+            rooms.get(data.roomId)?.addUser(user);
+
+            listener(user.id);
         })
 
         socket.on("leave_room", (data) => {

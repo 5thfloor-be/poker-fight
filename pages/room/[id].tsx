@@ -9,23 +9,14 @@ import { GiCardRandom } from 'react-icons/Gi';
 import { Deck } from '../../components/Deck';
 import Modal from 'react-bootstrap/Modal';
 import { Button } from 'react-bootstrap';
+import { userInfo } from 'os';
 
 const Room: NextPage = () => {
   const socket = io();
   const router = useRouter();
   const roomId = router.query.id;
 
-  const me = new User('20', {name: 'Gab', color: '#008000', role: Role.VOTING_SCRUM_MASTER});
-
-  const pedro = new User('10', {name: 'Pedro', color: '#ffff00', role: Role.DEV});
-  const estef = new User('30', {name: 'Estef', color: '#ffc0cb', role: Role.DEV});
-  const tbo = new User('40', {name: 'Tbo', color: '#ffa500', role: Role.DEV});
-  const alex = new User('50', {name: 'Alex', color: '#ffc0cb', role: Role.DEV});
-  const mathieu = new User('60', {name: 'Mathieu', color: '#808080', role: Role.DEV});
-  const renaud = new User('70', {name: 'Renaud', color: '#0000ff', role: Role.DEV});
-  const rachel = new User('80', {name: 'Rachel', color: '#808080', role: Role.DEV});
-  const michou = new User('90', {name: 'Michou', color: '#ff0000', role: Role.DEV});
-  const jerry = new User('100', {name: 'Jerry', color: '#0000ff', role: Role.DEV});
+  const [myUser, setMyUser] = useState<User>(new User({name: 'Gab', color: '#008000', role: Role.VOTING_SCRUM_MASTER}));
 
   const [room, setRoom] = useState<RoomModel>();
   console.log('roomId', roomId);
@@ -33,12 +24,18 @@ const Room: NextPage = () => {
   if (roomId !== '' && !room) {
     console.log(`displaying room ${roomId}`)
     socket.emit('get_room', {roomId: roomId}, (room: RoomModel) => setRoom(room));
+
+    console.log(`joining ${roomId}`)
+    socket.emit('join_room', {roomId, userInfo: myUser},
+        (id: string) => {
+          console.log(id)
+          setMyUser({...myUser, id: id})
+        });
   }
 
   useEffect(() => {
     socket.on('reveal', (data) => {
       console.log('reveeeeeeeal', data);
-
     });
     socket.on('start-voting', data => {
       console.log('startVotiiiiing', data);
@@ -58,17 +55,17 @@ const Room: NextPage = () => {
     console.log('my vote : ' + chosenVote);
     setSelectedVote(chosenVote);
     setShow(false);
-    socket.emit('vote', {roomId: roomId, userId: me.getId(), vote: selectedVote});
+    socket.emit('vote', {roomId: roomId, userId: myUser.id, vote: selectedVote});
   }
   // get room from server
   const startVoting = () => {
     console.log('start voting: Change status room to voting');
-    socket.emit('start-voting', { roomId }, (r) => setRoom(r));
+    socket.emit('start-voting', { roomId }, (r: any) => setRoom(r));
   }
 
   const reveal = () => {
     console.log('reveal: Change status room to voted');
-    socket.emit('reveal', {roomId}, (r) => {
+    socket.emit('reveal', {roomId}, (r: any) => {
       console.log('room', r);
       setRoom(r);
     });
@@ -76,7 +73,7 @@ const Room: NextPage = () => {
 
   const redoVote = () => {
     console.log('redo vote: Change status vote to voting');
-    socket.emit('redo_vote', {roomId}, (r) => {
+    socket.emit('redo_vote', {roomId}, (r: any) => {
       console.log('room', r);
       setRoom(r);
     });
@@ -104,15 +101,15 @@ const Room: NextPage = () => {
           {
             room.users.map((user, key) =>
                 <div key={key} className="col">
-                  <Card value={room?.state === States.VOTED ? Number(room.currentVotes.get(user.getId())) : undefined}
-                        canClose={(me.userInfo.role === Role.SCRUM_MASTER || me.userInfo.role === Role.VOTING_SCRUM_MASTER)} color={user.userInfo.color}
+                  <Card value={room?.state === States.VOTED && !!user.id ? Number(room.currentVotes.get(user.id)) : undefined}
+                        canClose={(myUser.userInfo.role === Role.SCRUM_MASTER || myUser.userInfo.role === Role.VOTING_SCRUM_MASTER)} color={user.userInfo.color}
                         name={user.userInfo.name}/>
                 </div>
             )
           }
         </div>
         <div className="row my-3">
-          {(me.userInfo.role === Role.SCRUM_MASTER || me.userInfo.role === Role.VOTING_SCRUM_MASTER)
+          {(myUser.userInfo.role === Role.SCRUM_MASTER || myUser.userInfo.role === Role.VOTING_SCRUM_MASTER)
               && room.state === States.STARTING
               && <div className='offset-3 col-6 offset-sm-5 col-sm-2'>
                 <button type='button' className='btn btn-primary fw-bold w-100'
@@ -121,7 +118,7 @@ const Room: NextPage = () => {
               </div>}
         </div>
         <div className="row my-3">
-          {(me.userInfo.role === Role.SCRUM_MASTER || me.userInfo.role === Role.VOTING_SCRUM_MASTER)
+          {(myUser.userInfo.role === Role.SCRUM_MASTER || myUser.userInfo.role === Role.VOTING_SCRUM_MASTER)
               && room.state === States.VOTING
               && <>
                 <div className='offset-1 col-5 offset-sm-4 col-sm-2'>
@@ -136,7 +133,7 @@ const Room: NextPage = () => {
                   </button>
                 </div>
               </>}
-          {(me.userInfo.role === Role.SCRUM_MASTER || me.userInfo.role === Role.VOTING_SCRUM_MASTER) && room.state === States.VOTED &&
+          {(myUser.userInfo.role === Role.SCRUM_MASTER || myUser.userInfo.role === Role.VOTING_SCRUM_MASTER) && room.state === States.VOTED &&
               <>
                 <div className='offset-1 col-5 offset-sm-4 col-sm-2'>
                   <button type='button' className='btn btn-primary fw-bold w-100'
@@ -159,7 +156,7 @@ const Room: NextPage = () => {
             </div>
           </div>
 
-          {(me.userInfo.role !== Role.SCRUM_MASTER) && room.state === States.VOTING &&
+          {(myUser.userInfo.role !== Role.SCRUM_MASTER) && room.state === States.VOTING &&
             <>
               <div className="row">
                 <div className="col d-none d-sm-block">
