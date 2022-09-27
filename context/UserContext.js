@@ -3,23 +3,34 @@ const { createContext, useState, useEffect } = require("react");
 export const UserContext = createContext();
 
 const UserContextProvider = ({ children }) => {
-  const [userbis, setUser] = useState({
-    username: "",
+  const [user, setUser] = useState({
+    name: "",
     color: "#ffffff",
   });
 
+  let initailValue;
+
   useEffect(() => {
-    setUser(JSON.parse(localStorage.getItem("USERBis")));
+    const saved = localStorage.getItem("USER");
+    initailValue = JSON.parse(saved);
+    setUser(initailValue);
+    //console.log("initailValue:=", initailValue);
+
+    /*     if (!user) {
+      tempo = JSON.parse(localStorage.getItem("USER"));
+      setUser(JSON.parse(localStorage.getItem("USER")));
+    } */
   }, []);
 
   useEffect(() => {
-    console.log("userbis", userbis);
+    console.log("user", user);
+    console.log("initial", initailValue);
 
-    localStorage.setItem("USERBis", JSON.stringify(userbis));
-  }, [userbis]);
+    localStorage.setItem("USER", JSON.stringify(user));
+  }, [user]);
 
   return (
-    <UserContext.Provider value={{ userbis, setUser }}>
+    <UserContext.Provider value={{ user, setUser }}>
       {children}
     </UserContext.Provider>
   );
