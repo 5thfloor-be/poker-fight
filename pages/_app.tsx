@@ -4,28 +4,23 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { useState } from "react";
 import LayoutActive from "../components/LayoutActive";
 import LayoutNonActive from "../components/LayoutNonActive";
-import { getStorageValue } from "../components/UseLocalStorage";
+import UserContextProvider from "../context/UserContext";
 
 function MyApp({ Component, pageProps }: AppProps) {
   const [isRoomActive, setIsRoomActive] = useState(false);
 
-  const user = getStorageValue("USER", {
-    username: "",
-    color: "#ffffff",
-  });
-
   return (
-    <>
+    <UserContextProvider>
       {isRoomActive ? (
-        <LayoutActive user={user}>
+        <LayoutActive>
           <Component {...pageProps} />
         </LayoutActive>
       ) : (
-        <LayoutNonActive user={user}>
+        <LayoutNonActive>
           <Component {...pageProps} />
         </LayoutNonActive>
       )}
-    </>
+    </UserContextProvider>
   );
 }
 

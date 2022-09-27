@@ -28,7 +28,7 @@ function configIO(io: Server){
             console.log(`${socket.id} is joining ${data.userInfo}`)
             console.log(`${socket.id} is joining ${socket.id}`)
             socket.join(data.roomId)
-            const user = new User(data.userInfo, uuid());
+            const user = {...data, id: uuid()};
             rooms.get(data.roomId)?.addUser(user);
 
             listener(user.id);
