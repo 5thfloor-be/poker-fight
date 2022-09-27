@@ -55,10 +55,12 @@ function configIO(io: Server){
         socket.on("vote", (data, listener) => {
             console.log("AAAAAAAAAAAAAAAA");
             console.log(`register vot e ${JSON.stringify(data)}`);
-            rooms.get(data.roomId)?.registerVote(data.userId, data.vote);
-            console.log("register vot e", rooms.get(data.roomId));
+            if (data.vote !== -1) {
+                rooms.get(data.roomId)?.registerVote(data.userId, data.vote);
+                console.log("register vot e", rooms.get(data.roomId));
 
-            listener(rooms.get(data.roomId));
+                listener(rooms.get(data.roomId));
+            }
             // io.in(data.roomId).emit('room_update', rooms.get(data.roomId));
         })
 

@@ -1,12 +1,11 @@
 import styles from '../styles/Card.module.css';
 import Image from 'next/image';
-import { MdAccountCircle } from 'react-icons/md';
-import { Badge, OverlayTrigger, Popover } from 'react-bootstrap';
-import {GrFormClose} from "react-icons/Gr";
+import {MdAccountCircle} from 'react-icons/md';
+import {Badge, OverlayTrigger, Popover} from 'react-bootstrap';
 
 export interface CardProps {
-    value?: number;
-    canClose: boolean;
+    value?: string;
+    canClose?: boolean;
     color?: string;
     selected?: boolean;
     name?: string | null;
