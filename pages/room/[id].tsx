@@ -9,7 +9,7 @@ import {GiCardRandom} from 'react-icons/gi';
 import {Deck} from '../../components/Deck';
 import Modal from 'react-bootstrap/Modal';
 import { Button } from 'react-bootstrap';
-import { getStorageValue } from '../../components/UseLocalStorage';
+import {getStorageValue} from "../../components/UseLocalStorage";
 
 const Room: NextPage = () => {
   const socket = io();
@@ -42,6 +42,11 @@ const Room: NextPage = () => {
       console.log('reveeeeeeeal', data);
       setRoom(data);
       setShow(false);
+      console.log('room state', data?.state);
+      if (data?.state === States.FIGHTING) {
+        console.log('push to versus');
+        router.push('/versus');
+      }
     });
     socket.on('start-voting', data => {
       console.log('startVotiiiiing', data);
