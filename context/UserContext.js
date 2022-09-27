@@ -7,6 +7,7 @@ const UserContextProvider = ({ children }) => {
     name: "",
     color: "#ffffff",
   });
+  const [isRoomActive, setIsRoomActive] = useState(false);
 
   let initailValue;
 
@@ -14,23 +15,16 @@ const UserContextProvider = ({ children }) => {
     const saved = localStorage.getItem("USER");
     initailValue = JSON.parse(saved);
     setUser(initailValue);
-    //console.log("initailValue:=", initailValue);
-
-    /*     if (!user) {
-      tempo = JSON.parse(localStorage.getItem("USER"));
-      setUser(JSON.parse(localStorage.getItem("USER")));
-    } */
   }, []);
 
   useEffect(() => {
-    console.log("user", user);
-    console.log("initial", initailValue);
-
     localStorage.setItem("USER", JSON.stringify(user));
   }, [user]);
 
   return (
-    <UserContext.Provider value={{ user, setUser }}>
+    <UserContext.Provider
+      value={{ user, setUser, isRoomActive, setIsRoomActive }}
+    >
       {children}
     </UserContext.Provider>
   );
