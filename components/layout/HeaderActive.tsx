@@ -6,8 +6,6 @@ import { UserContext } from "../../context/UserContext";
 import EditProfile from "../EditProfile";
 import { getStorageValue } from "../UseLocalStorage";
 
-//const isRoomActive = true;
-
 const HeaderActive = () => {
   const { isRoomActive, setIsRoomActive } = useContext(UserContext);
   const path = useRouter();
