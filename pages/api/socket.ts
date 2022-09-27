@@ -60,6 +60,16 @@ function configIO(io: Server){
             socket.to(data.roomId).emit('reveal', rooms.get(data.roomId));
         })
 
+        socket.on("redo_vote", data => {
+            console.log(`redo vote from scrum master ${JSON.stringify(data)}`);
+            let room = rooms.get(data.roomId);
+
+            room?.resetCurrentVotes();
+            room?.startVoting();
+
+            io.in(data.roomId).emit('start-voting', rooms.get(data.roomId));
+        });
+
         socket.on("cofee-break-vote", data =>{
             console.log(`cofee-break-vote ${JSON.stringify(data)}`);
             rooms.get(data.roomId)?.cofeeBreakVote(data.userId);

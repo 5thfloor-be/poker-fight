@@ -1,21 +1,21 @@
-import {NextPage} from 'next';
-import {useRouter} from 'next/router';
-import {useEffect, useState} from 'react';
-import {io} from 'socket.io-client';
+import { NextPage } from 'next';
+import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
+import { io } from 'socket.io-client';
 import Card from '../../components/Card';
-import User, {Role} from '../api/model/user';
-import RoomModel, {States} from '../api/model/room';
-import {GiCardRandom} from 'react-icons/Gi';
-import {Deck} from "../../components/Deck";
+import User, { Role } from '../api/model/user';
+import RoomModel, { States } from '../api/model/room';
+import { GiCardRandom } from 'react-icons/Gi';
+import { Deck } from '../../components/Deck';
 import Modal from 'react-bootstrap/Modal';
-import {Button} from "react-bootstrap";
+import { Button } from 'react-bootstrap';
 
 const Room: NextPage = () => {
   const socket = io();
   const router = useRouter();
   const roomId = router.query.id;
 
-  const me = new User('20', {name: 'Gab', color: '#008000', role: Role.SCRUM_MASTER});
+  const me = new User('20', {name: 'Gab', color: '#008000', role: Role.VOTING_SCRUM_MASTER});
 
   const pedro = new User('10', {name: 'Pedro', color: '#ffff00', role: Role.DEV});
   const estef = new User('30', {name: 'Estef', color: '#ffc0cb', role: Role.DEV});
@@ -53,11 +53,12 @@ const Room: NextPage = () => {
   const cardValues: any = [1, 2, 3, 5, 8, 13];
 
 
-  const [selecedIndex, setSelectedIndex] = useState(-1);
-  const updateSelection = (newIndex: number) => {
-    console.log('room ' + newIndex);
-    setSelectedIndex(newIndex)
-    setShow(false)
+  const [selectedVote, setSelectedVote] = useState(-1);
+  const updateSelection = (chosenVote: number) => {
+    console.log('my vote : ' + chosenVote);
+    setSelectedVote(chosenVote);
+    setShow(false);
+    socket.emit('vote', {roomId: roomId, userId: me.getId(), vote: selectedVote});
   }
   // get room from server
   const startVoting = () => {
@@ -75,6 +76,10 @@ const Room: NextPage = () => {
 
   const redoVote = () => {
     console.log('redo vote: Change status vote to voting');
+    socket.emit('redo_vote', {roomId}, (r) => {
+      console.log('room', r);
+      setRoom(r);
+    });
   }
 
   const validate = () => {
@@ -99,7 +104,7 @@ const Room: NextPage = () => {
           {
             room.users.map((user, key) =>
                 <div key={key} className="col">
-                  <Card value={undefined}
+                  <Card value={room?.state === States.VOTED ? Number(room.currentVotes.get(user.getId())) : undefined}
                         canClose={(me.userInfo.role === Role.SCRUM_MASTER || me.userInfo.role === Role.VOTING_SCRUM_MASTER)} color={user.userInfo.color}
                         name={user.userInfo.name}/>
                 </div>
@@ -149,26 +154,32 @@ const Room: NextPage = () => {
           <div className="row">
             <div className="col text-center text-xl-center mt-sm-5 mb-sm-5">
               <button className="btn btn-lg btn-primary">
-                <h1>{selecedIndex != -1 ? selecedIndex : 'Waiting for votes ...'}</h1>
+                <h1>{selectedVote != -1 ? selectedVote : 'Waiting for votes ...'}</h1>
               </button>
             </div>
           </div>
-          <div className="row">
-            <div className="col d-none d-sm-block">
-              {
-                <Deck deck={cardValues} updateSelection={updateSelection}/>
-              }
-            </div>
-          </div>
-          <div className="row d-sm-none mt-5 mt-sm-0 ">
-            {
-              <div className="col text-center h-100">
-                <button className="btn btn-lg btn-light rounded-5 fw-bold" onClick={handleShow}>
-                  <h1><GiCardRandom/></h1>
-                </button>
+
+          {(me.userInfo.role !== Role.SCRUM_MASTER) && room.state === States.VOTING &&
+            <>
+              <div className="row">
+                <div className="col d-none d-sm-block">
+                  {
+                    <Deck deck={cardValues} updateSelection={updateSelection}/>
+                  }
+                </div>
               </div>
-            }
-          </div>
+              <div className="row d-sm-none mt-5 mt-sm-0 ">
+                {
+                  <div className="col text-center h-100">
+                    <button className="btn btn-lg btn-light rounded-5 fw-bold" onClick={handleShow}>
+                      <h1><GiCardRandom/></h1>
+                    </button>
+                  </div>
+                }
+              </div>
+            </>
+          }
+
         </div>
         <Modal
             centered={true}
