@@ -53,7 +53,7 @@ const CreateRoomEdition = (props: CreateRoomEditionProps) => {
           const userInfo = getStorageValue("USER", {name : "Anonymous Scrum master", color:"white", role:"SCRUM_MASTER"})
           //TODO set user role vased on the "can vote" property from previous popup
           userInfo.role = Role.VOTING_SCRUM_MASTER
-          socket.emit('join_room', {roomId: data.roomId, userInfo: userInfo});
+          //socket.emit('join_room', {roomId: data.roomId, userInfo: userInfo});
           router.push(`room/${data.roomId}`);
         });
   }, [])
