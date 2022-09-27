@@ -50,12 +50,3 @@ const Home = () => {
 export default Home;
 
 
-export async function getServerSideProps(){
-    console.log('xxxxxxxxx');
-    await fetch('http://localhost:3000/api/socket');
-    return {
-        props: {
-            //socket: socket
-        }
-    }
-}
