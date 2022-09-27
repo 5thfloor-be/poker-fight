@@ -1,12 +1,12 @@
-import { NextPage } from 'next';
-import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
-import { io } from 'socket.io-client';
+import {NextPage} from 'next';
+import {useRouter} from 'next/router';
+import {useEffect, useState} from 'react';
+import {io} from 'socket.io-client';
 import Card from '../../components/Card';
-import User, { Role } from '../api/model/user';
-import RoomModel, { States } from '../api/model/room';
-import { GiCardRandom } from 'react-icons/Gi';
-import { Deck } from '../../components/Deck';
+import User, {Role} from '../api/model/user';
+import RoomModel, {States} from '../api/model/room';
+import {GiCardRandom} from 'react-icons/gi';
+import {Deck} from '../../components/Deck';
 import Modal from 'react-bootstrap/Modal';
 import { Button } from 'react-bootstrap';
 import {getStorageValue} from "../../components/UseLocalStorage";
@@ -27,10 +27,10 @@ const Room: NextPage = () => {
 
     console.log(`joining ${roomId}`)
 
-    if (!myUser.id) {
+    if (!myUser?.id) {
       socket.emit('join_room', {roomId, userInfo: myUser},
         (id: string) => {
-          console.log('my user id : ', id)
+          console.log('my user id : ', myUser)
           setMyUser({...myUser, id: id})
         }
       );
@@ -40,30 +40,36 @@ const Room: NextPage = () => {
   useEffect(() => {
     socket.on('reveal', (data) => {
       console.log('reveeeeeeeal', data);
+      setRoom(data);
+      setShow(false);
+      console.log('room state', data?.state);
+      if (data?.state === States.FIGHTING) {
+        console.log('push to versus');
+        router.push('/versus');
+      }
     });
     socket.on('start-voting', data => {
       console.log('startVotiiiiing', data);
+      setSelectedVote(-1);
       setRoom(data);
     });
-    socket.on('room_state_update', r =>{
+    socket.on('room_state_update', r => {
       console.log('room state update received ', r)
       setRoom(r);
-    });
-    socket.on('room_update', r =>{
-      console.log('room update received ', r)
-      setRoom(r);
+      if (room?.state === States.FIGHTING) {
+        // router.push(`versus/${data.roomId}`);
+      }
     });
   }, [socket]);
 
   const cardValues: any = [1, 2, 3, 5, 8, 13];
-
 
   const [selectedVote, setSelectedVote] = useState(-1);
   const updateSelection = (chosenVote: number) => {
     console.log('my vote : ' + chosenVote);
     setSelectedVote(chosenVote);
     setShow(false);
-    socket.emit('vote', {roomId: roomId, userId: myUser.id, vote: chosenVote},
+    socket.emit('vote', {roomId: roomId, userId: myUser?.id, vote: chosenVote},
       (room: any) => {
         console.log('room in listener : ', room)
       }
@@ -96,6 +102,12 @@ const Room: NextPage = () => {
     console.log('Validate: Add points and change status room to voting');
   }
 
+  const getVoteByUserId = (userId: string) => {
+    return room?.currentVotes.filter(userVote => userVote.userId === userId).at(0)?.vote ?
+        Number(room?.currentVotes.filter(userVote => userVote.userId === userId).at(0)?.vote) :
+        undefined;
+  };
+
   //modal
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
@@ -107,22 +119,37 @@ const Room: NextPage = () => {
     );
   }
 
+  const showBottomDeck = () => {
+    return (
+        <>
+          {
+            room.state === States.WONDROUS &&
+                <Card selected={false} canClose={false} value={selectedVote} />
+          }
+          {
+            room.state === States.VOTING &&
+                <Deck deck={cardValues} updateSelection={updateSelection}/>
+          }
+        </>
+    )
+  }
+
   return (
 
       <div className="container">
         <div className="row">
           {
-            room.users.map((user, key) =>
+            room.users.filter(u => u?.id !== myUser?.id).map((user, key) =>
                 <div key={key} className="col">
-                  <Card value={room?.state === States.VOTED && !!user.id ? Number(room.getCurrentVoteByUser(user.id)) : undefined}
+                  <Card value={room?.state === States.WONDROUS && !!user.id ? getVoteByUserId(user.id) : undefined}
                         canClose={(myUser.role === Role.SCRUM_MASTER || myUser.role === Role.VOTING_SCRUM_MASTER)} color={user.color}
-                        name={user.name}/>
+                        name={user.name}  selected={!!user.id && !!getVoteByUserId(user.id)}/>
                 </div>
             )
           }
         </div>
         <div className="row my-3">
-          {(myUser.role === Role.SCRUM_MASTER || myUser.role === Role.VOTING_SCRUM_MASTER)
+          {(myUser?.role === Role.SCRUM_MASTER || myUser?.role === Role.VOTING_SCRUM_MASTER)
               && room.state === States.STARTING
               && <div className='offset-3 col-6 offset-sm-5 col-sm-2'>
                 <button type='button' className='btn btn-primary fw-bold w-100'
@@ -131,7 +158,7 @@ const Room: NextPage = () => {
               </div>}
         </div>
         <div className="row my-3">
-          {(myUser.role === Role.SCRUM_MASTER || myUser.role === Role.VOTING_SCRUM_MASTER)
+          {(myUser?.role === Role.SCRUM_MASTER || myUser?.role === Role.VOTING_SCRUM_MASTER)
               && room.state === States.VOTING
               && <>
                 <div className='offset-1 col-5 offset-sm-4 col-sm-2'>
@@ -146,7 +173,7 @@ const Room: NextPage = () => {
                   </button>
                 </div>
               </>}
-          {(myUser.role === Role.SCRUM_MASTER || myUser.role === Role.VOTING_SCRUM_MASTER) && room.state === States.VOTED &&
+          {(myUser?.role === Role.SCRUM_MASTER || myUser?.role === Role.VOTING_SCRUM_MASTER) && room.state === States.WONDROUS &&
               <>
                 <div className='offset-1 col-5 offset-sm-4 col-sm-2'>
                   <button type='button' className='btn btn-primary fw-bold w-100'
@@ -163,23 +190,23 @@ const Room: NextPage = () => {
           }
           <div className="row">
             <div className="col text-center text-xl-center mt-sm-5 mb-sm-5">
+
               <button className="btn btn-lg btn-primary">
-                <h1>{selectedVote != -1 ? selectedVote : 'Waiting for votes ...'}</h1>
+                <h1>{room.state === States.WONDROUS ? room.wondrousVote : 'Waiting for votes ...'}</h1>
               </button>
             </div>
           </div>
 
-          {(myUser.role !== Role.SCRUM_MASTER) && room.state === States.VOTING &&
+          {(myUser?.role !== Role.SCRUM_MASTER) &&
             <>
               <div className="row">
-                <div className="col d-none d-sm-block">
-                  {
-                    <Deck deck={cardValues} updateSelection={updateSelection}/>
-                  }
+                <div className="col d-none d-sm-block justify-content-center">
+                  {showBottomDeck()}
                 </div>
               </div>
               <div className="row d-sm-none mt-5 mt-sm-0 ">
                 {
+                  room.state === States.VOTING &&
                   <div className="col text-center h-100">
                     <button className="btn btn-lg btn-light rounded-5 fw-bold" onClick={handleShow}>
                       <h1><GiCardRandom/></h1>
