@@ -4,18 +4,11 @@ import EditProfile from "./EditProfile";
 import { MdAccountCircle } from "react-icons/md";
 import { UserContext } from "../context/UserContext";
 
-type HeaderNonActiveProps = {
-  user: any;
-};
-
-const HeaderNonActive = (props: HeaderNonActiveProps) => {
+const HeaderNonActive = () => {
   const [widthScreen, setWidthScreen] = useState(0);
   const [showEditProfile, setShowEditProfile] = useState(false);
-  const user = props.user;
 
-  const { userbis, setUser } = useContext(UserContext);
-
-  console.log("isConnected", userbis && userbis.color);
+  const { user, setUser } = useContext(UserContext);
 
   useEffect(() => {
     setWidthScreen(window.innerWidth);
@@ -37,8 +30,6 @@ const HeaderNonActive = (props: HeaderNonActiveProps) => {
             />
           </div>
           <div className="col-2 col-sm-2 px-1 text-center">
-            {userbis && userbis.color}
-
             <MdAccountCircle
               color={user ? user.color : "#ffffff"}
               onClick={() => {
@@ -48,7 +39,6 @@ const HeaderNonActive = (props: HeaderNonActiveProps) => {
             />
             {showEditProfile && (
               <EditProfile
-                user={user}
                 showEditProfile={showEditProfile}
                 setShowEditProfile={() => setShowEditProfile(true)}
               />
