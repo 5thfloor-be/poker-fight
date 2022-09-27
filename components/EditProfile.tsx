@@ -27,7 +27,7 @@ const EditProfile = (props: EditProfileProps) => {
 
   const save = () => {
     setShowEditProfile(false);
-    setStorageValue("USER", user);
+    setUser(user);
   };
 
   const cancel = () => setShowEditProfile(false);
