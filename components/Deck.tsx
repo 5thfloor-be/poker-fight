@@ -1,17 +1,21 @@
-import { useState } from "react";
+import {useEffect, useState} from "react";
 import Card from "./Card";
 
 export interface DeckProps {
   deck: [];
   updateSelection: Function;
+  canClose?: boolean;
+  isLocked?: boolean;
 }
-export const Deck = ({ deck, updateSelection }: DeckProps) => {
+export const Deck = ({ deck, updateSelection, canClose, isLocked }: DeckProps) => {
 const [selectedIndex, setSelectedIndex] = useState(-1);
 
 const selectIndex = ( index: number) => {
     console.log('deck ' + index);
-    setSelectedIndex(index);
-    updateSelection(deck[index])
+    if (!isLocked) {
+        setSelectedIndex(index);
+        updateSelection(deck[index])
+    }
 }
 
   return (
@@ -19,7 +23,7 @@ const selectIndex = ( index: number) => {
       <div className="row">
         {deck.map((score, index) => (
           <div className="col" key={score} onClick={() => selectIndex(index)}>
-            <Card key={score} value={score} canClose={false} selected={selectedIndex === index} />
+            <Card key={score} value={score} canClose={canClose} selected={selectedIndex === index} />
           </div>
         ))}
       </div>

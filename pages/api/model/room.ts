@@ -61,7 +61,16 @@ export default class Room {
     }
 
     revealVotes() {
-        this.state = States.VOTED;
+        let set: Set<string> = new Set(Object.values(this.currentVotes.filter(vote => vote.vote !== "-1" )).map(v => v.vote));
+        console.log(this.currentVotes);
+        console.log(set);
+        if (set.size > 0) {
+            if (set.size == 1) {
+                this.state = States.WONDROUS;
+            } else {
+                this.state = States.FIGHTING;
+            }
+        }
         this.stateUpdated();
     }
 
@@ -89,7 +98,7 @@ export default class Room {
 export enum States{
     STARTING,
     VOTING,
-    VOTED,
+    WONDROUS,
     FIGHTING,
     BREAK,
     BUZZ
