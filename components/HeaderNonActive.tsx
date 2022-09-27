@@ -8,7 +8,7 @@ const HeaderNonActive = () => {
   const [widthScreen, setWidthScreen] = useState(0);
   const [showEditProfile, setShowEditProfile] = useState(false);
 
-  const { user, setUser } = useContext(UserContext);
+  const { user } = useContext(UserContext);
 
   useEffect(() => {
     setWidthScreen(window.innerWidth);

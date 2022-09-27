@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { Button, Modal } from "react-bootstrap";
 import { MdAccountCircle } from "react-icons/md";
 import { CirclePicker } from "react-color";
 import { setStorageValue } from "./UseLocalStorage";
+import { UserContext } from "../context/UserContext";
 
 type EditProfileProps = {
   showEditProfile: boolean;
@@ -10,7 +11,7 @@ type EditProfileProps = {
 };
 
 const EditProfile = (props: EditProfileProps) => {
-  const [user, setUser] = useState({});
+  const { user, setUser } = useContext(UserContext);
   const [showEditProfile, setShowEditProfile] = useState(props.showEditProfile);
 
   const colors = new Map<string, string>([
@@ -57,12 +58,24 @@ const EditProfile = (props: EditProfileProps) => {
                   />
                 </div>
                 <div className="col-12">
-                  <input
-                    defaultValue={user.name}
-                    type="text"
-                    placeholder="Username"
-                    onChange={(e) => setUser({ ...user, name: e.target.value })}
-                  />
+                  {user ? (
+                    <input
+                      defaultValue={user.name}
+                      type="text"
+                      placeholder="Username"
+                      onChange={(e) =>
+                        setUser({ ...user, name: e.target.value })
+                      }
+                    />
+                  ) : (
+                    <input
+                      type="text"
+                      placeholder="Username"
+                      onChange={(e) =>
+                        setUser({ ...user, name: e.target.value })
+                      }
+                    />
+                  )}
                 </div>
               </div>
               <div className="col-sm-6 text-center mt-3">
