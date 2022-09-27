@@ -4,7 +4,6 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { useState } from "react";
 import LayoutActive from "../components/LayoutActive";
 import LayoutNonActive from "../components/LayoutNonActive";
-import { getStorageValue } from "../components/UseLocalStorage";
 import UserContextProvider from "../context/UserContext";
 
 function MyApp({ Component, pageProps }: AppProps) {

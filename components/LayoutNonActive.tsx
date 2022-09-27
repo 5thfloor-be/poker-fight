@@ -4,14 +4,10 @@ import HeaderNonActive from "./HeaderNonActive";
 import styles from "../styles/LayoutNonActive.module.css";
 import Footer from "./Footer";
 
-type LayoutNonActiveProps = {
-  user: any;
-};
-
-const LayoutNonActive = ({ children }: any, props: LayoutNonActiveProps) => {
+const LayoutNonActive = ({ children }: any) => {
   return (
     <div className={styles.container}>
-      <HeaderNonActive user={props.user} />
+      <HeaderNonActive />
       {children}
       <Footer />
     </div>
