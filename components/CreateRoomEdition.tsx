@@ -1,6 +1,10 @@
-import React, { useState } from "react";
+import React, {useCallback, useState} from "react";
 import { Button, Modal } from "react-bootstrap";
 import { MdCheckCircle, MdCancel } from "react-icons/md";
+import {io} from "socket.io-client";
+import {getStorageValue} from "./UseLocalStorage";
+import User from "../pages/api/model/user";
+import {useRouter} from "next/router";
 
 type CreateRoomEditionProps = {
   showCreateRoomEdition: boolean;
@@ -16,17 +20,18 @@ const CreateRoomEdition = (props: CreateRoomEditionProps) => {
 
   /* All params of the future Room */
   const [roomSettings, setRoomSettings] = useState({
-    deck: ["1", "2", "3", "5", "8", "13"],
-    pointsachieved: "",
-    coffeebreak: false,
-    timer: "",
-    buzzer: false,
+    cardValues: ["1", "2", "3", "5", "8", "13"],
+    targetPoints: "",
+    coffeeBreakAllowed: false,
+    revealTimer: "",
+    buzzerAllowed: false,
   });
 
+  const router = useRouter();
   const deleteCard = (index: any) => {
     setRoomSettings({
       ...roomSettings,
-      deck: roomSettings.deck.filter((o, i) => index !== i),
+      cardValues: roomSettings.cardValues.filter((o, i) => index !== i),
     });
   };
 
@@ -38,6 +43,18 @@ const CreateRoomEdition = (props: CreateRoomEditionProps) => {
   const cancel = () => setShowCreateRoomEdition(false);
 
   console.log("roomSettings", roomSettings);
+
+  const socket = io();
+  const createRoom = useCallback(() => {
+    socket.emit('create_room',
+        roomSettings,
+        (data:any) => {
+          console.log(data.roomId)
+          const userInfo = getStorageValue("USER", {name : "Anonymous Scrum master", color:"white", role:"SCRUM_MASTER"})
+          socket.emit('join_room', {roomId: data.roomId, userInfo: userInfo});
+          router.push(`room/${data.roomId}`);
+        });
+  }, [])
 
   return (
     <>
@@ -56,10 +73,10 @@ const CreateRoomEdition = (props: CreateRoomEditionProps) => {
         <Modal.Body>
           <div className="container">
             <div className="row">
-              {roomSettings.deck.map((card, key) => (
+              {roomSettings.cardValues.map((card, key) => (
                 <div className="col-2" key={key}>
                   {card}
-                  {roomSettings.deck.length > 3 && (
+                  {roomSettings.cardValues.length > 3 && (
                     <MdCancel
                       color="red"
                       size={"26"}
@@ -92,11 +109,11 @@ const CreateRoomEdition = (props: CreateRoomEditionProps) => {
                         size={"26"}
                         onClick={() => {
                           let tempoCardValue: string[];
-                          tempoCardValue = [...roomSettings.deck, valueNewCard];
+                          tempoCardValue = [...roomSettings.cardValues, valueNewCard];
 
                           setRoomSettings({
                             ...roomSettings,
-                            deck: tempoCardValue,
+                            cardValues: tempoCardValue,
                           });
                           setAddCard(!addCard);
                         }}
@@ -117,7 +134,7 @@ const CreateRoomEdition = (props: CreateRoomEditionProps) => {
                   id="pointsachieved"
                   type="text"
                   placeholder="Value"
-                  value={roomSettings.pointsachieved}
+                  value={roomSettings.targetPoints}
                   pattern="[0-9]{1,3}"
                   title="Numbers only"
                   maxLength={3}
@@ -125,18 +142,18 @@ const CreateRoomEdition = (props: CreateRoomEditionProps) => {
                   onChange={(e) => {
                     setRoomSettings({
                       ...roomSettings,
-                      pointsachieved: e.target.value,
+                      targetPoints: e.target.value,
                     });
                   }}
                 />
-                {roomSettings.pointsachieved.length > 0 && (
+                {roomSettings.targetPoints.length > 0 && (
                   <MdCancel
                     color="red"
                     size={"26"}
                     onClick={() => {
                       setRoomSettings({
                         ...roomSettings,
-                        pointsachieved: "",
+                        targetPoints: "",
                       });
                     }}
                   />
@@ -149,13 +166,13 @@ const CreateRoomEdition = (props: CreateRoomEditionProps) => {
                 <input
                   className="form-check-input"
                   type="checkbox"
-                  checked={roomSettings.coffeebreak}
+                  checked={roomSettings.coffeeBreakAllowed}
                   role="switch"
                   id="flexSwitchCheckDefault"
                   onChange={() => {
                     setRoomSettings({
                       ...roomSettings,
-                      coffeebreak: !roomSettings.coffeebreak,
+                      coffeeBreakAllowed: !roomSettings.coffeeBreakAllowed,
                     });
                   }}
                 />
@@ -170,7 +187,7 @@ const CreateRoomEdition = (props: CreateRoomEditionProps) => {
                   id="timer"
                   type="text"
                   placeholder="Value"
-                  value={roomSettings.timer}
+                  value={roomSettings.revealTimer}
                   pattern="[0-9]{1,3}"
                   title="Numbers only"
                   maxLength={3}
@@ -178,18 +195,18 @@ const CreateRoomEdition = (props: CreateRoomEditionProps) => {
                   onChange={(e) => {
                     setRoomSettings({
                       ...roomSettings,
-                      timer: e.target.value,
+                      revealTimer: e.target.value,
                     });
                   }}
                 />
-                {roomSettings.timer.length > 0 && (
+                {roomSettings.revealTimer.length > 0 && (
                   <MdCancel
                     color="red"
                     size={"26"}
                     onClick={() => {
                       setRoomSettings({
                         ...roomSettings,
-                        timer: "",
+                        revealTimer: "",
                       });
                     }}
                   />
@@ -205,13 +222,13 @@ const CreateRoomEdition = (props: CreateRoomEditionProps) => {
                 <input
                   className="form-check-input"
                   type="checkbox"
-                  checked={roomSettings.buzzer}
+                  checked={roomSettings.buzzerAllowed}
                   role="switch"
                   id="flexSwitchBuzzer"
                   onChange={() => {
                     setRoomSettings({
                       ...roomSettings,
-                      buzzer: !roomSettings.buzzer,
+                      buzzerAllowed: !roomSettings.buzzerAllowed,
                     });
                   }}
                 />
@@ -226,7 +243,7 @@ const CreateRoomEdition = (props: CreateRoomEditionProps) => {
           <div className="container">
             <div className="row">
               <div className="col-sm-6">
-                <Button className="w-100 mb-3" variant="primary" onClick={save}>
+                <Button className="w-100 mb-3" variant="primary" onClick={createRoom}>
                   CREATE ROOM
                 </Button>
               </div>

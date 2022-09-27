@@ -41,8 +41,8 @@ export default class Room{
     }
 
     buzzBreakVote(userId: string){
-        const currentVote = this.buzzer.get(userId) ? this.buzzer.get(userId) : false
-        this.buzzer.set(userId, !currentVote);
+        const currentVote = this.buzzerAllowed.get(userId) ? this.buzzerAllowed.get(userId) : false
+        this.buzzerAllowed.set(userId, !currentVote);
         this.stateUpdated();
     }
 
