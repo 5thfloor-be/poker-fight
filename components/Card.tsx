@@ -2,6 +2,7 @@ import styles from '../styles/Card.module.css';
 import Image from 'next/image';
 import {MdAccountCircle} from 'react-icons/md';
 import {Badge, OverlayTrigger, Popover} from 'react-bootstrap';
+import { Placement } from 'react-bootstrap/types';
 
 export interface CardProps {
     value?: number;
@@ -16,7 +17,7 @@ export interface BadgeConfig {
     badgeText?: string | null;
     popupText?: any;
     popupTitle?: string | null;
-    position?: string | null;
+    position?: Placement;
 }
 
 const Card = ({ value, canClose, color, selected = false,name = null, badgeConfig = {} }: CardProps) => {
