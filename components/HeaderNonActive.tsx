@@ -39,7 +39,6 @@ const HeaderNonActive = () => {
             />
             {showEditProfile && (
               <EditProfile
-                user={user}
                 showEditProfile={showEditProfile}
                 setShowEditProfile={() => setShowEditProfile(true)}
               />

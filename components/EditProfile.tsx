@@ -10,7 +10,7 @@ type EditProfileProps = {
 };
 
 const EditProfile = (props: EditProfileProps) => {
-  const [user, setUser] = useState([]);
+  const [user, setUser] = useState({});
   const [showEditProfile, setShowEditProfile] = useState(props.showEditProfile);
 
   const colors = new Map<string, string>([
@@ -58,7 +58,7 @@ const EditProfile = (props: EditProfileProps) => {
                 </div>
                 <div className="col-12">
                   <input
-                    defaultValue={user?.name}
+                    defaultValue={user.name}
                     type="text"
                     placeholder="Username"
                     onChange={(e) => setUser({ ...user, name: e.target.value })}
