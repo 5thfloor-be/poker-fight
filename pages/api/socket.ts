@@ -28,7 +28,7 @@ function configIO(io: Server) {
             console.log(`${socket.id} is joining ${data.userInfo}`)
             console.log(`${socket.id} is joining ${socket.id}`)
             socket.join(data.roomId)
-            const user = {...data, id: uuid()};
+            const user = {...data.userInfo, id: uuid()};
             rooms.get(data.roomId)?.addUser(user);
 
             listener(user.id);
@@ -61,14 +61,26 @@ function configIO(io: Server) {
 
                 listener(rooms.get(data.roomId));
             }
-            // io.in(data.roomId).emit('room_update', rooms.get(data.roomId));
         })
 
         socket.on("reveal", data => {
             console.log(`reveal from scrum master ${JSON.stringify(data)}`);
-            rooms.get(data.roomId)?.revealVotes();
+            const room = rooms.get(data.roomId);
+            if (!!room) {
+                let votes = room.currentVotes.map(userVote => userVote.vote).filter(vote => vote > -1);
+                if (votes.length > 0) {
+                    const wondrous = votes.every(vote => vote === votes[0]);
+                    const vote = votes.pop();
+                    if (wondrous && !!vote) {
+                        room.vote(vote);
+                        rooms.get(data.roomId)?.revealVotes();
+                    } else {
+                        rooms.get(data.roomId)?.startFighting();
+                    }
+                }
 
-            socket.to(data.roomId).emit('reveal', rooms.get(data.roomId));
+                socket.to(data.roomId).emit('reveal', rooms.get(data.roomId));
+            }
         })
 
         socket.on("redo_vote", data => {
