@@ -5,6 +5,7 @@ import { useState } from "react";
 import LayoutActive from "../components/LayoutActive";
 import LayoutNonActive from "../components/LayoutNonActive";
 import { getStorageValue } from "../components/UseLocalStorage";
+import UserContextProvider from "../context/UserContext";
 
 function MyApp({ Component, pageProps }: AppProps) {
   const [isRoomActive, setIsRoomActive] = useState(false);
@@ -15,7 +16,7 @@ function MyApp({ Component, pageProps }: AppProps) {
   });
 
   return (
-    <>
+    <UserContextProvider>
       {isRoomActive ? (
         <LayoutActive user={user}>
           <Component {...pageProps} />
@@ -25,7 +26,7 @@ function MyApp({ Component, pageProps }: AppProps) {
           <Component {...pageProps} />
         </LayoutNonActive>
       )}
-    </>
+    </UserContextProvider>
   );
 }
 
