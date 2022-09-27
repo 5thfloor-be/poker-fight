@@ -29,7 +29,7 @@ const Versus: NextPage = () => {
   function getCards(side: String, mobile: boolean = false) {
     //TODO get room and user from local storage
 
-    let cards = room?.currentVotes.filter(vote => vote.vote !== "-1");
+    let cards = room?.currentVotes.filter(vote => vote.vote !== -1);
 
 
     let ordered = cards ? Array.from(cards?.sort((a, b) => Number(b.vote) - Number(a.vote))) : [];
@@ -45,14 +45,14 @@ const Versus: NextPage = () => {
           <>
             <div className="d-none d-sm-block">
               <div className="d-flex flex-wrap justify-content-center gap-5">
-                {rightCards?.map(item => <Card value={item.vote} name={item.userId} canClose={false}/>)}
+                {rightCards?.map((item, index) => <Card key={index} value={item.vote} name={item.userId} canClose={false}/>)}
               </div>
             </div>
             <div className="d-sm-none d-block">
                 <div className="d-flex flex-wrap justify-content-center gap-5">
                     <Card value={highVal} canClose={false} badgeConfig={{
-                        badgeText: rightCards?.length,
-                        popupText: rightCards?.map(item => <div>{item.userId}</div>),
+                        badgeText: '' + rightCards?.length,
+                        popupText: rightCards?.map((item, index) => <div key={index}>{item.userId}</div>),
                         position: "left",
                         popupTitle: "Voters"
                     }}/>
@@ -67,14 +67,14 @@ else
           <>
             <div className="d-none d-sm-block">
               <div className="d-flex flex-wrap justify-content-center gap-5">
-                {leftCards?.map(item => <Card value={item.vote} name={item.userId} canClose={false}/>)}
+                {leftCards?.map((item, index) => <Card key={index} value={item.vote} name={item.userId} canClose={false}/>)}
               </div>
             </div>
             <div className="d-sm-none d-block">
               <div className="d-flex flex-wrap justify-content-center gap-5">
                   <Card value={lowVal} canClose={false} badgeConfig={{
-                      badgeText: leftCards?.length,
-                      popupText: leftCards?.map(item => <div>{item.userId}</div>),
+                      badgeText: '' + leftCards?.length,
+                      popupText: leftCards?.map((item, index) => <div key={index}>{item.userId}</div>),
                       position: "right",
                       popupTitle: "Voters"}}/>
               </div>
@@ -96,12 +96,12 @@ return (
             <div className="text-center">
                 <div className="d-sm-block d-none">
                     <h1 style={{fontSize: '50px', fontWeight: 'bold'}} className="mx-0">
-                        LET'S FIGHT !
+                        LET&apos;S FIGHT !
                     </h1>
                 </div>
-                <h4 className="pt-2 d-sm-block d-none">Hey, it seems like we're not all aligned. Let's talk about
+                <h4 className="pt-2 d-sm-block d-none">Hey, it seems like we&apos;re not all aligned. Let&apos;s talk about
                     it.</h4>
-                <h4 className="pt-5 pb-5 d-block d-sm-none">Hey, it seems like we're not all aligned. Let's talk about
+                <h4 className="pt-5 pb-5 d-block d-sm-none">Hey, it seems like we&apos;re not all aligned. Let&apos;s talk about
                     it.</h4>
             </div>
             <div className="container" style={{marginTop: '5%'}}>
