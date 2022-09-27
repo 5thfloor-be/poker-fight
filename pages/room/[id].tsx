@@ -9,7 +9,7 @@ import {GiCardRandom} from 'react-icons/gi';
 import {Deck} from '../../components/Deck';
 import Modal from 'react-bootstrap/Modal';
 import { Button } from 'react-bootstrap';
-import {getStorageValue} from "../../components/UseLocalStorage";
+import { getStorageValue } from '../../components/UseLocalStorage';
 
 const Room: NextPage = () => {
   const socket = io();
@@ -48,18 +48,16 @@ const Room: NextPage = () => {
       setSelectedVote(-1);
       setRoom(data);
     });
-    socket.on('room_state_update', r =>{
+    socket.on('room_state_update', r => {
       console.log('room state update received ', r)
       setRoom(r);
-    });
-    socket.on('room_update', r =>{
-      console.log('room update received ', r)
-      setRoom(r);
+      if (room?.state === States.FIGHTING) {
+        // router.push(`versus/${data.roomId}`);
+      }
     });
   }, [socket]);
 
   const cardValues: any = [1, 2, 3, 5, 8, 13];
-
 
   const [selectedVote, setSelectedVote] = useState(-1);
   const updateSelection = (chosenVote: number) => {
@@ -138,10 +136,9 @@ const Room: NextPage = () => {
           {
             room.users.filter(u => u?.id !== myUser?.id).map((user, key) =>
                 <div key={key} className="col">
-                  <Card value={room?.state === States.WONDROUS && !!user.id ? (Number(room.currentVotes.find(u => u.userId === user.id)?.vote) ? Number(room.currentVotes.find(u => u?.userId === user.id)?.vote) : "0") : undefined}
-                        canClose={(myUser?.role === Role.SCRUM_MASTER || myUser?.role === Role.VOTING_SCRUM_MASTER)} color={user.color}
-                        selected={room?.state !== States.WONDROUS && !!Number(room.currentVotes.find(u => u?.userId === user.id)?.vote)}
-                        name={user.name}/>
+                  <Card value={room?.state === States.WONDROUS && !!user.id ? getVoteByUserId(user.id) : undefined}
+                        canClose={(myUser.role === Role.SCRUM_MASTER || myUser.role === Role.VOTING_SCRUM_MASTER)} color={user.color}
+                        name={user.name}  selected={!!user.id && !!getVoteByUserId(user.id)}/>
                 </div>
             )
           }
@@ -189,11 +186,9 @@ const Room: NextPage = () => {
           <div className="row">
             <div className="col text-center text-xl-center mt-sm-5 mb-sm-5">
 
-              {room.state !== States.STARTING &&
-                  <button className="btn btn-lg btn-primary">
-                    <h1>{selectedVote != -1 ? selectedVote : room.state === States.VOTING ? 'Waiting for votes ...' : room.currentVotes[0]?.vote}</h1>
-                  </button>
-              }
+              <button className="btn btn-lg btn-primary">
+                <h1>{room.state === States.WONDROUS ? room.wondrousVote : 'Waiting for votes ...'}</h1>
+              </button>
             </div>
           </div>
 

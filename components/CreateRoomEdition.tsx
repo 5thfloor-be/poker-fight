@@ -2,7 +2,7 @@ import React, {useCallback, useState} from "react";
 import { Button, Modal } from "react-bootstrap";
 import { MdCheckCircle, MdCancel } from "react-icons/md";
 import {io} from "socket.io-client";
-import {getStorageValue} from "./UseLocalStorage";
+import { getStorageValue, setStorageValue } from './UseLocalStorage';
 import User, {Role} from "../pages/api/model/user";
 import {useRouter} from "next/router";
 
@@ -51,9 +51,9 @@ const CreateRoomEdition = (props: CreateRoomEditionProps) => {
         (data:any) => {
           console.log(data.roomId)
           const userInfo = getStorageValue("USER", {name : "Anonymous Scrum master", color:"white", role:"SCRUM_MASTER"})
+          setStorageValue("USER", {...userInfo, role: Role.VOTING_SCRUM_MASTER})
           //TODO set user role vased on the "can vote" property from previous popup
-          userInfo.role = Role.VOTING_SCRUM_MASTER
-          //socket.emit('join_room', {roomId: data.roomId, userInfo: userInfo});
+          // socket.emit('join_room', {roomId: data.roomId, userInfo: userInfo});
           router.push(`room/${data.roomId}`);
         });
   }, [])

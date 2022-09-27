@@ -4,7 +4,7 @@ import {MdAccountCircle} from 'react-icons/md';
 import {Badge, OverlayTrigger, Popover} from 'react-bootstrap';
 
 export interface CardProps {
-    value?: string;
+    value?: number;
     canClose?: boolean;
     color?: string;
     selected?: boolean;
