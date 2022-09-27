@@ -1,12 +1,14 @@
 
 import User from "./user";
+import UserVote from './userVote';
 
-export default class Room{
+export default class Room {
     users: User[] = [];
     modified: Date = new Date();
     coffeBreak: Map<string, boolean> = new Map();
     buzzer: Map<string, boolean> = new Map();
-    currentVotes: Map<string, string> = new Map();
+    // currentVotes: Map<string, string> = new Map();
+    currentVotes: UserVote[] = [];
     state: States = States.STARTING;
     currentPoints: number = 0;
     roomOptions: RoomOptions
@@ -23,13 +25,20 @@ export default class Room{
     }
 
     removeUser(userId: string){
-        this.users = this.users.filter(u => u.getId());
+        this.users = this.users.filter(u => u.id);
         //TODO : close room when users is empty or no more scrum master
         this.stateUpdated();
     }
 
     registerVote(userId: string, vote: string){
-        this.currentVotes.set(userId, vote);
+        console.log('registerVote - user id : ', userId);
+        console.log('registerVote - vote : ', vote);
+        if (this.currentVotes.filter(userVote => userVote.userId === userId).length === 0) {
+            this.currentVotes.push(new UserVote(userId, vote));
+        } else {
+            this.currentVotes.filter(userVote => userVote.userId === userId).map(userVote => userVote.setVote(vote));
+        }
+        // this.currentVotes.set(userId, vote);
         //TODO : if everyone has voted, send event ?
         this.stateUpdated();
     }
@@ -57,11 +66,11 @@ export default class Room{
     }
 
     resetCurrentVotes() {
-        this.currentVotes.clear();
+        this.currentVotes = [];
     }
 
     getCurrentVoteByUser(userId: string): string | undefined{
-        return this.currentVotes.get(userId);
+        return this.currentVotes.filter(userVote => userVote.userId === userId).at(0)?.vote;
     }
 
     private stateUpdated(){
