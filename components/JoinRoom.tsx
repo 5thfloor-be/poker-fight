@@ -9,7 +9,7 @@ import {Role} from "../pages/api/model/user";
 type JoinRoomProps = {
   showJoinRoom: boolean;
   setShowJoinRoom: (val: any) => void;
-  roomId: string;
+  roomId?: string;
 };
 
 const JoinRoom = (props: JoinRoomProps) => {

@@ -57,7 +57,7 @@ const ScrumMasterActions = ({ minValue, maxValue, deck }: ScrumMasterActionsProp
         </Modal.Header>
         <Modal.Body>
           <div>
-              <Deck deck={deck} />
+              <Deck deck={deck} updateSelection={() => []} />
               <button type="button" className="btn btn-danger w-100 fw-bold my-3"
                 onClick={() => { toggleShowActions(); toggleShowOtherScores() }}>CANCEL</button>
           </div>

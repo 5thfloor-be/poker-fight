@@ -11,6 +11,8 @@ const HeaderActive = () => {
     getStorageValue("USER", { name: "", color: "#ffffff" })
   );
 
+  const [showEditProfile, setShowEditProfile] = useState(false);
+
   const [widthScreen, setWidthScreen] = useState(0);
   const [urlValue, setUrlValue] = useState(
     "http://poker-fight.be/room/aid777jdjfdhjkds_"
@@ -88,7 +90,10 @@ const HeaderActive = () => {
             style={{ textAlign: "right" }}
           >
             <div className="col-sm-6">
-              <EditProfile />
+              <EditProfile
+                  showEditProfile={showEditProfile}
+                  setShowEditProfile={() => setShowEditProfile(true)}
+              />
               {isRoomActive && (
                 <button className="btn btn-danger mt-1">Quit</button>
               )}
