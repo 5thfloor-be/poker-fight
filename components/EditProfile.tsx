@@ -59,11 +59,11 @@ const EditProfile = (props: EditProfileProps) => {
                 </div>
                 <div className="col-12">
                   <input
-                    defaultValue={user && user.username}
+                    defaultValue={user?.name}
                     type="text"
                     placeholder="Username"
                     onChange={(e) =>
-                      setUser({ ...user, username: e.target.value })
+                      setUser({ ...user, name: e.target.value })
                     }
                   />
                 </div>

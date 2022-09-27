@@ -17,7 +17,7 @@ const CreateRoom = (props: CreateRoomProps) => {
   const [checked, setChecked] = useState(false);
 
   const [user, setUser] = useState(
-    getStorageValue("USER", { username: "", color: "#ffffff" })
+    getStorageValue("USER", { name: "", color: "#ffffff" })
   );
 
   const handleChangeCheckbox = () => {
@@ -70,11 +70,11 @@ const CreateRoom = (props: CreateRoomProps) => {
                 </div>
                 <div className="col-12">
                   <input
-                    defaultValue={user && user.username}
+                    defaultValue={user?.name}
                     type="text"
                     placeholder="Username"
                     onChange={(e) => {
-                      setUser({ ...user, username: e.target.value });
+                      setUser({ ...user, name: e.target.value });
                     }}
                   />
                 </div>
