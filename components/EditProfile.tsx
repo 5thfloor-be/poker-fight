@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { Button, Modal } from "react-bootstrap";
 import { MdAccountCircle } from "react-icons/md";
 import { CirclePicker } from "react-color";
@@ -31,6 +31,10 @@ const EditProfile = (props: EditProfileProps) => {
   };
 
   const cancel = () => setShowEditProfile(false);
+
+  useEffect(() => {
+    if (user === null) setUser({ ...user, color: "#ffffff" });
+  }, []);
 
   return (
     <div>
