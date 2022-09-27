@@ -57,8 +57,6 @@ const Home: NextPage = () => {
             </div>
           </div>
 
-          <ScrumMasterActions minValue={1} maxValue={3} deck={[1, 3, 5, 8]} />
-
           <div className="row">
             <div className="offset-sm-3 col-sm-2 offset-1 col-10 my-1">
               <button

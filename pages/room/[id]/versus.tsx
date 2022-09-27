@@ -8,6 +8,7 @@ import RoomModel, { States } from '../../api/model/room';
 import { useRouter } from "next/router";
 import { io } from "socket.io-client";
 import User from "../../api/model/user";
+import ScrumMasterActions from '../../../components/ScrumMasterActions';
 
 const Versus: NextPage = () => {
     const [widthScreen, setWidthScreen] = useState(0);
@@ -156,16 +157,19 @@ const Versus: NextPage = () => {
                         </div>
                     </div>
                     <div className="row mt-5">
-                        <div className="offset-2 col-2">
+                        <div className="d-sm-none d-block offset-4 col-4">
+                            <ScrumMasterActions minValue={lowest()} maxValue={highest()} deck={[1, 3, 5, 8]} />
+                        </div>
+                        <div className="d-none d-sm-block offset-sm-2 col-sm-2">
                             <button type='button' className='btn btn-primary fw-bold w-100' onClick={forceLow}>GO FOR {lowest()}</button>
                         </div>
-                        <div className="col-2">
+                        <div className="d-none d-sm-block col-sm-2">
                             <button type='button' className='btn btn-primary fw-bold w-100' onClick={forceHigh}>GO FOR {highest()}</button>
                         </div>
-                        <div className="col-2">
+                        <div className="d-none d-sm-block col-sm-2">
                             <button type='button' className='btn btn-primary fw-bold w-100' onClick={() => ''}>OTHER SCORE</button>
                         </div>
-                        <div className="col-2">
+                        <div className="d-none d-sm-block col-sm-2">
                             <button type='button' className='btn btn-primary fw-bold w-100' onClick={redoVote}>REDO VOTE</button>
                         </div>
                     </div>
