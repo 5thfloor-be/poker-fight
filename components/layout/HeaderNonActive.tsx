@@ -1,8 +1,8 @@
 import Image from "next/image";
 import { useEffect, useState, useContext } from "react";
-import EditProfile from "./EditProfile";
 import { MdAccountCircle } from "react-icons/md";
-import { UserContext } from "../context/UserContext";
+import { UserContext } from "../../context/UserContext";
+import EditProfile from "../EditProfile";
 
 const HeaderNonActive = () => {
   const [widthScreen, setWidthScreen] = useState(0);

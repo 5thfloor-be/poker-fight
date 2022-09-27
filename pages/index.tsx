@@ -1,15 +1,16 @@
 import type { NextPage } from "next";
 import Head from "next/head";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import styles from "../styles/Home.module.css";
-import FooterActiveMobile from "../components/FooterActiveMobile";
 import CreateRoom from "../components/CreateRoom";
 import ScrumMasterActions from "../components/ScrumMasterActions";
 import CreateRoomEdition from "../components/CreateRoomEdition";
 import JoinRoom from "../components/JoinRoom";
+import FooterActiveMobile from "../components/layout/FooterActiveMobile";
+import { UserContext } from "../context/UserContext";
 
 const Home: NextPage = () => {
-  const [isRoomActive, setIsRoomActive] = useState(true);
+  const { isRoomActive, setIsRoomActive } = useContext(UserContext);
   const [showCreateRoom, setShowCreateRoom] = useState(false);
   const [showJoinRoom, setShowJoinRoom] = useState(false);
   const [showCreateRoomEdition, setShowCreateRoomEdition] = useState(false);

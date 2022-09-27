@@ -1,7 +1,7 @@
 import { NextPage } from "next";
 import { FaLinkedinIn } from "react-icons/fa";
 import Image from "next/image";
-import styles from "../styles/Footer.module.css";
+import styles from "../../styles/Footer.module.css";
 
 const Footer: NextPage = () => {
   return (
@@ -58,7 +58,11 @@ const Footer: NextPage = () => {
                   className="col-1"
                   style={{ position: "relative", height: "30px" }}
                 >
-                  <a href="https://5thfloor.be/poker-fight" target="_blank" rel="noreferrer">
+                  <a
+                    href="https://5thfloor.be/poker-fight"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
                     <Image
                       className="text-white"
                       src="/images/5thFloor-logo-white.png"
