@@ -4,9 +4,9 @@ import User from "./user";
 export default class Room{
     users: User[] = [];
     modified: Date = new Date();
-    coffeBreak: Map<string, boolean> = new Map([]);
-    buzzer: Map<string, boolean> = new Map([]);
-    currentVotes: Map<string, string> = new Map([]);
+    coffeBreak: Map<string, boolean> = new Map();
+    buzzer: Map<string, boolean> = new Map();
+    currentVotes: Map<string, string> = new Map();
     state: States = States.STARTING;
     currentPoints: number = 0;
     roomOptions: RoomOptions
@@ -50,9 +50,14 @@ export default class Room{
         this.state = States.VOTING;
         this.stateUpdated();
     }
+
     revealVotes() {
         this.state = States.VOTED;
         this.stateUpdated();
+    }
+
+    resetCurrentVotes() {
+        this.currentVotes.clear();
     }
 
     getCurrentVoteByUser(userId: string): string | undefined{
