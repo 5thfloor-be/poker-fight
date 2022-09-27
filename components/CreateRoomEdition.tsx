@@ -1,10 +1,11 @@
-import React, {useCallback, useState} from "react";
+import React, { useCallback, useState, useContext } from "react";
 import { Button, Modal } from "react-bootstrap";
 import { MdCheckCircle, MdCancel } from "react-icons/md";
-import {io} from "socket.io-client";
-import { getStorageValue, setStorageValue } from './UseLocalStorage';
-import User, {Role} from "../pages/api/model/user";
-import {useRouter} from "next/router";
+import { io } from "socket.io-client";
+import { getStorageValue, setStorageValue } from "./UseLocalStorage";
+import User, { Role } from "../pages/api/model/user";
+import { useRouter } from "next/router";
+import { UserContext } from "../context/UserContext";
 
 type CreateRoomEditionProps = {
   showCreateRoomEdition: boolean;
@@ -17,6 +18,7 @@ const CreateRoomEdition = (props: CreateRoomEditionProps) => {
 
   const [addCard, setAddCard] = useState(false);
   const [valueNewCard, setValueNewCard] = useState("");
+  const { isRoomActive, setIsRoomActive } = useContext(UserContext);
 
   /* All params of the future Room */
   const [roomSettings, setRoomSettings] = useState({
@@ -46,17 +48,20 @@ const CreateRoomEdition = (props: CreateRoomEditionProps) => {
 
   const socket = io();
   const createRoom = useCallback(() => {
-    socket.emit('create_room',
-        roomSettings,
-        (data:any) => {
-          console.log(data.roomId)
-          const userInfo = getStorageValue("USER", {name : "Anonymous Scrum master", color:"white", role:"SCRUM_MASTER"})
-          setStorageValue("USER", {...userInfo, role: Role.VOTING_SCRUM_MASTER})
-          //TODO set user role vased on the "can vote" property from previous popup
-          // socket.emit('join_room', {roomId: data.roomId, userInfo: userInfo});
-          router.push(`room/${data.roomId}`);
-        });
-  }, [])
+    setIsRoomActive(true);
+    socket.emit("create_room", roomSettings, (data: any) => {
+      console.log(data.roomId);
+      const userInfo = getStorageValue("USER", {
+        name: "Anonymous Scrum master",
+        color: "white",
+        role: "SCRUM_MASTER",
+      });
+      setStorageValue("USER", { ...userInfo, role: Role.VOTING_SCRUM_MASTER });
+      //TODO set user role vased on the "can vote" property from previous popup
+      // socket.emit('join_room', {roomId: data.roomId, userInfo: userInfo});
+      router.push(`room/${data.roomId}`);
+    });
+  }, []);
 
   return (
     <>
@@ -111,7 +116,10 @@ const CreateRoomEdition = (props: CreateRoomEditionProps) => {
                         size={"26"}
                         onClick={() => {
                           let tempoCardValue: string[];
-                          tempoCardValue = [...roomSettings.cardValues, valueNewCard];
+                          tempoCardValue = [
+                            ...roomSettings.cardValues,
+                            valueNewCard,
+                          ];
 
                           setRoomSettings({
                             ...roomSettings,
@@ -245,7 +253,11 @@ const CreateRoomEdition = (props: CreateRoomEditionProps) => {
           <div className="container">
             <div className="row">
               <div className="col-sm-6">
-                <Button className="w-100 mb-3" variant="primary" onClick={createRoom}>
+                <Button
+                  className="w-100 mb-3"
+                  variant="primary"
+                  onClick={createRoom}
+                >
                   CREATE ROOM
                 </Button>
               </div>
