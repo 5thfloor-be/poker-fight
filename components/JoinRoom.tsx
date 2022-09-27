@@ -1,20 +1,23 @@
-import { useState } from "react";
-import { Button, Modal } from "react-bootstrap";
-import { MdAccountCircle } from "react-icons/md";
-import { CirclePicker } from "react-color";
-import { setStorageValue } from "./UseLocalStorage";
+import {useState} from "react";
+import {Button, Modal, ToggleButton, ToggleButtonGroup} from "react-bootstrap";
+import {MdAccountCircle} from "react-icons/md";
+import {CirclePicker} from "react-color";
+import {getStorageValue, setStorageValue} from "./UseLocalStorage";
+import {useRouter} from "next/router";
+import {Role} from "../pages/api/model/user";
 
 type JoinRoomProps = {
   showJoinRoom: boolean;
   setShowJoinRoom: (val: any) => void;
+  roomId: string;
 };
 
 const JoinRoom = (props: JoinRoomProps) => {
-  const [user, setUser] = useState({
-    username: "",
-    color: "#ffffff",
-  });
+  const [user, setUser] = useState(getStorageValue("USER", {name: '', color: '#ffffff', role: Role.DEV}));
   const [showJoinRoom, setShowJoinRoom] = useState(props.showJoinRoom);
+  const [roomId, setRoomId] = useState(props.roomId);
+  const [isDev, setIsDev] = useState(1);
+  const router = useRouter();
 
   const colors = new Map<string, string>([
     ["#0000ff", "blue"],
@@ -26,13 +29,17 @@ const JoinRoom = (props: JoinRoomProps) => {
     ["#ffa500", "orange"],
     ["#808080", "grey"],
   ]);
-
+console.log(user)
   const save = () => {
     setShowJoinRoom(false);
-    setStorageValue("USER", user);
+    setStorageValue("USER", {...user, role: isDev === 1? Role.DEV : Role.SPECTATOR});
+    router.push(`room/${roomId}`);
   };
 
   const cancel = () => setShowJoinRoom(false);
+  const toggle = (val: number) => {
+    setIsDev(val);
+  };
 
   return (
     <div>
@@ -61,11 +68,12 @@ const JoinRoom = (props: JoinRoomProps) => {
                 </div>
                 <div className="col-12">
                   <input
-                    defaultValue={user && user.username}
+                    defaultValue={user?.name}
                     type="text"
                     placeholder="Username"
+                    required={true}
                     onChange={(e) =>
-                      setUser({ ...user, username: e.target.value })
+                      setUser({ ...user, name: e.target.value })
                     }
                   />
                 </div>
@@ -83,10 +91,27 @@ const JoinRoom = (props: JoinRoomProps) => {
                 </div>
                 <div className="col-12">
                   <p className="text-white mt-2">
-                    Color: {colors.get(user && user.color)}
+                    Color: {colors.get(user?.color)}
                   </p>
                 </div>
               </div>
+            </div>
+            <div className="row">
+              <div>
+                <input className="w-100"
+                       defaultValue={roomId || ''}
+                       type="text"
+                       placeholder="Room id"
+                       required={true}
+                       onChange={(e) => setRoomId(e.target.value)}
+                />
+              </div>
+            </div>
+            <div className="row">
+              <ToggleButtonGroup type="radio" name="options" defaultValue={isDev} onChange={toggle} className="mt-3">
+                <ToggleButton id="dev" value={1} >Dev</ToggleButton>
+                <ToggleButton id="spec" value={2} >Spec</ToggleButton>
+              </ToggleButtonGroup>
             </div>
           </div>
         </Modal.Body>

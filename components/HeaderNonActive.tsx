@@ -1,16 +1,14 @@
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import EditProfile from "./EditProfile";
 import { MdAccountCircle } from "react-icons/md";
+import { UserContext } from "../context/UserContext";
 
-type HeaderNonActiveProps = {
-  user: any;
-};
-
-const HeaderNonActive = (props: HeaderNonActiveProps) => {
+const HeaderNonActive = () => {
   const [widthScreen, setWidthScreen] = useState(0);
   const [showEditProfile, setShowEditProfile] = useState(false);
-  const user = props.user;
+
+  const { user, setUser } = useContext(UserContext);
 
   useEffect(() => {
     setWidthScreen(window.innerWidth);
@@ -41,7 +39,6 @@ const HeaderNonActive = (props: HeaderNonActiveProps) => {
             />
             {showEditProfile && (
               <EditProfile
-                user={user}
                 showEditProfile={showEditProfile}
                 setShowEditProfile={() => setShowEditProfile(true)}
               />
