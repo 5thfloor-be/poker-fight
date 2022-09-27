@@ -52,9 +52,14 @@ function configIO(io: Server){
             listener({roomId: roomId});
         })
 
-        socket.on("vote", data =>{
-            console.log(`register vote ${JSON.stringify(data)}`);
+        socket.on("vote", (data, listener) => {
+            console.log("AAAAAAAAAAAAAAAA");
+            console.log(`register vot e ${JSON.stringify(data)}`);
             rooms.get(data.roomId)?.registerVote(data.userId, data.vote);
+            console.log("register vot e", rooms.get(data.roomId));
+
+            listener(rooms.get(data.roomId));
+            // io.in(data.roomId).emit('room_update', rooms.get(data.roomId));
         })
 
         socket.on("reveal", data =>{

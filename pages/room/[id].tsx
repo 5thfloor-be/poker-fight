@@ -9,7 +9,6 @@ import { GiCardRandom } from 'react-icons/Gi';
 import { Deck } from '../../components/Deck';
 import Modal from 'react-bootstrap/Modal';
 import { Button } from 'react-bootstrap';
-import { userInfo } from 'os';
 
 const Room: NextPage = () => {
   const socket = io();
@@ -26,11 +25,15 @@ const Room: NextPage = () => {
     socket.emit('get_room', {roomId: roomId}, (room: RoomModel) => setRoom(room));
 
     console.log(`joining ${roomId}`)
-    socket.emit('join_room', {roomId, userInfo: myUser},
+
+    if (!myUser.id) {
+      socket.emit('join_room', {roomId, userInfo: myUser},
         (id: string) => {
-          console.log(id)
+          console.log('my user id : ', id)
           setMyUser({...myUser, id: id})
-        });
+        }
+      );
+    }
   }
 
   useEffect(() => {
@@ -44,7 +47,11 @@ const Room: NextPage = () => {
     socket.on('room_state_update', r =>{
       console.log('room state update received ', r)
       setRoom(r);
-    })
+    });
+    socket.on('room_update', r =>{
+      console.log('room update received ', r)
+      setRoom(r);
+    });
   }, [socket]);
 
   const cardValues: any = [1, 2, 3, 5, 8, 13];
@@ -55,7 +62,11 @@ const Room: NextPage = () => {
     console.log('my vote : ' + chosenVote);
     setSelectedVote(chosenVote);
     setShow(false);
-    socket.emit('vote', {roomId: roomId, userId: myUser.id, vote: selectedVote});
+    socket.emit('vote', {roomId: roomId, userId: myUser.id, vote: chosenVote},
+      (room: any) => {
+        console.log('room in listener : ', room)
+      }
+    );
   }
   // get room from server
   const startVoting = () => {
@@ -66,6 +77,7 @@ const Room: NextPage = () => {
   const reveal = () => {
     console.log('reveal: Change status room to voted');
     socket.emit('reveal', {roomId}, (r: any) => {
+      console.log(room?.currentVotes);
       console.log('room', r);
       setRoom(r);
     });
@@ -101,7 +113,7 @@ const Room: NextPage = () => {
           {
             room.users.map((user, key) =>
                 <div key={key} className="col">
-                  <Card value={room?.state === States.VOTED && !!user.id ? Number(room.currentVotes.get(user.id)) : undefined}
+                  <Card value={room?.state === States.VOTED && !!user.id ? Number(room.getCurrentVoteByUser(user.id)) : undefined}
                         canClose={(myUser.userInfo.role === Role.SCRUM_MASTER || myUser.userInfo.role === Role.VOTING_SCRUM_MASTER)} color={user.userInfo.color}
                         name={user.userInfo.name}/>
                 </div>
