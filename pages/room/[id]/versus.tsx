@@ -8,17 +8,25 @@ import RoomModel from "../../api/model/room";
 
 const Versus: NextPage = () => {
   const [widthScreen, setWidthScreen] = useState(0);
+  const socket = io();
+  const router = useRouter();
+  const roomId = router.query.id;
+  const [room, setRoom] = useState<RoomModel>();
+  const [myUser, setMyUser] = useState<User>(getStorageValue('USER', null));
 
   useEffect(() => {
     setWidthScreen(window.innerWidth);
   }, []);
 
-  function getCards(side: String, mobile: boolean = false) {
-    let room: RoomModel = getStorageValue('ROOM', null);
+    if (roomId !== '' && !room) {
+        console.log(`displaying room ${roomId}`)
+        socket.emit('get_room', {roomId: roomId}, (room: RoomModel) => setRoom(room));
+    }
 
+  function getCards(side: String, mobile: boolean = false) {
     //TODO get room and user from local storage
 
-    let cards = room.currentVotes.filter(vote => vote.vote !== "-1");
+    let cards = room?.currentVotes.filter(vote => vote.vote !== "-1");
 
 
     let ordered = Array.from(cards.sort((a, b) => Number(b.vote) - Number(a.vote)));
