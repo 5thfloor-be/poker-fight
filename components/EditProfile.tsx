@@ -5,13 +5,12 @@ import { CirclePicker } from "react-color";
 import { setStorageValue } from "./UseLocalStorage";
 
 type EditProfileProps = {
-  user: any;
   showEditProfile: boolean;
   setShowEditProfile: (val: any) => void;
 };
 
 const EditProfile = (props: EditProfileProps) => {
-  const [user, setUser] = useState(props.user);
+  const [user, setUser] = useState([]);
   const [showEditProfile, setShowEditProfile] = useState(props.showEditProfile);
 
   const colors = new Map<string, string>([
@@ -62,9 +61,7 @@ const EditProfile = (props: EditProfileProps) => {
                     defaultValue={user?.name}
                     type="text"
                     placeholder="Username"
-                    onChange={(e) =>
-                      setUser({ ...user, name: e.target.value })
-                    }
+                    onChange={(e) => setUser({ ...user, name: e.target.value })}
                   />
                 </div>
               </div>
