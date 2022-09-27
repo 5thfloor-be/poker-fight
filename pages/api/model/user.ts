@@ -1,17 +1,6 @@
-export default class User {
-
-    userInfo: UserInfo;
+export default interface User extends UserInfo {
     id?: string;
     canVote?: boolean;
-
-    constructor(
-        info: UserInfo,
-        id?: string
-    ) {
-        this.canVote = info?.role == Role.DEV || info?.role == Role.VOTING_SCRUM_MASTER
-        this.userInfo = info;
-        this.id = id;
-    }
 }
 
 export interface UserInfo {
