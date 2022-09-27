@@ -1,12 +1,18 @@
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
+import { useContext, useEffect, useState } from "react";
 import { MdAccountCircle, MdOutlineCheck } from "react-icons/md";
-import EditProfile from "./EditProfile";
-import { getStorageValue } from "./UseLocalStorage";
+import { UserContext } from "../../context/UserContext";
+import EditProfile from "../EditProfile";
+import { getStorageValue } from "../UseLocalStorage";
 
-const isRoomActive = true;
+//const isRoomActive = true;
 
 const HeaderActive = () => {
+  const { isRoomActive, setIsRoomActive } = useContext(UserContext);
+  const path = useRouter();
+  const router = path.query;
+
   const [user, setUser] = useState(
     getStorageValue("USER", { name: "", color: "#ffffff" })
   );
@@ -22,6 +28,11 @@ const HeaderActive = () => {
   useEffect(() => {
     setWidthScreen(window.innerWidth);
   }, []);
+
+  const quitHandler = () => {
+    setIsRoomActive(false);
+    path.push("/");
+  };
 
   return (
     <div>
@@ -91,11 +102,13 @@ const HeaderActive = () => {
           >
             <div className="col-sm-6">
               <EditProfile
-                  showEditProfile={showEditProfile}
-                  setShowEditProfile={() => setShowEditProfile(true)}
+                showEditProfile={showEditProfile}
+                setShowEditProfile={() => setShowEditProfile(true)}
               />
               {isRoomActive && (
-                <button className="btn btn-danger mt-1">Quit</button>
+                <button onClick={quitHandler} className="btn btn-danger mt-1">
+                  Quit
+                </button>
               )}
             </div>
           </div>
