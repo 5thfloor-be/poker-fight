@@ -9,6 +9,7 @@ export default class Room {
     buzzer: Map<string, boolean> = new Map();
     // currentVotes: Map<string, string> = new Map();
     currentVotes: UserVote[] = [];
+    wondrousVote: number = -1;
     state: States = States.STARTING;
     currentPoints: number = 0;
     roomOptions: RoomOptions
@@ -61,15 +62,30 @@ export default class Room {
     }
 
     revealVotes() {
-        this.state = States.VOTED;
+        let set: Set<string> = new Set(Object.values(this.currentVotes.filter(vote => vote.vote !== "-1" )).map(v => v.vote));
+        console.log(this.currentVotes);
+        console.log(set);
+        if (set.size > 0) {
+            if (set.size == 1) {
+                this.state = States.WONDROUS;
+            } else {
+                this.state = States.FIGHTING;
+            }
+        }
+        this.stateUpdated();
+    }
+
+    startFighting() {
+        this.state = States.FIGHTING;
         this.stateUpdated();
     }
 
     resetCurrentVotes() {
         this.currentVotes = [];
+        this.wondrousVote = -1;
     }
 
-    getCurrentVoteByUser(userId: string): string | undefined{
+    getCurrentVoteByUser(userId: string): number | undefined {
         return this.currentVotes.filter(userVote => userVote.userId === userId).at(0)?.vote;
     }
 
@@ -84,12 +100,16 @@ export default class Room {
         this.onChangeCallbacks.push(callback);
     }
 
+    vote(vote: number) {
+        this.wondrousVote = vote;
+        this.currentPoints += vote;
+    }
 }
 
 export enum States{
     STARTING,
     VOTING,
-    VOTED,
+    WONDROUS,
     FIGHTING,
     BREAK,
     BUZZ
