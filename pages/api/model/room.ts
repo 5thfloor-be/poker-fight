@@ -62,12 +62,13 @@ export default class Room {
     }
 
     revealVotes() {
-        let set: Set<number> = new Set(Object.values(this.currentVotes.filter(vote => vote.vote !== -1 )).map(v => v.vote));
+        let set: Set<number> = new Set(Object.values(this.currentVotes.filter(vote => vote.vote > -1 )).map(v => v.vote));
         console.log(this.currentVotes);
         console.log(set);
         if (set.size > 0) {
             if (set.size == 1) {
                 this.state = States.WONDROUS;
+                this.vote(set.values().next().value);
             } else {
                 this.state = States.FIGHTING;
             }
@@ -103,6 +104,11 @@ export default class Room {
     vote(vote: number) {
         this.wondrousVote = vote;
         this.currentPoints += vote;
+    }
+
+    forceVote(vote: number) {
+        this.vote(vote);
+        this.state = States.WONDROUS;
     }
 }
 
