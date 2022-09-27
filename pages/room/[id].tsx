@@ -9,13 +9,14 @@ import { GiCardRandom } from 'react-icons/Gi';
 import { Deck } from '../../components/Deck';
 import Modal from 'react-bootstrap/Modal';
 import { Button } from 'react-bootstrap';
+import {getStorageValue} from "../../components/UseLocalStorage";
 
 const Room: NextPage = () => {
   const socket = io();
   const router = useRouter();
   const roomId = router.query.id;
 
-  const [myUser, setMyUser] = useState<User>(new User({name: 'Gab', color: '#008000', role: Role.VOTING_SCRUM_MASTER}));
+  const [myUser, setMyUser] = useState<User>(getStorageValue('USER', null));
 
   const [room, setRoom] = useState<RoomModel>();
   console.log('roomId', roomId);
@@ -114,14 +115,14 @@ const Room: NextPage = () => {
             room.users.map((user, key) =>
                 <div key={key} className="col">
                   <Card value={room?.state === States.VOTED && !!user.id ? Number(room.getCurrentVoteByUser(user.id)) : undefined}
-                        canClose={(myUser.userInfo.role === Role.SCRUM_MASTER || myUser.userInfo.role === Role.VOTING_SCRUM_MASTER)} color={user.userInfo.color}
-                        name={user.userInfo.name}/>
+                        canClose={(myUser.role === Role.SCRUM_MASTER || myUser.role === Role.VOTING_SCRUM_MASTER)} color={user.color}
+                        name={user.name}/>
                 </div>
             )
           }
         </div>
         <div className="row my-3">
-          {(myUser.userInfo.role === Role.SCRUM_MASTER || myUser.userInfo.role === Role.VOTING_SCRUM_MASTER)
+          {(myUser.role === Role.SCRUM_MASTER || myUser.role === Role.VOTING_SCRUM_MASTER)
               && room.state === States.STARTING
               && <div className='offset-3 col-6 offset-sm-5 col-sm-2'>
                 <button type='button' className='btn btn-primary fw-bold w-100'
@@ -130,7 +131,7 @@ const Room: NextPage = () => {
               </div>}
         </div>
         <div className="row my-3">
-          {(myUser.userInfo.role === Role.SCRUM_MASTER || myUser.userInfo.role === Role.VOTING_SCRUM_MASTER)
+          {(myUser.role === Role.SCRUM_MASTER || myUser.role === Role.VOTING_SCRUM_MASTER)
               && room.state === States.VOTING
               && <>
                 <div className='offset-1 col-5 offset-sm-4 col-sm-2'>
@@ -145,7 +146,7 @@ const Room: NextPage = () => {
                   </button>
                 </div>
               </>}
-          {(myUser.userInfo.role === Role.SCRUM_MASTER || myUser.userInfo.role === Role.VOTING_SCRUM_MASTER) && room.state === States.VOTED &&
+          {(myUser.role === Role.SCRUM_MASTER || myUser.role === Role.VOTING_SCRUM_MASTER) && room.state === States.VOTED &&
               <>
                 <div className='offset-1 col-5 offset-sm-4 col-sm-2'>
                   <button type='button' className='btn btn-primary fw-bold w-100'
@@ -168,7 +169,7 @@ const Room: NextPage = () => {
             </div>
           </div>
 
-          {(myUser.userInfo.role !== Role.SCRUM_MASTER) && room.state === States.VOTING &&
+          {(myUser.role !== Role.SCRUM_MASTER) && room.state === States.VOTING &&
             <>
               <div className="row">
                 <div className="col d-none d-sm-block">
