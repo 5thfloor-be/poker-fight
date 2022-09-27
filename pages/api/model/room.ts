@@ -31,7 +31,7 @@ export default class Room {
         this.stateUpdated();
     }
 
-    registerVote(userId: string, vote: string){
+    registerVote(userId: string, vote: number){
         console.log('registerVote - user id : ', userId);
         console.log('registerVote - vote : ', vote);
         if (this.currentVotes.filter(userVote => userVote.userId === userId).length === 0) {
@@ -51,8 +51,8 @@ export default class Room {
     }
 
     buzzBreakVote(userId: string){
-        const currentVote = this.buzzerAllowed.get(userId) ? this.buzzerAllowed.get(userId) : false
-        this.buzzerAllowed.set(userId, !currentVote);
+        const currentVote = this.buzzer.get(userId) ? this.buzzer.get(userId) : false
+        this.buzzer.set(userId, !currentVote);
         this.stateUpdated();
     }
 
@@ -62,7 +62,7 @@ export default class Room {
     }
 
     revealVotes() {
-        let set: Set<string> = new Set(Object.values(this.currentVotes.filter(vote => vote.vote !== "-1" )).map(v => v.vote));
+        let set: Set<number> = new Set(Object.values(this.currentVotes.filter(vote => vote.vote !== -1 )).map(v => v.vote));
         console.log(this.currentVotes);
         console.log(set);
         if (set.size > 0) {

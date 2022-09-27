@@ -2,7 +2,7 @@ import {useEffect, useState} from "react";
 import Card from "./Card";
 
 export interface DeckProps {
-  deck: [];
+  deck: number[];
   updateSelection: Function;
   canClose?: boolean;
   isLocked?: boolean;

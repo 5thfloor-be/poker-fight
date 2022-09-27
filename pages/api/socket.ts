@@ -6,7 +6,7 @@ import User, {Role} from './model/user';
 
 const rooms: Map<string, Room> = new Map();
 
-const SocketHandler = (req: IncomingMessage, res: ServerResponse) => {
+const SocketHandler = (req: IncomingMessage, res: any) => {
 
     if (res?.socket?.server.io) {
         console.log('Socket is already running')
