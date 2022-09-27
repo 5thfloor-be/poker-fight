@@ -10,19 +10,14 @@ import UserContextProvider from "../context/UserContext";
 function MyApp({ Component, pageProps }: AppProps) {
   const [isRoomActive, setIsRoomActive] = useState(false);
 
-  const user = getStorageValue("USER", {
-    username: "",
-    color: "#ffffff",
-  });
-
   return (
     <UserContextProvider>
       {isRoomActive ? (
-        <LayoutActive user={user}>
+        <LayoutActive>
           <Component {...pageProps} />
         </LayoutActive>
       ) : (
-        <LayoutNonActive user={user}>
+        <LayoutNonActive>
           <Component {...pageProps} />
         </LayoutNonActive>
       )}
