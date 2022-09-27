@@ -6,10 +6,12 @@ import FooterActiveMobile from "../components/FooterActiveMobile";
 import CreateRoom from "../components/CreateRoom";
 import ScrumMasterActions from "../components/ScrumMasterActions";
 import CreateRoomEdition from "../components/CreateRoomEdition";
+import JoinRoom from "../components/JoinRoom";
 
 const Home: NextPage = () => {
   const [isRoomActive, setIsRoomActive] = useState(true);
   const [showCreateRoom, setShowCreateRoom] = useState(false);
+  const [showJoinRoom, setShowJoinRoom] = useState(false);
   const [showCreateRoomEdition, setShowCreateRoomEdition] = useState(false);
 
   return (
@@ -67,7 +69,11 @@ const Home: NextPage = () => {
               </button>
             </div>
             <div className="offset-sm-2 col-sm-2 offset-1 col-10 my-1">
-              <button type="button" className="btn btn-success w-100 fw-bold">
+              <button
+                type="button"
+                className="btn btn-success w-100 fw-bold"
+                onClick={() => setShowJoinRoom(!showJoinRoom)}
+              >
                 JOIN ROOM
               </button>
             </div>
@@ -81,6 +87,12 @@ const Home: NextPage = () => {
           setShowCreateRoomEdition={() => setShowCreateRoomEdition(true)}
         />
       )}
+      {showJoinRoom && (
+        <JoinRoom
+          showJoinRoom={showJoinRoom}
+          setShowJoinRoom={() => setShowJoinRoom(true)}
+        />
+      )}
       {showCreateRoomEdition && (
         <CreateRoomEdition showCreateRoomEdition={showCreateRoomEdition} />
       )}
@@ -91,12 +103,12 @@ const Home: NextPage = () => {
 
 export default Home;
 
-export async function getServerSideProps(){
-  console.log('xxxxxxxxx');
-  await fetch('http://localhost:3000/api/socket');
+export async function getServerSideProps() {
+  console.log("xxxxxxxxx");
+  await fetch("http://localhost:3000/api/socket");
   return {
     props: {
       //socket: socket
-    }
-  }
+    },
+  };
 }
