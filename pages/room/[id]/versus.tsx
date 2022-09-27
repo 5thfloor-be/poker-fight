@@ -5,6 +5,9 @@ import Card from '../../../components/Card';
 import { getStorageValue } from '../../../components/UseLocalStorage';
 import Image from 'next/image';
 import RoomModel from "../../api/model/room";
+import {useRouter} from "next/router";
+import {io} from "socket.io-client";
+import User from "../../api/model/user";
 
 const Versus: NextPage = () => {
   const [widthScreen, setWidthScreen] = useState(0);
@@ -29,27 +32,27 @@ const Versus: NextPage = () => {
     let cards = room?.currentVotes.filter(vote => vote.vote !== "-1");
 
 
-    let ordered = Array.from(cards.sort((a, b) => Number(b.vote) - Number(a.vote)));
+    let ordered = cards ? Array.from(cards?.sort((a, b) => Number(b.vote) - Number(a.vote))) : [];
 
-    let highVal = ordered[0].vote;
-    let lowVal = ordered[ordered.length - 1].vote;
+    let highVal = ordered[0]?.vote;
+    let lowVal = ordered[ordered.length - 1]?.vote;
 
-    let leftCards = cards.filter(it => it.vote == highVal);
-    let rightCards = cards.filter(it => it.vote == lowVal);
+    let leftCards = cards?.filter(it => it.vote == highVal);
+    let rightCards = cards?.filter(it => it.vote == lowVal);
 
     if (side == 'right') {
       return (
           <>
             <div className="d-none d-sm-block">
               <div className="d-flex flex-wrap justify-content-center gap-5">
-                {rightCards.map(item => <Card value={item.vote} name={item.userId} canClose={false}/>)}
+                {rightCards?.map(item => <Card value={item.vote} name={item.userId} canClose={false}/>)}
               </div>
             </div>
             <div className="d-sm-none d-block">
                 <div className="d-flex flex-wrap justify-content-center gap-5">
                     <Card value={highVal} canClose={false} badgeConfig={{
-                        badgeText: rightCards.length,
-                        popupText: rightCards.map(item => <div>{item.userId}</div>),
+                        badgeText: rightCards?.length,
+                        popupText: rightCards?.map(item => <div>{item.userId}</div>),
                         position: "left",
                         popupTitle: "Voters"
                     }}/>
@@ -64,14 +67,14 @@ else
           <>
             <div className="d-none d-sm-block">
               <div className="d-flex flex-wrap justify-content-center gap-5">
-                {leftCards.map(item => <Card value={item.vote} name={item.userId} canClose={false}/>)}
+                {leftCards?.map(item => <Card value={item.vote} name={item.userId} canClose={false}/>)}
               </div>
             </div>
             <div className="d-sm-none d-block">
               <div className="d-flex flex-wrap justify-content-center gap-5">
                   <Card value={lowVal} canClose={false} badgeConfig={{
-                      badgeText: leftCards.length,
-                      popupText: leftCards.map(item => <div>{item.userId}</div>),
+                      badgeText: leftCards?.length,
+                      popupText: leftCards?.map(item => <div>{item.userId}</div>),
                       position: "right",
                       popupTitle: "Voters"}}/>
               </div>
