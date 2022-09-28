@@ -3,7 +3,7 @@ import { Button, Modal } from "react-bootstrap";
 import { MdCheckCircle, MdCancel } from "react-icons/md";
 import { io } from "socket.io-client";
 import { getStorageValue, setStorageValue } from "./UseLocalStorage";
-import User, { Role } from "../pages/api/model/user";
+import { Role } from "../pages/api/model/user";
 import { useRouter } from "next/router";
 import { UserContext } from "../context/UserContext";
 

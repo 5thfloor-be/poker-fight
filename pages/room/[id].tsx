@@ -37,6 +37,10 @@ const Room: NextPage = () => {
     }
   }
 
+  if (room?.state === States.FIGHTING) {
+    router.push(`${router.asPath}/versus`);
+  }
+
   useEffect(() => {
     socket.on("reveal", (data) => {
       console.log("reveeeeeeeal", data);
@@ -45,10 +49,10 @@ const Room: NextPage = () => {
       console.log("room state", data?.state);
       if (data?.state === States.FIGHTING) {
         console.log("push to versus");
-        router.push("/versus");
+        router.push(`${router.asPath}/versus`);
       }
     });
-    socket.on("start-voting", (data) => {
+    socket.on("start_voting", (data) => {
       console.log("startVotiiiiing", data);
       setSelectedVote(-1);
       setRoom(data);
@@ -80,8 +84,8 @@ const Room: NextPage = () => {
   // get room from server
   const startVoting = () => {
     console.log("start voting: Change status room to voting");
-    socket.emit("start-voting", { roomId }, (r: any) => setRoom(r));
-  };
+    socket.emit("start_voting", { roomId }, (r: any) => setRoom(r));
+  }
 
   const reveal = () => {
     console.log("reveal: Change status room to voted");

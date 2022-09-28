@@ -64,7 +64,7 @@ const ScrumMasterActions = ({ minValue, maxValue, deck }: ScrumMasterActionsProp
         </Modal.Body>
       </Modal>
 
-      <button type="button" onClick={toggleShowActions}>ACTIONS</button>
+      <button type='button' className='btn btn-primary fw-bold w-100' onClick={toggleShowActions}>ACTIONS</button>
     </div>
   )
 }
