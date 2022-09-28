@@ -1,9 +1,10 @@
-import {useState} from "react";
-import {Button, Modal} from "react-bootstrap";
-import {MdAccountCircle} from "react-icons/md";
-import {CirclePicker} from "react-color";
-import {getStorageValue, setStorageValue} from "./UseLocalStorage";
-import {Role} from "../pages/api/model/user";
+import { useState, useContext } from "react";
+import { Button, Modal } from "react-bootstrap";
+import { MdAccountCircle } from "react-icons/md";
+import { CirclePicker } from "react-color";
+import { getStorageValue, setStorageValue } from "./UseLocalStorage";
+import { Role } from "../pages/api/model/user";
+import { UserContext } from "../context/UserContext";
 
 type CreateRoomProps = {
   showCreateRoom: boolean;
@@ -16,9 +17,7 @@ const CreateRoom = (props: CreateRoomProps) => {
 
   const [checked, setChecked] = useState(false);
 
-  const [user, setUser] = useState(
-    getStorageValue("USER", { name: "", color: "#ffffff" })
-  );
+  const { user, setUser } = useContext(UserContext);
 
   const handleChangeCheckbox = () => {
     setChecked(!checked);
@@ -36,7 +35,10 @@ const CreateRoom = (props: CreateRoomProps) => {
   ]);
 
   const save = () => {
-    setStorageValue("USER", { ...user, role: checked?Role.VOTING_SCRUM_MASTER : Role.SCRUM_MASTER });
+    setUser({
+      ...user,
+      role: checked ? Role.VOTING_SCRUM_MASTER : Role.SCRUM_MASTER,
+    });
     setShowCreateRoom(false);
     props.setShowCreateRoomEdition(true);
   };

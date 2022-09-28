@@ -143,7 +143,12 @@ const JoinRoom = (props: JoinRoomProps) => {
           <div className="container">
             <div className="row">
               <div className="sm-6">
-                <Button className="w-100 mb-3" variant="primary" onClick={save}>
+                <Button
+                  className="w-100 mb-3"
+                  variant={roomId ? "primary" : "secondary"}
+                  onClick={save}
+                  disabled={roomId ? false : true}
+                >
                   SAVE
                 </Button>
               </div>

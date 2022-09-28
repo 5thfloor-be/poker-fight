@@ -7,13 +7,14 @@ import EditProfile from "../EditProfile";
 import { getStorageValue } from "../UseLocalStorage";
 
 const HeaderActive = () => {
-  const { isRoomActive, setIsRoomActive } = useContext(UserContext);
+  const { isRoomActive, setIsRoomActive, user, setUser } =
+    useContext(UserContext);
   const path = useRouter();
   const router = path.query;
 
-  const [user, setUser] = useState(
+  /*   const [user, setUser] = useState(
     getStorageValue("USER", { name: "", color: "#ffffff" })
-  );
+  ); */
 
   const [showEditProfile, setShowEditProfile] = useState(false);
 
@@ -29,6 +30,7 @@ const HeaderActive = () => {
 
   const quitHandler = () => {
     setIsRoomActive(false);
+    setUser({ ...user, role: "" });
     path.push("/");
   };
 
