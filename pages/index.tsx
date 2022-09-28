@@ -58,19 +58,19 @@ const Home: NextPage = () => {
           </div>
 
           <div className="row">
-            <div className="offset-sm-3 col-sm-2 offset-1 col-10 my-1">
+            <div className="offset-sm-2 col-sm-3 offset-1 col-10 my-1">
               <button
                 type="button"
-                className="btn btn-primary w-100 fw-bold"
+                className="btn btn-primary btn-lg w-100 fw-bold"
                 onClick={() => setShowCreateRoom(!showCreateRoom)}
               >
                 CREATE ROOM
               </button>
             </div>
-            <div className="offset-sm-2 col-sm-2 offset-1 col-10 my-1">
+            <div className="offset-sm-2 col-sm-3 offset-1 col-10 my-1">
               <button
                 type="button"
-                className="btn btn-success w-100 fw-bold"
+                className="btn btn-success btn-lg w-100 fw-bold"
                 onClick={() => setShowJoinRoom(!showJoinRoom)}
               >
                 JOIN ROOM
