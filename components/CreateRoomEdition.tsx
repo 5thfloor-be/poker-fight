@@ -66,6 +66,7 @@ const CreateRoomEdition = (props: CreateRoomEditionProps) => {
   return (
     <>
       <Modal
+        size="lg"
         className="text-white"
         centered={true}
         contentClassName="bg-dark"

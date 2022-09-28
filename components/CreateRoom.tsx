@@ -48,6 +48,7 @@ const CreateRoom = (props: CreateRoomProps) => {
   return (
     <>
       <Modal
+        size="lg"
         centered={true}
         contentClassName="bg-dark"
         show={showCreateRoom}
