@@ -59,6 +59,7 @@ const JoinRoom = (props: JoinRoomProps) => {
   return (
     <div>
       <Modal
+        size="lg"
         centered={true}
         contentClassName="bg-dark"
         show={showJoinRoom}

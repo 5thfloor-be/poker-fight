@@ -39,6 +39,7 @@ const EditProfile = (props: EditProfileProps) => {
   return (
     <div>
       <Modal
+        size="lg"
         centered={true}
         contentClassName="bg-dark"
         show={showEditProfile}
