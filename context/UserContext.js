@@ -6,6 +6,7 @@ const UserContextProvider = ({ children }) => {
   const [user, setUser] = useState({
     name: "",
     color: "#ffffff",
+    role: "",
   });
   const [isRoomActive, setIsRoomActive] = useState(false);
 
