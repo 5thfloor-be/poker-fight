@@ -3,8 +3,6 @@ import Head from "next/head";
 import { useContext, useState } from "react";
 import styles from "../styles/Home.module.css";
 import CreateRoom from "../components/CreateRoom";
-import ScrumMasterActions from "../components/ScrumMasterActions";
-import CreateRoomEdition from "../components/CreateRoomEdition";
 import JoinRoom from "../components/JoinRoom";
 import FooterActiveMobile from "../components/layout/FooterActiveMobile";
 import { UserContext } from "../context/UserContext";
@@ -13,7 +11,8 @@ const Home: NextPage = () => {
   const { isRoomActive, setIsRoomActive } = useContext(UserContext);
   const [showCreateRoom, setShowCreateRoom] = useState(false);
   const [showJoinRoom, setShowJoinRoom] = useState(false);
-  const [showCreateRoomEdition, setShowCreateRoomEdition] = useState(false);
+
+  console.log("showCreateRoom", showCreateRoom);
 
   return (
     <div>
@@ -83,7 +82,6 @@ const Home: NextPage = () => {
         <CreateRoom
           showCreateRoom={showCreateRoom}
           setShowCreateRoom={() => setShowCreateRoom(true)}
-          setShowCreateRoomEdition={() => setShowCreateRoomEdition(true)}
         />
       )}
       {showJoinRoom && (
@@ -91,9 +89,6 @@ const Home: NextPage = () => {
           showJoinRoom={showJoinRoom}
           setShowJoinRoom={() => setShowJoinRoom(true)}
         />
-      )}
-      {showCreateRoomEdition && (
-        <CreateRoomEdition showCreateRoomEdition={showCreateRoomEdition} />
       )}
       {isRoomActive && <FooterActiveMobile />}
     </div>
