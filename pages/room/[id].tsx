@@ -85,7 +85,7 @@ const Room: NextPage = () => {
   const startVoting = () => {
     console.log("start voting: Change status room to voting");
     socket.emit("start_voting", { roomId }, (r: any) => setRoom(r));
-  }
+  };
 
   const reveal = () => {
     console.log("reveal: Change status room to voted");
@@ -271,7 +271,7 @@ const Room: NextPage = () => {
           </>
         )}
       </div>
-      <Modal centered={true} contentClassName="bg-dark" show={show}>
+      <Modal size="lg" centered={true} contentClassName="bg-dark" show={show}>
         <Modal.Header style={{ border: "none" }}>
           <Modal.Title className="w-100">
             <p className="text-white text-center">CHOOSE CARD</p>
