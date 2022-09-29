@@ -6,6 +6,7 @@ import CreateRoom from "../components/CreateRoom";
 import JoinRoom from "../components/JoinRoom";
 import FooterActiveMobile from "../components/layout/FooterActiveMobile";
 import { UserContext } from "../context/UserContext";
+import Carousel from "../components/Carousel";
 
 const Home: NextPage = () => {
   const { isRoomActive, setIsRoomActive } = useContext(UserContext);
@@ -27,36 +28,14 @@ const Home: NextPage = () => {
       </Head>
 
       <main>
-        <div className="container mx-0 mw-100" style={{ marginTop: "15%" }}>
-          <div className="row">
-            <div className="col px-0">
-              <div className={styles.landingText}>
-                <p>
-                  Discover a new voting system for your Poker Planning, with fun
-                  and innovative features.
-                </p>
-                <p>
-                  No registration is required, just start a game and invite your
-                  colleagues to join you.
-                </p>
-                <p>
-                  This application is Open Source and developed by 5th Floor
-                  teams. Discover the full story{" "}
-                  <a
-                    className="text-decoration-none text-reset"
-                    href="https://5thfloor.be/poker-fight"
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    here
-                  </a>
-                  .
-                </p>
-              </div>
+        <div className="container mx-0 mw-100">
+          <div className="row mt-3">
+            <div className="col-10 offset-1 my-2">
+              <Carousel />
             </div>
           </div>
 
-          <div className="row">
+          <div className="row mt-2">
             <div className="offset-sm-2 col-sm-3 offset-1 col-10 my-1">
               <button
                 type="button"
