@@ -1,27 +1,36 @@
-import { useState, useContext } from "react";
+import React, { useCallback, useState, useContext } from "react";
 import { Button, Modal } from "react-bootstrap";
-import { MdAccountCircle } from "react-icons/md";
+import { MdAccountCircle, MdCheckCircle, MdCancel } from "react-icons/md";
 import { CirclePicker } from "react-color";
-import { getStorageValue, setStorageValue } from "./UseLocalStorage";
 import { Role } from "../pages/api/model/user";
 import { UserContext } from "../context/UserContext";
+import { io } from "socket.io-client";
+import { useRouter } from "next/router";
 
 type CreateRoomProps = {
   showCreateRoom: boolean;
   setShowCreateRoom: (val: any) => void;
-  setShowCreateRoomEdition: (val: any) => void;
 };
 
 const CreateRoom = (props: CreateRoomProps) => {
   const [showCreateRoom, setShowCreateRoom] = useState(props.showCreateRoom);
-
-  const [checked, setChecked] = useState(false);
-
   const { user, setUser } = useContext(UserContext);
+  const [checkedVoter, setCheckedVoter] = useState(false);
+  const [addCard, setAddCard] = useState(false);
+  const [valueNewCard, setValueNewCard] = useState("");
+  const { isRoomActive, setIsRoomActive } = useContext(UserContext);
+  const [errorLetters, setErrorLetters] = useState("");
+  const router = useRouter();
+  const socket = io();
 
-  const handleChangeCheckbox = () => {
-    setChecked(!checked);
-  };
+  /* All params of the future Room */
+  const [roomSettings, setRoomSettings] = useState({
+    cardValues: ["1", "2", "3", "5", "8", "13"],
+    targetPoints: "",
+    coffeeBreakAllowed: false,
+    revealTimer: "",
+    buzzerAllowed: false,
+  });
 
   const colors = new Map<string, string>([
     ["#0000ff", "blue"],
@@ -34,14 +43,40 @@ const CreateRoom = (props: CreateRoomProps) => {
     ["#808080", "grey"],
   ]);
 
-  const save = () => {
+  const handleChangeCheckbox = () => {
+    setCheckedVoter(!checkedVoter);
+  };
+
+  const deleteCard = (index: any) => {
+    setRoomSettings({
+      ...roomSettings,
+      cardValues: roomSettings.cardValues.filter((o, i) => index !== i),
+    });
+  };
+
+  const createRoom = useCallback(() => {
+    setIsRoomActive(true);
+    socket.emit("create_room", roomSettings, (data: any) => {
+      console.log(data.roomId);
+
+      /* const userInfo = getStorageValue("USER", {
+        name: "Anonymous Scrum master",
+        color: "white",
+        role: "SCRUM_MASTER",
+      });
+      setStorageValue("USER", { ...userInfo, role: Role.VOTING_SCRUM_MASTER }); */
+
+      //TODO set user role vased on the "can vote" property from previous popup
+      // socket.emit('join_room', {roomId: data.roomId, userInfo: userInfo});
+      router.push(`room/${data.roomId}`);
+    });
+
     setUser({
       ...user,
-      role: checked ? Role.VOTING_SCRUM_MASTER : Role.SCRUM_MASTER,
+      role: checkedVoter ? Role.VOTING_SCRUM_MASTER : Role.SCRUM_MASTER,
     });
     setShowCreateRoom(false);
-    props.setShowCreateRoomEdition(true);
-  };
+  }, []);
 
   const cancel = () => setShowCreateRoom(false);
 
@@ -49,21 +84,35 @@ const CreateRoom = (props: CreateRoomProps) => {
     <>
       <Modal
         size="lg"
+        className="text-white"
         centered={true}
         contentClassName="bg-dark"
         show={showCreateRoom}
         onHide={cancel}
       >
         <Modal.Header style={{ border: "none" }}>
-          <Modal.Title className="w-100">
-            <p className="text-white text-center">CREATE ROOM</p>
-          </Modal.Title>
+          <Modal.Title className="w-100 text-center">CREATE ROOM</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <div className="container">
+            {/* Début du bloc message erreur Letters */}
+            {errorLetters.length > 0 && (
+              <div className="row mb-3">
+                <div className="bg-warning pt-1 text-center">
+                  {errorLetters}
+                  <MdCancel
+                    className="ms-3"
+                    color="red"
+                    size={"26"}
+                    onClick={() => setErrorLetters("")}
+                  />
+                </div>
+              </div>
+            )}
+            {/* Début du bloc User */}
             <div className="row">
-              <div className="col-sm-6 text-center">
-                <div className="col-12">
+              <div className="col-sm-4 offset-sm-2">
+                <div className="col-12 text-center">
                   <MdAccountCircle
                     className="mb-3"
                     color={user ? user.color : "#ffffff"}
@@ -71,8 +120,9 @@ const CreateRoom = (props: CreateRoomProps) => {
                     size={60}
                   />
                 </div>
-                <div className="col-12">
+                <div className="col">
                   <input
+                    className="form-control"
                     defaultValue={user?.name}
                     type="text"
                     placeholder="Username"
@@ -81,9 +131,22 @@ const CreateRoom = (props: CreateRoomProps) => {
                     }}
                   />
                 </div>
+                <div className="col mt-3">
+                  <div className="form-check">
+                    <input
+                      className="form-check-input"
+                      type="checkbox"
+                      checked={checkedVoter}
+                      onChange={handleChangeCheckbox}
+                    ></input>
+                    <label className="form-check-label text-white ps-2">
+                      Can vote (check the box if the Scrum Master can vote too)
+                    </label>
+                  </div>
+                </div>
               </div>
               <div className="col-sm-6 text-center mt-3">
-                <div className="offset-3 offset-sm-2">
+                <div className="offset-3 offset-sm-3">
                   <CirclePicker
                     className="mx-0 px-0"
                     onChangeComplete={(color) => {
@@ -99,18 +162,230 @@ const CreateRoom = (props: CreateRoomProps) => {
                   </p>
                 </div>
               </div>
-              <div className="col">
+            </div>
+            {/* Début du block des cartes à ajouter */}
+            <div className="row mt-3 ms-sm-2 text-center">
+              {roomSettings.cardValues.map((card, key) => (
+                <div
+                  className="col-2 bg-light text-primary fw-bold fs-1 mx-2 my-2 rounded"
+                  key={key}
+                >
+                  {card}
+                  {roomSettings.cardValues.length > 3 && (
+                    <>
+                      <br />
+                      <MdCancel
+                        color="red"
+                        size={"26"}
+                        onClick={() => deleteCard(key)}
+                      />
+                    </>
+                  )}
+                </div>
+              ))}
+              <div className="col-2 bg-light text-primary fw-bold mx-2 my-2 rounded">
+                {!addCard ? (
+                  <div
+                    className="fs-1 pt-3"
+                    onClick={() => setAddCard(!addCard)}
+                  >
+                    +
+                  </div>
+                ) : (
+                  <div className="fs-1 pt-3">
+                    <input
+                      type="text"
+                      className="form-control"
+                      placeholder="..."
+                      pattern="[A-Za-z0-9-?_]{1,2}"
+                      title="Letters, numbers, and ? only"
+                      maxLength={2}
+                      size={1}
+                      onChange={(e) => {
+                        setValueNewCard(e.target.value);
+                      }}
+                      onKeyPress={(event) => {
+                        if (!/[0-9]/.test(event.key)) {
+                          event.preventDefault();
+                          setErrorLetters("Only numbers accepted");
+                        } else {
+                          setErrorLetters("");
+                        }
+                      }}
+                    />
+
+                    {/* On teste si au moins un caractère est rentré */}
+                    {valueNewCard.length > 0 && (
+                      <MdCheckCircle
+                        className="me-sm-2"
+                        color="#3f51b5"
+                        size={"26"}
+                        onClick={() => {
+                          let tempoCardValue: string[];
+                          tempoCardValue = [
+                            ...roomSettings.cardValues,
+                            valueNewCard,
+                          ];
+
+                          setRoomSettings({
+                            ...roomSettings,
+                            cardValues: tempoCardValue,
+                          });
+                          setAddCard(!addCard);
+                        }}
+                      />
+                    )}
+                    <MdCancel
+                      className="ms-sm-2"
+                      color="red"
+                      size={"26"}
+                      onClick={() => setAddCard(!addCard)}
+                    />
+                  </div>
+                )}
+              </div>
+            </div>
+            {/* Début du block de settings de la Room */}
+            <div className="row pt-3">
+              <div className="col-3 col-sm-2 offset-sm-3 text-end">
                 <input
+                  id="pointsachieved"
+                  className="rounded p-2"
+                  type="text"
+                  placeholder="Value"
+                  value={roomSettings.targetPoints}
+                  pattern="[0-9]{1,3}"
+                  title="Numbers only"
+                  maxLength={3}
+                  size={1}
+                  onChange={(e) => {
+                    setRoomSettings({
+                      ...roomSettings,
+                      targetPoints: e.target.value,
+                    });
+                  }}
+                  onKeyPress={(event) => {
+                    if (!/[0-9]/.test(event.key)) {
+                      event.preventDefault();
+                      setErrorLetters("Only numbers accepted");
+                    } else {
+                      setErrorLetters("");
+                    }
+                  }}
+                />
+                {roomSettings.targetPoints.length > 0 && (
+                  <MdCancel
+                    className="ms-2"
+                    color="red"
+                    size={"26"}
+                    onClick={() => {
+                      setRoomSettings({
+                        ...roomSettings,
+                        targetPoints: "",
+                      });
+                    }}
+                  />
+                )}
+              </div>
+              <div className="col-9 col-sm-6 text-start pt-2">
+                <label className="form-label ps-2">
+                  Number of points to achieve
+                </label>
+              </div>
+            </div>
+            <div className="row pt-3">
+              <div className="col-3 col-sm-2 offset-sm-3 text-end">
+                <input
+                  id="timer"
+                  className="rounded p-2"
+                  type="text"
+                  placeholder="Value"
+                  value={roomSettings.revealTimer}
+                  pattern="[0-9]{1,3}"
+                  title="Numbers only"
+                  maxLength={3}
+                  size={1}
+                  onChange={(e) => {
+                    setRoomSettings({
+                      ...roomSettings,
+                      revealTimer: e.target.value,
+                    });
+                  }}
+                  onKeyPress={(event) => {
+                    if (!/[0-9]/.test(event.key)) {
+                      event.preventDefault();
+                      setErrorLetters("Only numbers accepted");
+                    } else {
+                      setErrorLetters("");
+                    }
+                  }}
+                />
+                {roomSettings.revealTimer.length > 0 && (
+                  <MdCancel
+                    className="ms-2"
+                    color="red"
+                    size={"26"}
+                    onClick={() => {
+                      setRoomSettings({
+                        ...roomSettings,
+                        revealTimer: "",
+                      });
+                    }}
+                  />
+                )}
+              </div>
+              <div className="col-9 col-sm-6 text-start">
+                <span className="form-label ps-2">
+                  Automatically reveal the votes after X seconds. If empty no
+                  countdown
+                </span>
+              </div>
+            </div>
+            <div className="row pt-3">
+              <div className="col-3 col-sm-2 offset-sm-3 form-switch text-end">
+                <input
+                  className="form-check-input p-2"
                   type="checkbox"
-                  checked={checked}
-                  onChange={handleChangeCheckbox}
-                ></input>
-                <label className="text-white ps-2">Can vote</label>
-                <p>
-                  <span className="text-white">
-                    (check the box if the Scrum Master can vote too)
-                  </span>
-                </p>
+                  checked={roomSettings.coffeeBreakAllowed}
+                  role="switch"
+                  id="flexSwitchCheckDefault"
+                  onChange={() => {
+                    setRoomSettings({
+                      ...roomSettings,
+                      coffeeBreakAllowed: !roomSettings.coffeeBreakAllowed,
+                    });
+                  }}
+                />
+              </div>
+              <div className="col-9 col-sm-6 text-start">
+                <label
+                  className="form-label ps-2"
+                  htmlFor="flexSwitchCheckDefault"
+                >
+                  Allow players to initiate a break
+                </label>
+              </div>
+            </div>
+            <div className="row pt-3">
+              <div className="col-3 col-sm-2 offset-sm-3 form-switch text-end">
+                <input
+                  className="form-check-input p-2"
+                  type="checkbox"
+                  checked={roomSettings.buzzerAllowed}
+                  role="switch"
+                  id="flexSwitchBuzzer"
+                  onChange={() => {
+                    setRoomSettings({
+                      ...roomSettings,
+                      buzzerAllowed: !roomSettings.buzzerAllowed,
+                    });
+                  }}
+                />
+              </div>
+              <div className="col-9 col-sm-6 text-start">
+                <label className="form-label ps-2" htmlFor="flexSwitchBuzzer">
+                  Allow players to speed up discussion
+                </label>
               </div>
             </div>
           </div>
@@ -119,13 +394,27 @@ const CreateRoom = (props: CreateRoomProps) => {
           <div className="container">
             <div className="row">
               <div className="col-sm-6">
-                <Button className="w-100 mb-3" variant="primary" onClick={save}>
-                  CREATE ROOM
-                </Button>
+                {user.name.length > 0 ? (
+                  <Button
+                    className="btn-lg w-100 fw-bold mb-3"
+                    variant="primary"
+                    onClick={createRoom}
+                  >
+                    CREATE ROOM
+                  </Button>
+                ) : (
+                  <Button
+                    className="btn-lg w-100 fw-bold mb-3"
+                    disabled
+                    variant="primary"
+                  >
+                    CREATE ROOM
+                  </Button>
+                )}
               </div>
               <div className="col-sm-6">
                 <Button
-                  className="w-100 mb-3"
+                  className="btn-lg w-100 fw-bold mb-3"
                   variant="danger"
                   onClick={cancel}
                 >
