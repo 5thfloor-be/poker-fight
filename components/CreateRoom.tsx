@@ -165,6 +165,7 @@ const CreateRoom = (props: CreateRoomProps) => {
             </div>
             {/* Début du block des cartes à ajouter */}
             <div className="row mt-3 ms-sm-2 text-center">
+              <div>Choose cards values</div>
               {roomSettings.cardValues.map((card, key) => (
                 <div
                   className="col-2 bg-light text-primary fw-bold fs-1 mx-2 my-2 rounded"
