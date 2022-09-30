@@ -29,14 +29,15 @@ const Home: NextPage = () => {
 
       <main>
         <div className="container mx-0 mw-100">
+          {/* Partie dédiée au Carousel */}
           <div className="row mt-3">
-            <div className="col-10 offset-1 my-2">
+            <div className="col-12 col-sm-8 offset-sm-2 my-3">
               <Carousel />
             </div>
           </div>
 
-          <div className="row mt-2">
-            <div className="offset-sm-2 col-sm-3 offset-1 col-10 my-1">
+          <div className="row mt-3">
+            <div className="offset-sm-2 col-sm-3 offset-1 col-10 my-2">
               <button
                 type="button"
                 className="btn btn-primary btn-lg w-100 fw-bold"
@@ -45,7 +46,7 @@ const Home: NextPage = () => {
                 CREATE ROOM
               </button>
             </div>
-            <div className="offset-sm-2 col-sm-3 offset-1 col-10 my-1">
+            <div className="offset-sm-2 col-sm-3 offset-1 col-10 my-2">
               <button
                 type="button"
                 className="btn btn-success btn-lg w-100 fw-bold"

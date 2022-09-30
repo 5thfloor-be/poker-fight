@@ -12,12 +12,21 @@ export default class NextJsCarousel extends Component {
           infiniteLoop={true}
           showThumbs={false}
           showStatus={false}
+          dynamicHeight={false}
+          interval={4000}
         >
           <div>
             <img src="/images/poker-planning.jpg" alt="Love Git" />
             <p className="legend">
               Discover a new voting system for your Poker Planning, with fun and
               innovative features.
+            </p>
+          </div>
+          <div>
+            <img src="/images/vsroom.jpg" alt="Love Git" />
+            <p className="legend">
+              When there is no consensus, meet in a special room to open a
+              debate.
             </p>
           </div>
           <div>
