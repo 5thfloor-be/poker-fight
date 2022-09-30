@@ -106,12 +106,22 @@ const EditProfile = (props: EditProfileProps) => {
         <Modal.Footer style={{ border: "none" }}>
           <div className="container">
             <div className="row">
-              <div className="sm-6">
-                <Button className="w-100 mb-3" variant="primary" onClick={save}>
-                  SAVE
-                </Button>
+              <div className="col-sm-6">
+                {user && user.name && user.name.length > 0 ? (
+                  <Button
+                    className="w-100 mb-3"
+                    variant="primary"
+                    onClick={save}
+                  >
+                    SAVE
+                  </Button>
+                ) : (
+                  <Button disabled className="w-100 mb-3" variant="primary">
+                    SAVE
+                  </Button>
+                )}
               </div>
-              <div className="sm-6">
+              <div className="col-sm-6">
                 <Button
                   className="w-100 mb-3"
                   variant="danger"
