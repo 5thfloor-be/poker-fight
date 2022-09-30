@@ -22,7 +22,7 @@ const JoinRoom = (props: JoinRoomProps) => {
   const [user, setUser] = useState(
     getStorageValue("USER", { name: "", color: "#ffffff", role: Role.DEV })
   );
-  const [showJoinRoom, setShowJoinRoom] = useState(props.showJoinRoom);
+  const showJoinRoom = props.showJoinRoom;
   const [roomId, setRoomId] = useState(props.roomId);
   const [isDev, setIsDev] = useState(1);
   const router = useRouter();
@@ -43,7 +43,7 @@ const JoinRoom = (props: JoinRoomProps) => {
   const save = () => {
     //Activate the active header
     setIsRoomActive(true);
-    setShowJoinRoom(false);
+    props.setShowJoinRoom(false);
     setStorageValue("USER", {
       ...user,
       role: isDev === 1 ? Role.DEV : Role.SPECTATOR,
@@ -51,7 +51,7 @@ const JoinRoom = (props: JoinRoomProps) => {
     router.push(`room/${roomId}`);
   };
 
-  const cancel = () => setShowJoinRoom(false);
+  const cancel = () => props.setShowJoinRoom(false);
   const toggle = (val: number) => {
     setIsDev(val);
   };

@@ -13,8 +13,6 @@ const Home: NextPage = () => {
   const [showCreateRoom, setShowCreateRoom] = useState(false);
   const [showJoinRoom, setShowJoinRoom] = useState(false);
 
-  console.log("showCreateRoom", showCreateRoom);
-
   return (
     <div>
       <Head>
@@ -61,13 +59,13 @@ const Home: NextPage = () => {
       {showCreateRoom && (
         <CreateRoom
           showCreateRoom={showCreateRoom}
-          setShowCreateRoom={() => setShowCreateRoom(true)}
+          setShowCreateRoom={(val) => setShowCreateRoom(val)}
         />
       )}
       {showJoinRoom && (
         <JoinRoom
           showJoinRoom={showJoinRoom}
-          setShowJoinRoom={() => setShowJoinRoom(true)}
+          setShowJoinRoom={(val) => setShowJoinRoom(val)}
         />
       )}
       {isRoomActive && <FooterActiveMobile />}

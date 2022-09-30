@@ -13,15 +13,16 @@ type CreateRoomProps = {
 };
 
 const CreateRoom = (props: CreateRoomProps) => {
-  const [showCreateRoom, setShowCreateRoom] = useState(props.showCreateRoom);
-  const { user, setUser } = useContext(UserContext);
+  const showCreateRoom = props.showCreateRoom;
+  const { user, setUser, setSocket } = useContext(UserContext);
   const [checkedVoter, setCheckedVoter] = useState(false);
   const [addCard, setAddCard] = useState(false);
   const [valueNewCard, setValueNewCard] = useState("");
   const { isRoomActive, setIsRoomActive } = useContext(UserContext);
   const [errorLetters, setErrorLetters] = useState("");
   const router = useRouter();
-  const socket = io();
+
+  let socketTempo;
 
   /* All params of the future Room */
   const [roomSettings, setRoomSettings] = useState({
@@ -45,6 +46,10 @@ const CreateRoom = (props: CreateRoomProps) => {
 
   const handleChangeCheckbox = () => {
     setCheckedVoter(!checkedVoter);
+    setUser({
+      ...user,
+      role: checkedVoter ? Role.VOTING_SCRUM_MASTER : Role.SCRUM_MASTER,
+    });
   };
 
   const deleteCard = (index: any) => {
@@ -55,8 +60,12 @@ const CreateRoom = (props: CreateRoomProps) => {
   };
 
   const createRoom = useCallback(() => {
+    /* Init de la Socket */
+    socketTempo = io();
+
     setIsRoomActive(true);
-    socket.emit("create_room", roomSettings, (data: any) => {
+
+    socketTempo.emit("create_room", roomSettings, (data: any) => {
       console.log(data.roomId);
 
       /* const userInfo = getStorageValue("USER", {
@@ -71,14 +80,14 @@ const CreateRoom = (props: CreateRoomProps) => {
       router.push(`room/${data.roomId}`);
     });
 
-    setUser({
-      ...user,
-      role: checkedVoter ? Role.VOTING_SCRUM_MASTER : Role.SCRUM_MASTER,
-    });
-    setShowCreateRoom(false);
+    /* On ajoute dans le contexte la Socket */
+    setSocket(socketTempo);
+
+    /* Fermeture de la Modal */
+    props.setShowCreateRoom(false);
   }, []);
 
-  const cancel = () => setShowCreateRoom(false);
+  const cancel = () => props.setShowCreateRoom(false);
 
   return (
     <>
@@ -123,7 +132,7 @@ const CreateRoom = (props: CreateRoomProps) => {
                 <div className="col">
                   <input
                     className="form-control"
-                    defaultValue={user?.name}
+                    defaultValue={user ? user.name : ""}
                     type="text"
                     placeholder="Username"
                     onChange={(e) => {
@@ -395,7 +404,7 @@ const CreateRoom = (props: CreateRoomProps) => {
           <div className="container">
             <div className="row">
               <div className="col-sm-6">
-                {user.name.length > 0 ? (
+                {user && user.name && user.name.length > 0 ? (
                   <Button
                     className="btn-lg w-100 fw-bold mb-3"
                     variant="primary"

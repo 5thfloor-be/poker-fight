@@ -1,7 +1,6 @@
 import { NextPage } from "next";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
-import { io } from "socket.io-client";
+import { useEffect, useState, useContext } from "react";
 import Card from "../../components/Card";
 import User, { Role } from "../api/model/user";
 import RoomModel, { States } from "../api/model/room";
@@ -9,31 +8,37 @@ import { GiCardRandom } from "react-icons/gi";
 import { Deck } from "../../components/Deck";
 import Modal from "react-bootstrap/Modal";
 import { Button } from "react-bootstrap";
-import { getStorageValue } from "../../components/UseLocalStorage";
+import { UserContext } from "../../context/UserContext";
 
 const Room: NextPage = () => {
-  const socket = io();
   const router = useRouter();
   const roomId = router.query.id;
-
-  const [myUser, setMyUser] = useState<User>(getStorageValue("USER", null));
+  const { user, setUser, socket } = useContext(UserContext);
 
   const [room, setRoom] = useState<RoomModel>();
   console.log("roomId", roomId);
 
-  if (roomId !== "" && !room) {
-    console.log(`displaying room ${roomId}`);
-    socket.emit("get_room", { roomId: roomId }, (room: RoomModel) =>
-      setRoom(room)
-    );
+  useEffect(() => {
+    if (!socket) {
+      router.push("/");
+    }
+  }, [socket]);
 
-    console.log(`joining ${roomId}`);
+  if (socket) {
+    if (roomId !== "" && !room) {
+      console.log(`displaying room ${roomId}`);
+      socket.emit("get_room", { roomId: roomId }, (room: RoomModel) =>
+        setRoom(room)
+      );
 
-    if (!myUser?.id) {
-      socket.emit("join_room", { roomId, userInfo: myUser }, (id: string) => {
-        console.log("my user id : ", myUser);
-        setMyUser({ ...myUser, id: id });
-      });
+      console.log(`joining ${roomId}`);
+
+      if (!user?.id) {
+        socket.emit("join_room", { roomId, userInfo: user }, (id: string) => {
+          console.log("my user id : ", user);
+          setUser({ ...user, id: id });
+        });
+      }
     }
   }
 
@@ -42,28 +47,30 @@ const Room: NextPage = () => {
   }
 
   useEffect(() => {
-    socket.on("reveal", (data) => {
-      console.log("reveeeeeeeal", data);
-      setRoom(data);
-      setShow(false);
-      console.log("room state", data?.state);
-      if (data?.state === States.FIGHTING) {
-        console.log("push to versus");
-        router.push(`${router.asPath}/versus`);
-      }
-    });
-    socket.on("start_voting", (data) => {
-      console.log("startVotiiiiing", data);
-      setSelectedVote(-1);
-      setRoom(data);
-    });
-    socket.on("room_state_update", (r) => {
-      console.log("room state update received ", r);
-      setRoom(r);
-      if (room?.state === States.FIGHTING) {
-        // router.push(`versus/${data.roomId}`);
-      }
-    });
+    if (socket) {
+      socket.on("reveal", (data: any) => {
+        console.log("reveeeeeeeal", data);
+        setRoom(data);
+        setShow(false);
+        console.log("room state", data?.state);
+        if (data?.state === States.FIGHTING) {
+          console.log("push to versus");
+          router.push(`${router.asPath}/versus`);
+        }
+      });
+      socket.on("start_voting", (data: any) => {
+        console.log("startVotiiiiing", data);
+        setSelectedVote(-1);
+        setRoom(data);
+      });
+      socket.on("room_state_update", (r: any) => {
+        console.log("room state update received ", r);
+        setRoom(r);
+        if (room?.state === States.FIGHTING) {
+          // router.push(`versus/${data.roomId}`);
+        }
+      });
+    }
   }, [socket]);
 
   const cardValues: any = [1, 2, 3, 5, 8, 13];
@@ -75,7 +82,7 @@ const Room: NextPage = () => {
     setShow(false);
     socket.emit(
       "vote",
-      { roomId: roomId, userId: myUser?.id, vote: chosenVote },
+      { roomId: roomId, userId: user?.id, vote: chosenVote },
       (room: any) => {
         console.log("room in listener : ", room);
       }
@@ -151,7 +158,7 @@ const Room: NextPage = () => {
     <div className="container">
       <div className="row">
         {room.users
-          .filter((u) => u?.id !== myUser?.id)
+          .filter((u) => u?.id !== user?.id)
           .map((user, key) => (
             <div key={key} className="col">
               <Card
@@ -161,8 +168,8 @@ const Room: NextPage = () => {
                     : undefined
                 }
                 canClose={
-                  myUser.role === Role.SCRUM_MASTER ||
-                  myUser.role === Role.VOTING_SCRUM_MASTER
+                  user.role === Role.SCRUM_MASTER ||
+                  user.role === Role.VOTING_SCRUM_MASTER
                 }
                 color={user.color}
                 name={user.name}
@@ -172,8 +179,8 @@ const Room: NextPage = () => {
           ))}
       </div>
       <div className="row my-3">
-        {(myUser?.role === Role.SCRUM_MASTER ||
-          myUser?.role === Role.VOTING_SCRUM_MASTER) &&
+        {(user?.role === Role.SCRUM_MASTER ||
+          user?.role === Role.VOTING_SCRUM_MASTER) &&
           room.state === States.STARTING && (
             <div className="offset-3 col-6 offset-sm-5 col-sm-2">
               <button
@@ -187,8 +194,8 @@ const Room: NextPage = () => {
           )}
       </div>
       <div className="row my-3">
-        {(myUser?.role === Role.SCRUM_MASTER ||
-          myUser?.role === Role.VOTING_SCRUM_MASTER) &&
+        {(user?.role === Role.SCRUM_MASTER ||
+          user?.role === Role.VOTING_SCRUM_MASTER) &&
           room.state === States.VOTING && (
             <>
               <div className="offset-1 col-5 offset-sm-4 col-sm-2">
@@ -211,8 +218,8 @@ const Room: NextPage = () => {
               </div>
             </>
           )}
-        {(myUser?.role === Role.SCRUM_MASTER ||
-          myUser?.role === Role.VOTING_SCRUM_MASTER) &&
+        {(user?.role === Role.SCRUM_MASTER ||
+          user?.role === Role.VOTING_SCRUM_MASTER) &&
           room.state === States.WONDROUS && (
             <>
               <div className="offset-1 col-5 offset-sm-4 col-sm-2">
@@ -247,7 +254,7 @@ const Room: NextPage = () => {
           </div>
         </div>
 
-        {myUser?.role !== Role.SCRUM_MASTER && (
+        {user?.role !== Role.SCRUM_MASTER && (
           <>
             <div className="row">
               <div className="col d-none d-sm-block justify-content-center">

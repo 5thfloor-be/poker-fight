@@ -4,20 +4,13 @@ import { useContext, useEffect, useState } from "react";
 import { MdAccountCircle, MdOutlineCheck } from "react-icons/md";
 import { UserContext } from "../../context/UserContext";
 import EditProfile from "../EditProfile";
-import { getStorageValue } from "../UseLocalStorage";
 
 const HeaderActive = () => {
   const { isRoomActive, setIsRoomActive, user, setUser } =
     useContext(UserContext);
   const path = useRouter();
   const router = path.query;
-
-  /*   const [user, setUser] = useState(
-    getStorageValue("USER", { name: "", color: "#ffffff" })
-  ); */
-
   const [showEditProfile, setShowEditProfile] = useState(false);
-
   const [widthScreen, setWidthScreen] = useState(0);
   const [urlValue, setUrlValue] = useState(
     "http://poker-fight.be/room/aid777jdjfdhjkds_"
