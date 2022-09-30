@@ -10,6 +10,8 @@ const UserContextProvider = ({ children }) => {
   });
   const [isRoomActive, setIsRoomActive] = useState(false);
 
+  const [socket, setSocket] = useState();
+
   let initailValue;
 
   useEffect(() => {
@@ -24,7 +26,14 @@ const UserContextProvider = ({ children }) => {
 
   return (
     <UserContext.Provider
-      value={{ user, setUser, isRoomActive, setIsRoomActive }}
+      value={{
+        user,
+        setUser,
+        socket,
+        setSocket,
+        isRoomActive,
+        setIsRoomActive,
+      }}
     >
       {children}
     </UserContext.Provider>
