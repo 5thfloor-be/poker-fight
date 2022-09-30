@@ -1,11 +1,16 @@
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import {
   Button,
   Modal,
   ToggleButton,
   ToggleButtonGroup,
 } from "react-bootstrap";
-import { MdAccountCircle } from "react-icons/md";
+import {
+  MdAccountCircle,
+  MdCode,
+  MdOutlineKeyboard,
+  MdOutlineTagFaces,
+} from "react-icons/md";
 import { CirclePicker } from "react-color";
 import { getStorageValue, setStorageValue } from "./UseLocalStorage";
 import { useRouter } from "next/router";
@@ -19,15 +24,17 @@ type JoinRoomProps = {
 };
 
 const JoinRoom = (props: JoinRoomProps) => {
-  const [user, setUser] = useState(
-    getStorageValue("USER", { name: "", color: "#ffffff", role: Role.DEV })
-  );
   const showJoinRoom = props.showJoinRoom;
   const [roomId, setRoomId] = useState(props.roomId);
   const [isDev, setIsDev] = useState(1);
   const router = useRouter();
 
-  const { isRoomActive, setIsRoomActive } = useContext(UserContext);
+  const { user, setUser, isRoomActive, setIsRoomActive } =
+    useContext(UserContext);
+
+  useEffect(() => {
+    if (user === null) setUser({ name: "", color: "#ffffff", role: Role.DEV });
+  }, []);
 
   const colors = new Map<string, string>([
     ["#0000ff", "blue"],
@@ -39,7 +46,9 @@ const JoinRoom = (props: JoinRoomProps) => {
     ["#ffa500", "orange"],
     ["#808080", "grey"],
   ]);
+
   console.log(user);
+
   const save = () => {
     //Activate the active header
     setIsRoomActive(true);
@@ -52,6 +61,7 @@ const JoinRoom = (props: JoinRoomProps) => {
   };
 
   const cancel = () => props.setShowJoinRoom(false);
+
   const toggle = (val: number) => {
     setIsDev(val);
   };
@@ -130,11 +140,30 @@ const JoinRoom = (props: JoinRoomProps) => {
                 onChange={toggle}
                 className="mt-3"
               >
-                <ToggleButton id="dev" value={1}>
-                  Dev
+                <ToggleButton
+                  id="dev"
+                  value={1}
+                  style={
+                    isDev === 1
+                      ? { backgroundColor: "#0d6efd" }
+                      : { backgroundColor: "transparent" }
+                  }
+                >
+                  <MdOutlineKeyboard className="me-3" size={28} />
+                  Developer
                 </ToggleButton>
-                <ToggleButton id="spec" value={2}>
-                  Spec
+                <MdCode className="mx-3 mt-2" size={26} color={"white"} />
+                <ToggleButton
+                  id="spec"
+                  value={2}
+                  style={
+                    isDev === 2
+                      ? { backgroundColor: "#0d6efd" }
+                      : { backgroundColor: "transparent" }
+                  }
+                >
+                  <MdOutlineTagFaces className="me-3" size={28} />
+                  Spectactor
                 </ToggleButton>
               </ToggleButtonGroup>
             </div>
@@ -143,20 +172,18 @@ const JoinRoom = (props: JoinRoomProps) => {
         <Modal.Footer style={{ border: "none" }}>
           <div className="container">
             <div className="row">
-              <div className="sm-6">
+              <div className="col-sm-6">
                 <Button
-                  className="w-100 mb-3"
-                  variant={roomId ? "primary" : "secondary"}
+                  className="w-100 fw-bold mb-3 btn-primary"
                   onClick={save}
                   disabled={roomId ? false : true}
                 >
                   SAVE
                 </Button>
               </div>
-              <div className="sm-6">
+              <div className="col-sm-6">
                 <Button
-                  className="w-100 mb-3"
-                  variant="danger"
+                  className="w-100 fw-bold mb-3 btn-danger"
                   onClick={cancel}
                 >
                   CANCEL

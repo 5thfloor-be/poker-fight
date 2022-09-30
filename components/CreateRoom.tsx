@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useContext } from "react";
+import React, { useCallback, useState, useContext, useEffect } from "react";
 import { Button, Modal } from "react-bootstrap";
 import { MdAccountCircle, MdCheckCircle, MdCancel } from "react-icons/md";
 import { CirclePicker } from "react-color";
@@ -14,13 +14,17 @@ type CreateRoomProps = {
 
 const CreateRoom = (props: CreateRoomProps) => {
   const showCreateRoom = props.showCreateRoom;
-  const { user, setUser, setSocket } = useContext(UserContext);
+  const { user, setUser, setSocket, isRoomActive, setIsRoomActive } =
+    useContext(UserContext);
   const [checkedVoter, setCheckedVoter] = useState(false);
   const [addCard, setAddCard] = useState(false);
   const [valueNewCard, setValueNewCard] = useState("");
-  const { isRoomActive, setIsRoomActive } = useContext(UserContext);
   const [errorLetters, setErrorLetters] = useState("");
   const router = useRouter();
+
+  useEffect(() => {
+    if (user === null) setUser({ ...user, color: "#ffffff" });
+  }, []);
 
   let socketTempo;
 

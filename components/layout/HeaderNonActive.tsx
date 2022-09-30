@@ -40,7 +40,7 @@ const HeaderNonActive = () => {
             {showEditProfile && (
               <EditProfile
                 showEditProfile={showEditProfile}
-                setShowEditProfile={() => setShowEditProfile(true)}
+                setShowEditProfile={(val) => setShowEditProfile(val)}
               />
             )}
           </div>

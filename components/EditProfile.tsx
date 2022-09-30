@@ -12,7 +12,7 @@ type EditProfileProps = {
 
 const EditProfile = (props: EditProfileProps) => {
   const { user, setUser } = useContext(UserContext);
-  const [showEditProfile, setShowEditProfile] = useState(props.showEditProfile);
+  const showEditProfile = props.showEditProfile;
 
   const colors = new Map<string, string>([
     ["#0000ff", "blue"],
@@ -26,11 +26,11 @@ const EditProfile = (props: EditProfileProps) => {
   ]);
 
   const save = () => {
-    setShowEditProfile(false);
+    props.setShowEditProfile(false);
     setUser(user);
   };
 
-  const cancel = () => setShowEditProfile(false);
+  const cancel = () => props.setShowEditProfile(false);
 
   useEffect(() => {
     if (user === null) setUser({ ...user, color: "#ffffff" });
@@ -109,21 +109,25 @@ const EditProfile = (props: EditProfileProps) => {
               <div className="col-sm-6">
                 {user && user.name && user.name.length > 0 ? (
                   <Button
-                    className="w-100 mb-3"
+                    className="w-100 fw-bold mb-3"
                     variant="primary"
                     onClick={save}
                   >
                     SAVE
                   </Button>
                 ) : (
-                  <Button disabled className="w-100 mb-3" variant="primary">
+                  <Button
+                    disabled
+                    className="w-100 fw-bold mb-3"
+                    variant="primary"
+                  >
                     SAVE
                   </Button>
                 )}
               </div>
               <div className="col-sm-6">
                 <Button
-                  className="w-100 mb-3"
+                  className="w-100 fw-bold mb-3"
                   variant="danger"
                   onClick={cancel}
                 >
