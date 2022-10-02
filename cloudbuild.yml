@@ -53,7 +53,7 @@ steps:
       - 'deploy'
       - 'pocker-fight-app'
       - '--image'
-      - ${_DOCKER_IMAGE}:$(cat /workspace/VERSION)
+      - ${_DOCKER_IMAGE}:'$(cat /workspace/VERSION)'
       - '--region'
       - 'europe-west1'
 
