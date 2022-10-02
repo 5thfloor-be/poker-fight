@@ -45,7 +45,7 @@ steps:
       - -c
       - docker push ${_DOCKER_IMAGE}:$(cat /workspace/VERSION)
   # Setting version in a variable:
-  - name: 'gcr.io/cloud-builders/git'
+  - name: 'ubuntu'
     args:
       - -c
       - export _VERSION=$(cat /workspace/VERSION)
