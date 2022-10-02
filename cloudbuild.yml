@@ -49,7 +49,7 @@ options:
   substitution_option: 'ALLOW_LOOSE'
   machineType: 'E2_HIGHCPU_8'
 substitutions:
-  _DOCKER_IMAGE: 'europe-west1-docker.pkg.dev/pocker-fight/registry/pocker-fight-app'
+  _DOCKER_IMAGE: 'eu.gcr.io/poker-fight/pocker-fight-app'
 availableSecrets:
   secretManager:
     - versionName: projects/poker-fight/secrets/github-secret/versions/latest
