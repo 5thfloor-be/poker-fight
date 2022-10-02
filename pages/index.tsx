@@ -1,17 +1,24 @@
 import type { NextPage } from "next";
 import Head from "next/head";
-import { useContext, useState } from "react";
-import styles from "../styles/Home.module.css";
+import { useContext, useState, useEffect } from "react";
 import CreateRoom from "../components/CreateRoom";
 import JoinRoom from "../components/JoinRoom";
 import FooterActiveMobile from "../components/layout/FooterActiveMobile";
 import { UserContext } from "../context/UserContext";
 import Carousel from "../components/Carousel";
+import { useKonamiCode } from "../components/konami/useKonamiCode";
+import Credits from "../components/konami/Credits";
 
 const Home: NextPage = () => {
-  const { isRoomActive, setIsRoomActive } = useContext(UserContext);
+  const { isRoomActive } = useContext(UserContext);
   const [showCreateRoom, setShowCreateRoom] = useState(false);
   const [showJoinRoom, setShowJoinRoom] = useState(false);
+  const [showCredits, setShowCredits] = useState(false);
+  const konami = useKonamiCode();
+
+  useEffect(() => {
+    if (konami) setShowCredits(true);
+  }, [konami]);
 
   return (
     <div>
@@ -29,7 +36,7 @@ const Home: NextPage = () => {
         <div className="container mx-0 mw-100">
           {/* Partie dédiée au Carousel */}
           <div className="row mt-3">
-            <div className="col-12 col-sm-8 offset-sm-2 my-3">
+            <div className="col-12 col-sm-5 offset-sm-3 col-xxl-8 offset-xxl-2 my-2 my-xxl-3">
               <Carousel />
             </div>
           </div>
@@ -66,6 +73,12 @@ const Home: NextPage = () => {
         <JoinRoom
           showJoinRoom={showJoinRoom}
           setShowJoinRoom={(val) => setShowJoinRoom(val)}
+        />
+      )}
+      {showCredits && (
+        <Credits
+          showCredits={showCredits}
+          setShowCredits={(val) => setShowCredits(val)}
         />
       )}
       {isRoomActive && <FooterActiveMobile />}
