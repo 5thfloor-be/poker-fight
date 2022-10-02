@@ -44,6 +44,11 @@ steps:
     args:
       - -c
       - docker push ${_DOCKER_IMAGE}:$(cat /workspace/VERSION)
+  # Setting version in a variable:
+  - name: 'gcr.io/cloud-builders/git'
+    args:
+      - -c
+      - export _VERSION=$(cat /workspace/VERSION)
   # Deploy container image to Cloud Run
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
     id: 'deploy to gcloud run'
@@ -53,7 +58,7 @@ steps:
       - 'deploy'
       - 'pocker-fight-app'
       - '--image'
-      - ${_DOCKER_IMAGE}:'$(cat /workspace/VERSION)'
+      - ${_DOCKER_IMAGE}:$(_VERSION)
       - '--region'
       - 'europe-west1'
 
