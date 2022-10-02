@@ -1,0 +1,23 @@
+.marquee {
+  width: 100%;
+  height: 400px;
+  color: white;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.credits {
+  display: inline-block;
+  padding-top: 100%;
+  animation: marquee 80s linear infinite;
+  word-wrap: break-word;
+}
+
+@keyframes marquee {
+  0% {
+    transform: translate(0, -8%);
+  }
+  100% {
+    transform: translate(0, -100%);
+  }
+}
