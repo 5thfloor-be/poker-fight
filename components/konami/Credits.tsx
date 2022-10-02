@@ -36,8 +36,7 @@ const Credits = (props: CreditsProps) => {
                   <div className={styles.credits}>
                     <p>
                       <span>
-                        The Authorization team is proud to present its brand new
-                        project, Poker-Fight, we've put our hearts into it!
+                        The Authorization team is proud to present its brand new project, Poker-Fight, we have put our hearts into it!
                       </span>
                     </p>
 
