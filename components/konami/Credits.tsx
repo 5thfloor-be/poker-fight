@@ -1,6 +1,6 @@
 import styles from "../../styles/Konami.module.css";
 import { Button, Modal } from "react-bootstrap";
-import { useRef } from "react";
+import Image from 'next/image';
 import { FaLinkedinIn } from "react-icons/fa";
 
 type CreditsProps = {
@@ -40,7 +40,9 @@ const Credits = (props: CreditsProps) => {
                         project, Poker-Fight, we've put our hearts into it!
                       </span>
                     </p>
-                    <img src="/images/team.png" width="100%" />
+
+                    <Image alt="Team"
+                           src="/images/team.png" width={100} />
                     <div className="col-12 offset-sm-4 w-100">
                       <a
                         className="text-decoration-none text-reset"
@@ -48,10 +50,11 @@ const Credits = (props: CreditsProps) => {
                         target="_blank"
                         rel="noreferrer"
                       >
-                        <img
+                        <Image
+                          alt="Michael"
                           src="/images/team/michael.png"
-                          width="80"
-                          height="80"
+                          width={80}
+                          height={80}
                         />
                         <span className="ms-3">
                           Michael Dupuy - Scrum Master
@@ -69,10 +72,11 @@ const Credits = (props: CreditsProps) => {
                         target="_blank"
                         rel="noreferrer"
                       >
-                        <img
+                        <Image
+                            alt="Rachel"
                           src="/images/team/rachel.png"
-                          width="80"
-                          height="80"
+                          width={80}
+                          height={80}
                         />
                         <span className="ms-3">
                           Rachel Lemon - Product Owner
@@ -89,10 +93,11 @@ const Credits = (props: CreditsProps) => {
                         target="_blank"
                         rel="noreferrer"
                       >
-                        <img
+                        <Image
+                            alt="Jerry"
                           src="/images/team/jerry.png"
-                          width="80"
-                          height="80"
+                          width={80}
+                          height={80}
                         />
                         <span className="ms-3">
                           Jerry Matondo - Business Analyst
@@ -109,10 +114,11 @@ const Credits = (props: CreditsProps) => {
                         target="_blank"
                         rel="noreferrer"
                       >
-                        <img
-                          src="/images/team/thibault.png"
-                          width="80"
-                          height="80"
+                        <Image
+                          alt="Thibault"
+                            src="/images/team/thibault.png"
+                          width={80}
+                          height={80}
                         />
                         <span className="ms-3">
                           Thibault Blondeel - Developer
@@ -129,10 +135,11 @@ const Credits = (props: CreditsProps) => {
                         target="_blank"
                         rel="noreferrer"
                       >
-                        <img
+                        <Image
+                            alt="Gabriel"
                           src="/images/team/gabriel.png"
-                          width="80"
-                          height="80"
+                          width={80}
+                          height={80}
                         />
                         <span className="ms-3">Gabriel Kaplan - Developer</span>
                         <span className="ms-2">
@@ -147,10 +154,11 @@ const Credits = (props: CreditsProps) => {
                         target="_blank"
                         rel="noreferrer"
                       >
-                        <img
+                        <Image
+                            alt="Esthefany"
                           src="/images/team/esthefany.png"
-                          width="80"
-                          height="80"
+                          width={80}
+                          height={80}
                         />
                         <span className="ms-3">
                           Esthefany Astete - Developer
@@ -167,10 +175,11 @@ const Credits = (props: CreditsProps) => {
                         target="_blank"
                         rel="noreferrer"
                       >
-                        <img
+                        <Image
+                            alt="Mathieu"
                           src="/images/team/mathieu.png"
-                          width="80"
-                          height="80"
+                          width={80}
+                          height={80}
                         />
                         <span className="ms-3">Mathieu Raujol - Developer</span>
                         <span className="ms-2">
@@ -185,10 +194,11 @@ const Credits = (props: CreditsProps) => {
                         target="_blank"
                         rel="noreferrer"
                       >
-                        <img
+                        <Image
+                            alt="Alexandre"
                           src="/images/team/alexandre.png"
-                          width="80"
-                          height="80"
+                          width={80}
+                          height={80}
                         />
                         <span className="ms-3">
                           Alexandre Huvenne - Developer
@@ -205,10 +215,11 @@ const Credits = (props: CreditsProps) => {
                         target="_blank"
                         rel="noreferrer"
                       >
-                        <img
+                        <Image
+                            alt="Renaud"
                           src="/images/team/renaud.png"
-                          width="80"
-                          height="80"
+                          width={80}
+                          height={80}
                         />
                         <span className="ms-3">Renaud Pirson - Developer</span>
                         <span className="ms-2">
@@ -219,11 +230,11 @@ const Credits = (props: CreditsProps) => {
                     <p className="mt-3 pt-3">
                       <span>A project made out of Pizzas...</span>
                     </p>
-                    <img src="/images/pizza.jpg" width="100%" />
+                    <Image alt="Pizza" src="/images/pizza.jpg" width={100} />
                     <p className="mt-3 pt-3">
                       <span>...and Retro!</span>
                     </p>
-                    <img src="/images/retro.jpg" width="100%" />
+                    <Image alt="Retro" src="/images/retro.jpg" width={100} />
                     <p className="mt-3 pt-3">
                       <span>
                         We hope you will appreciate the work done and that you
