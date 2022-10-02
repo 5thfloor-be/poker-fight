@@ -56,8 +56,6 @@ steps:
       - ${_DOCKER_IMAGE}:$(cat /workspace/VERSION)
       - '--region'
       - 'europe-west1'
-    images:
-      - ${_DOCKER_IMAGE}:$(cat /workspace/VERSION)
 
 options:
   substitution_option: 'ALLOW_LOOSE'
