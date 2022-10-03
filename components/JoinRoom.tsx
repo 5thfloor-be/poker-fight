@@ -34,6 +34,7 @@ const JoinRoom = (props: JoinRoomProps) => {
 
   useEffect(() => {
     if (user === null) setUser({ name: "", color: "#ffffff", role: Role.DEV });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const colors = new Map<string, string>([

@@ -36,9 +36,7 @@ const Home: NextPage = () => {
         <div className="container mx-0 mw-100">
           {/* Partie dédiée au Carousel */}
           <div className="row mt-3">
-            <div className="col-12 col-sm-5 offset-sm-3 col-xxl-8 offset-xxl-2 my-2 my-xxl-3">
-              <Carousel />
-            </div>
+            <Carousel />
           </div>
 
           <div className="row mt-3">
