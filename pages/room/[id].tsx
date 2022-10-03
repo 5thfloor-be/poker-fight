@@ -22,6 +22,7 @@ const Room: NextPage = () => {
     if (!socket) {
       router.push("/");
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [socket]);
 
   if (socket) {
@@ -70,7 +71,7 @@ const Room: NextPage = () => {
           // router.push(`versus/${data.roomId}`);
         }
       });
-    }
+    } // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [socket]);
 
   const cardValues: any = [1, 2, 3, 5, 8, 13];

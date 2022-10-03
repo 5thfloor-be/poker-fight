@@ -1,6 +1,6 @@
 import styles from "../../styles/Konami.module.css";
 import { Button, Modal } from "react-bootstrap";
-import Image from 'next/image';
+import Image from "next/image";
 import { FaLinkedinIn } from "react-icons/fa";
 
 type CreditsProps = {
@@ -36,13 +36,19 @@ const Credits = (props: CreditsProps) => {
                   <div className={styles.credits}>
                     <p>
                       <span>
-                        The Authorization team is proud to present its brand new project, Poker-Fight, we have put our hearts into it!
+                        The Authorization team is proud to present its brand new
+                        project, Poker-Fight, we have put our hearts into it!
                       </span>
                     </p>
 
-                    <Image alt="Team"
-                           src="/images/team.png" width={100} />
-                    <div className="col-12 offset-sm-4 w-100">
+                    <Image
+                      loading="eager"
+                      alt="Team"
+                      src="/images/team.png"
+                      width={800}
+                      height={800}
+                    />
+                    <div className="w-100 text-center">
                       <a
                         className="text-decoration-none text-reset"
                         href="https://www.linkedin.com/in/michaeldupuy"
@@ -50,21 +56,21 @@ const Credits = (props: CreditsProps) => {
                         rel="noreferrer"
                       >
                         <Image
+                          loading="eager"
                           alt="Michael"
                           src="/images/team/michael.png"
                           width={80}
                           height={80}
                         />
-                        <span className="ms-3">
-                          Michael Dupuy - Scrum Master
-                        </span>
-
-                        <span className="ms-2">
-                          <FaLinkedinIn className="bg-primary" size={28} />
-                        </span>
+                        <p>
+                          <span className="ms-3">
+                            Michael Dupuy - Scrum Master
+                          </span>
+                          <span className="ms-2">
+                            <FaLinkedinIn className="bg-primary" size={28} />
+                          </span>
+                        </p>
                       </a>
-                      <br />
-                      <br />
                       <a
                         className="text-decoration-none text-reset"
                         href="https://www.linkedin.com/in/rachel-lemon-0b75baa2/"
@@ -72,20 +78,21 @@ const Credits = (props: CreditsProps) => {
                         rel="noreferrer"
                       >
                         <Image
-                            alt="Rachel"
+                          loading="eager"
+                          alt="Rachel"
                           src="/images/team/rachel.png"
                           width={80}
                           height={80}
                         />
-                        <span className="ms-3">
-                          Rachel Lemon - Product Owner
-                        </span>
-                        <span className="ms-2">
-                          <FaLinkedinIn className="bg-primary" size={28} />
-                        </span>
+                        <p>
+                          <span className="ms-3">
+                            Rachel Lemon - Product Owner
+                          </span>
+                          <span className="ms-2">
+                            <FaLinkedinIn className="bg-primary" size={28} />
+                          </span>
+                        </p>
                       </a>
-                      <br />
-                      <br />
                       <a
                         className="text-decoration-none text-reset"
                         href="https://www.linkedin.com/in/jerry-matondo-makedika-15b19b6/"
@@ -93,20 +100,21 @@ const Credits = (props: CreditsProps) => {
                         rel="noreferrer"
                       >
                         <Image
-                            alt="Jerry"
+                          loading="eager"
+                          alt="Jerry"
                           src="/images/team/jerry.png"
                           width={80}
                           height={80}
                         />
-                        <span className="ms-3">
-                          Jerry Matondo - Business Analyst
-                        </span>
-                        <span className="ms-2">
-                          <FaLinkedinIn className="bg-primary" size={28} />
-                        </span>
+                        <p>
+                          <span className="ms-3">
+                            Jerry Matondo - Business Analyst
+                          </span>
+                          <span className="ms-2">
+                            <FaLinkedinIn className="bg-primary" size={28} />
+                          </span>
+                        </p>
                       </a>
-                      <br />
-                      <br />
                       <a
                         className="text-decoration-none text-reset"
                         href="https://www.linkedin.com/in/"
@@ -114,20 +122,21 @@ const Credits = (props: CreditsProps) => {
                         rel="noreferrer"
                       >
                         <Image
+                          loading="eager"
                           alt="Thibault"
-                            src="/images/team/thibault.png"
+                          src="/images/team/thibault.png"
                           width={80}
                           height={80}
                         />
-                        <span className="ms-3">
-                          Thibault Blondeel - Developer
-                        </span>
-                        <span className="ms-2">
-                          <FaLinkedinIn className="bg-primary" size={28} />
-                        </span>
+                        <p>
+                          <span className="ms-3">
+                            Thibault Blondeel - Developer
+                          </span>
+                          <span className="ms-2">
+                            <FaLinkedinIn className="bg-primary" size={28} />
+                          </span>
+                        </p>
                       </a>
-                      <br />
-                      <br />
                       <a
                         className="text-decoration-none text-reset"
                         href="https://www.linkedin.com/in/gabriel-kaplan-0/"
@@ -135,18 +144,21 @@ const Credits = (props: CreditsProps) => {
                         rel="noreferrer"
                       >
                         <Image
-                            alt="Gabriel"
+                          loading="eager"
+                          alt="Gabriel"
                           src="/images/team/gabriel.png"
                           width={80}
                           height={80}
                         />
-                        <span className="ms-3">Gabriel Kaplan - Developer</span>
-                        <span className="ms-2">
-                          <FaLinkedinIn className="bg-primary" size={28} />
-                        </span>
+                        <p>
+                          <span className="ms-3">
+                            Gabriel Kaplan - Developer
+                          </span>
+                          <span className="ms-2">
+                            <FaLinkedinIn className="bg-primary" size={28} />
+                          </span>
+                        </p>
                       </a>
-                      <br />
-                      <br />
                       <a
                         className="text-decoration-none text-reset"
                         href="https://www.linkedin.com/in/esthefany-astete/"
@@ -154,20 +166,21 @@ const Credits = (props: CreditsProps) => {
                         rel="noreferrer"
                       >
                         <Image
-                            alt="Esthefany"
+                          loading="eager"
+                          alt="Esthefany"
                           src="/images/team/esthefany.png"
                           width={80}
                           height={80}
                         />
-                        <span className="ms-3">
-                          Esthefany Astete - Developer
-                        </span>
-                        <span className="ms-2">
-                          <FaLinkedinIn className="bg-primary" size={28} />
-                        </span>
+                        <p>
+                          <span className="ms-3">
+                            Esthefany Astete - Developer
+                          </span>
+                          <span className="ms-2">
+                            <FaLinkedinIn className="bg-primary" size={28} />
+                          </span>
+                        </p>
                       </a>
-                      <br />
-                      <br />
                       <a
                         className="text-decoration-none text-reset"
                         href="https://www.linkedin.com/in/mathieuraujol/"
@@ -175,18 +188,21 @@ const Credits = (props: CreditsProps) => {
                         rel="noreferrer"
                       >
                         <Image
-                            alt="Mathieu"
+                          loading="eager"
+                          alt="Mathieu"
                           src="/images/team/mathieu.png"
                           width={80}
                           height={80}
                         />
-                        <span className="ms-3">Mathieu Raujol - Developer</span>
-                        <span className="ms-2">
-                          <FaLinkedinIn className="bg-primary" size={28} />
-                        </span>
+                        <p>
+                          <span className="ms-3">
+                            Mathieu Raujol - Developer
+                          </span>
+                          <span className="ms-2">
+                            <FaLinkedinIn className="bg-primary" size={28} />
+                          </span>
+                        </p>
                       </a>
-                      <br />
-                      <br />
                       <a
                         className="text-decoration-none text-reset"
                         href="https://www.linkedin.com/in/alexandre-huvenne/"
@@ -194,20 +210,21 @@ const Credits = (props: CreditsProps) => {
                         rel="noreferrer"
                       >
                         <Image
-                            alt="Alexandre"
+                          loading="eager"
+                          alt="Alexandre"
                           src="/images/team/alexandre.png"
                           width={80}
                           height={80}
                         />
-                        <span className="ms-3">
-                          Alexandre Huvenne - Developer
-                        </span>
-                        <span className="ms-2">
-                          <FaLinkedinIn className="bg-primary" size={28} />
-                        </span>
+                        <p>
+                          <span className="ms-3">
+                            Alexandre Huvenne - Developer
+                          </span>
+                          <span className="ms-2">
+                            <FaLinkedinIn className="bg-primary" size={28} />
+                          </span>
+                        </p>
                       </a>
-                      <br />
-                      <br />
                       <a
                         className="text-decoration-none text-reset"
                         href="https://www.linkedin.com/in/renaud-pirson-a9963aa6/"
@@ -215,25 +232,42 @@ const Credits = (props: CreditsProps) => {
                         rel="noreferrer"
                       >
                         <Image
-                            alt="Renaud"
+                          loading="eager"
+                          alt="Renaud"
                           src="/images/team/renaud.png"
                           width={80}
                           height={80}
                         />
-                        <span className="ms-3">Renaud Pirson - Developer</span>
-                        <span className="ms-2">
-                          <FaLinkedinIn className="bg-primary" size={28} />
-                        </span>
+                        <p>
+                          <span className="ms-3">
+                            Renaud Pirson - Developer
+                          </span>
+                          <span className="ms-2">
+                            <FaLinkedinIn className="bg-primary" size={28} />
+                          </span>
+                        </p>
                       </a>
                     </div>
                     <p className="mt-3 pt-3">
                       <span>A project made out of Pizzas...</span>
                     </p>
-                    <Image alt="Pizza" src="/images/pizza.jpg" width={100} />
+                    <Image
+                      loading="eager"
+                      alt="Pizza"
+                      src="/images/pizza.jpg"
+                      width={800}
+                      height={355}
+                    />
                     <p className="mt-3 pt-3">
                       <span>...and Retro!</span>
                     </p>
-                    <Image alt="Retro" src="/images/retro.jpg" width={100} />
+                    <Image
+                      loading="eager"
+                      alt="Retro"
+                      src="/images/retro.jpg"
+                      width={800}
+                      height={612}
+                    />
                     <p className="mt-3 pt-3">
                       <span>
                         We hope you will appreciate the work done and that you

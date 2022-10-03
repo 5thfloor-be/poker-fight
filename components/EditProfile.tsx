@@ -34,6 +34,7 @@ const EditProfile = (props: EditProfileProps) => {
 
   useEffect(() => {
     if (user === null) setUser({ ...user, color: "#ffffff" });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
