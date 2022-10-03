@@ -24,8 +24,8 @@ const HeaderNonActive = () => {
           <div className="col-10 col-sm-10">
             <Image
               src="/images/logo-project.png"
-              width={widthScreen / 2}
-              height="100%"
+              width={797}
+              height={154}
               alt="logo"
             />
           </div>
