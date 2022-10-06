@@ -66,7 +66,7 @@ const EditProfile = (props: EditProfileProps) => {
                 <div className="col-12">
                   {user ? (
                     <input
-                      defaultValue={user.name}
+                      defaultValue={user ? user.name : ""}
                       type="text"
                       placeholder="Username"
                       onChange={(e) =>
