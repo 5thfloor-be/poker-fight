@@ -9,9 +9,9 @@ const Footer: NextPage = () => {
       <div className="text-bg-dark pt-2 mx-0 ps-2">
         <div className="container">
           <div className="row">
-            <div className="col-2 col-sm-6 text-start">
+            <div className="col-2 col-lg-6 text-start">
               <div className="row">
-                <div className="d-none d-sm-block">
+                <div className="d-none d-lg-block">
                   <p>
                     Rue des Wallons 238 - 4000 Liège - info@5thfloor.be -{" "}
                     <a
@@ -29,10 +29,10 @@ const Footer: NextPage = () => {
                     </a>
                   </p>
                 </div>
-                <div className="d-block d-sm-none">
+                <div className="d-block d-lg-none">
                   <p>
                     <a
-                      className="text-decoration-none text-reset"
+                      className="text-decoration-none text-reset "
                       href="https://www.linkedin.com/company/5th-floor-software"
                       target="_blank"
                       rel="noreferrer"
@@ -49,7 +49,7 @@ const Footer: NextPage = () => {
               </div>
             </div>
 
-            <div className="col-10 col-sm-6">
+            <div className="col-10 col-lg-6">
               <div className="row">
                 <div className="col-11 text-end ">
                   <p>Open Source Project powered by</p>

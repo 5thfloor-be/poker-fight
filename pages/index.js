@@ -1,4 +1,3 @@
-import type { NextPage } from "next";
 import Head from "next/head";
 import { useContext, useState, useEffect } from "react";
 import CreateRoom from "../components/CreateRoom";
@@ -9,7 +8,7 @@ import Carousel from "../components/Carousel";
 import { useKonamiCode } from "../components/konami/useKonamiCode";
 import Credits from "../components/konami/Credits";
 
-const Home: NextPage = () => {
+const Home = () => {
   const { isRoomActive } = useContext(UserContext);
   const [showCreateRoom, setShowCreateRoom] = useState(false);
   const [showJoinRoom, setShowJoinRoom] = useState(false);
@@ -32,35 +31,38 @@ const Home: NextPage = () => {
         <link rel="icon" href="/images/favicon.png" />
       </Head>
 
-      <main>
-        <div className="container mx-0 mw-100">
-          {/* Partie dédiée au Carousel */}
-          <div className="row mt-3">
-            <Carousel />
-          </div>
+      {/* On affiche uniquement les éléments si la Room n'est pas active */}
+      {!isRoomActive && (
+        <main>
+          <div className="container mx-0 mw-100">
+            {/* Partie dédiée au Carousel */}
+            <div className="row mt-3">
+              <Carousel />
+            </div>
 
-          <div className="row mt-3">
-            <div className="offset-sm-2 col-sm-3 offset-1 col-10 my-2">
-              <button
-                type="button"
-                className="btn btn-primary btn-lg w-100 fw-bold"
-                onClick={() => setShowCreateRoom(!showCreateRoom)}
-              >
-                CREATE ROOM
-              </button>
-            </div>
-            <div className="offset-sm-2 col-sm-3 offset-1 col-10 my-2">
-              <button
-                type="button"
-                className="btn btn-success btn-lg w-100 fw-bold"
-                onClick={() => setShowJoinRoom(!showJoinRoom)}
-              >
-                JOIN ROOM
-              </button>
+            <div className="row mt-3">
+              <div className="offset-sm-2 col-sm-3 offset-1 col-10 my-2">
+                <button
+                  type="button"
+                  className="btn btn-primary btn-lg w-100 fw-bold"
+                  onClick={() => setShowCreateRoom(!showCreateRoom)}
+                >
+                  CREATE ROOM
+                </button>
+              </div>
+              <div className="offset-sm-2 col-sm-3 offset-1 col-10 my-2">
+                <button
+                  type="button"
+                  className="btn btn-success btn-lg w-100 fw-bold"
+                  onClick={() => setShowJoinRoom(!showJoinRoom)}
+                >
+                  JOIN ROOM
+                </button>
+              </div>
             </div>
           </div>
-        </div>
-      </main>
+        </main>
+      )}
       {showCreateRoom && (
         <CreateRoom
           showCreateRoom={showCreateRoom}
@@ -87,8 +89,10 @@ const Home: NextPage = () => {
 export default Home;
 
 export async function getServerSideProps() {
-  console.log("xxxxxxxxx");
-  await fetch("http://localhost:3000/api/socket");
+  const url = process.env.HOST;
+
+  console.log("URL", url);
+  await fetch(url);
   return {
     props: {
       //socket: socket

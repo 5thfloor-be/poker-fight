@@ -6,15 +6,13 @@ import { UserContext } from "../../context/UserContext";
 import EditProfile from "../EditProfile";
 
 const HeaderActive = () => {
-  const { isRoomActive, setIsRoomActive, user, setUser } =
+  const { isRoomActive, setIsRoomActive, user, setUser, targetPoints } =
     useContext(UserContext);
   const path = useRouter();
-  const router = path.query;
+  const router = useRouter();
   const [showEditProfile, setShowEditProfile] = useState(false);
   const [widthScreen, setWidthScreen] = useState(0);
-  const [urlValue, setUrlValue] = useState(
-    "http://poker-fight.be/room/aid777jdjfdhjkds_"
-  );
+  const urlValue = "http://www.poker-fight.com/room/" + router.query.id;
   const [showAlert, setShowAlert] = useState(false);
 
   useEffect(() => {
@@ -84,7 +82,7 @@ const HeaderActive = () => {
                   className=" btn btn-success rounded-5 form-control fw-bold opacity-100"
                   disabled
                 >
-                  Nombre de points: 20/60
+                  Points to achieve : 20/{targetPoints}
                 </button>
               </div>
             )}

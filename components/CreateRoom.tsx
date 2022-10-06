@@ -14,41 +14,14 @@ type CreateRoomProps = {
 
 const CreateRoom = (props: CreateRoomProps) => {
   const showCreateRoom = props.showCreateRoom;
-  const { user, setUser, socket, setSocket, isRoomActive, setIsRoomActive } =
-    useContext(UserContext);
+  const { user, setUser, setSocket, setIsRoomActive } = useContext(UserContext);
   const [checkedVoter, setCheckedVoter] = useState(false);
   const [addCard, setAddCard] = useState(false);
   const [valueNewCard, setValueNewCard] = useState("");
   const [errorLetters, setErrorLetters] = useState("");
-  const [loader, setLoader] = useState(false);
   const [roomId, setRoomId] = useState(false);
   const router = useRouter();
   let socketTempo: any;
-
-  /* Init de la Socket */
-  socketTempo = io();
-
-  useEffect(() => {
-    if (user === null) setUser({ ...user, color: "#ffffff" });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  console.log("length", roomId);
-
-  console.log("status", socket && socket.status);
-
-  useEffect(() => {
-    if (roomId) {
-      setLoader(false);
-
-      /* Fermeture de la Modal */
-      props.setShowCreateRoom(false);
-
-      router.push(`room/${roomId}`);
-
-      setIsRoomActive(true);
-    } // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [roomId]);
 
   /* All params of the future Room */
   const [roomSettings, setRoomSettings] = useState({
@@ -70,6 +43,16 @@ const CreateRoom = (props: CreateRoomProps) => {
     ["#808080", "grey"],
   ]);
 
+  /* Init de la Socket */
+  socketTempo = io();
+
+  useEffect(() => {
+    if (user === null) setUser({ ...user, color: "#ffffff" });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  console.log("Room Settings", roomSettings);
+
   const handleChangeCheckbox = () => {
     setCheckedVoter(!checkedVoter);
     setUser({
@@ -85,21 +68,26 @@ const CreateRoom = (props: CreateRoomProps) => {
     });
   };
 
-  const createRoom = useCallback(() => {
-    /* Lancement du Loader */
-    setLoader(true);
+  const createRoom = () => {
+    console.log("Room Settings Inside", roomSettings);
 
     socketTempo.emit("create_room", roomSettings, (data: any) => {
       console.log("data", data);
 
-      setRoomId(data.roomId);
+      /* Fermeture de la Modal */
+      props.setShowCreateRoom(false);
+
+      setRoomId(data.id);
+      router.push(`room/${data.id}`);
+
+      setIsRoomActive(true);
+
+      /* On ajoute dans le contexte la Socket */
+      setSocket(socketTempo);
     });
 
-    /* On ajoute dans le contexte la Socket */
-    setSocket(socketTempo);
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  };
 
   const cancel = () => props.setShowCreateRoom(false);
 
@@ -220,6 +208,7 @@ const CreateRoom = (props: CreateRoomProps) => {
                     <input
                       type="text"
                       className="form-control"
+                      autoFocus
                       placeholder="..."
                       pattern="[A-Za-z0-9-?_]{1,2}"
                       title="Letters, numbers, and ? only"
@@ -418,7 +407,7 @@ const CreateRoom = (props: CreateRoomProps) => {
           <div className="container">
             <div className="row">
               <div className="col-sm-6">
-                {!loader && user && user.name && user.name.length > 0 ? (
+                {user && user.name && user.name.length > 0 ? (
                   <Button
                     className="btn-lg w-100 fw-bold mb-3"
                     variant="primary"
@@ -433,15 +422,6 @@ const CreateRoom = (props: CreateRoomProps) => {
                     variant="primary"
                   >
                     CREATE ROOM
-                  </Button>
-                )}
-                {loader && (
-                  <Button
-                    className="btn-lg w-100 fw-bold mb-3"
-                    disabled
-                    variant="primary"
-                  >
-                    LOADING PAGE...
                   </Button>
                 )}
               </div>
