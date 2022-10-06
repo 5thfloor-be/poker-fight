@@ -13,7 +13,7 @@ import { UserContext } from "../../context/UserContext";
 const Room: NextPage = () => {
   const router = useRouter();
   const roomId = router.query.id;
-  const { user, setUser, socket } = useContext(UserContext);
+  const { user, setUser, socket, setTargetPoints } = useContext(UserContext);
 
   const [room, setRoom] = useState<RoomModel>();
   console.log("roomId", roomId);
@@ -28,9 +28,10 @@ const Room: NextPage = () => {
   if (socket) {
     if (roomId !== "" && !room) {
       console.log(`displaying room ${roomId}`);
-      socket.emit("get_room", { roomId: roomId }, (room: RoomModel) =>
-        setRoom(room)
-      );
+      socket.emit("get_room", { roomId: roomId }, (room: RoomModel) => {
+        setRoom(room);
+        setTargetPoints(room.roomOptions.targetPoints);
+      });
 
       console.log(`joining ${roomId}`);
 
