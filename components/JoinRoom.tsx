@@ -95,7 +95,7 @@ const JoinRoom = (props: JoinRoomProps) => {
                 </div>
                 <div className="col-12">
                   <input
-                    defaultValue={user?.name}
+                    defaultValue={user && user.name}
                     type="text"
                     placeholder="Username"
                     required={true}
