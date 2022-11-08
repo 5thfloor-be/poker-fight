@@ -7,6 +7,7 @@ import { UserContext } from "../context/UserContext";
 import Carousel from "../components/Carousel";
 import { useKonamiCode } from "../components/konami/useKonamiCode";
 import Credits from "../components/konami/Credits";
+import { useRouter } from "next/router";
 
 const Home = () => {
   const { isRoomActive } = useContext(UserContext);
@@ -14,6 +15,7 @@ const Home = () => {
   const [showJoinRoom, setShowJoinRoom] = useState(false);
   const [showCredits, setShowCredits] = useState(false);
   const konami = useKonamiCode();
+  const router = useRouter();
 
   useEffect(() => {
     if (konami) setShowCredits(true);
@@ -54,7 +56,7 @@ const Home = () => {
                 <button
                   type="button"
                   className="btn btn-success btn-lg w-100 fw-bold"
-                  onClick={() => setShowJoinRoom(!showJoinRoom)}
+                  onClick={() => router.push("/join")}
                 >
                   JOIN ROOM
                 </button>
@@ -67,12 +69,6 @@ const Home = () => {
         <CreateRoom
           showCreateRoom={showCreateRoom}
           setShowCreateRoom={(val) => setShowCreateRoom(val)}
-        />
-      )}
-      {showJoinRoom && (
-        <JoinRoom
-          showJoinRoom={showJoinRoom}
-          setShowJoinRoom={(val) => setShowJoinRoom(val)}
         />
       )}
       {showCredits && (

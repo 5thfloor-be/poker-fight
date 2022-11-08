@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useContext, useEffect } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { Button, Modal } from "react-bootstrap";
 import { MdAccountCircle, MdCheckCircle, MdCancel } from "react-icons/md";
 import { CirclePicker } from "react-color";
@@ -14,14 +14,14 @@ type CreateRoomProps = {
 
 const CreateRoom = (props: CreateRoomProps) => {
   const showCreateRoom = props.showCreateRoom;
-  const { user, setUser, setSocket, setIsRoomActive } = useContext(UserContext);
+  const { user, setUser, setIsRoomActive } = useContext(UserContext);
   const [checkedVoter, setCheckedVoter] = useState(false);
   const [addCard, setAddCard] = useState(false);
   const [valueNewCard, setValueNewCard] = useState("");
   const [errorLetters, setErrorLetters] = useState("");
-  const [roomId, setRoomId] = useState(false);
   const router = useRouter();
-  let socketTempo: any;
+
+  const socket = io();
 
   /* All params of the future Room */
   const [roomSettings, setRoomSettings] = useState({
@@ -43,15 +43,10 @@ const CreateRoom = (props: CreateRoomProps) => {
     ["#808080", "grey"],
   ]);
 
-  /* Init de la Socket */
-  socketTempo = io();
-
   useEffect(() => {
     if (user === null) setUser({ ...user, color: "#ffffff" });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  console.log("Room Settings", roomSettings);
 
   const handleChangeCheckbox = () => {
     setCheckedVoter(!checkedVoter);
@@ -69,21 +64,17 @@ const CreateRoom = (props: CreateRoomProps) => {
   };
 
   const createRoom = () => {
-    console.log("Room Settings Inside", roomSettings);
-
-    socketTempo.emit("create_room", roomSettings, (data: any) => {
+    socket.emit("create_room", roomSettings, (data: any) => {
       console.log("data", data);
 
       /* Fermeture de la Modal */
       props.setShowCreateRoom(false);
 
-      setRoomId(data.id);
+      setUser({ ...user, roomId: data.id });
+
       router.push(`room/${data.id}`);
 
       setIsRoomActive(true);
-
-      /* On ajoute dans le contexte la Socket */
-      setSocket(socketTempo);
     });
 
     // eslint-disable-next-line react-hooks/exhaustive-deps

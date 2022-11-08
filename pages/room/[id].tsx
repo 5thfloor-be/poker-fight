@@ -9,39 +9,20 @@ import { Deck } from "../../components/Deck";
 import Modal from "react-bootstrap/Modal";
 import { Button } from "react-bootstrap";
 import { UserContext } from "../../context/UserContext";
+import { io } from "socket.io-client";
 
 const Room: NextPage = () => {
   const router = useRouter();
   const roomId = router.query.id;
-  const { user, setUser, socket, setTargetPoints } = useContext(UserContext);
+  const { user, setUser, setTargetPoints } = useContext(UserContext);
+
+  let socket: any;
 
   const [room, setRoom] = useState<RoomModel>();
-  console.log("roomId", roomId);
 
-  useEffect(() => {
-    if (!socket) {
-      router.push("/");
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [socket]);
-
-  if (socket) {
-    if (roomId !== "" && !room) {
-      console.log(`displaying room ${roomId}`);
-      socket.emit("get_room", { roomId: roomId }, (room: RoomModel) => {
-        setRoom(room);
-        setTargetPoints(room.roomOptions.targetPoints);
-      });
-
-      console.log(`joining ${roomId}`);
-
-      if (!user?.id) {
-        socket.emit("join_room", { roomId, userInfo: user }, (id: string) => {
-          console.log("my user id : ", user);
-          setUser({ ...user, id: id });
-        });
-      }
-    }
+  /* Dans le cas si pas d'utilisateur redirect vers la Join Room */
+  if (!user.name) {
+    router.push(`join/${roomId}`);
   }
 
   if (room?.state === States.FIGHTING) {
@@ -49,6 +30,22 @@ const Room: NextPage = () => {
   }
 
   useEffect(() => {
+    console.log("Coucou");
+
+    if (!socket) {
+      socket = io();
+
+      socket.emit("join_room", { roomId, userInfo: user }, (id: string) => {
+        console.log("my user id : ", user);
+        setUser({ ...user, id: id });
+      });
+
+      socket.emit("get_room", { roomId: roomId }, (room: RoomModel) => {
+        setRoom(room);
+        setTargetPoints(room.roomOptions.targetPoints);
+      });
+    }
+
     if (socket) {
       socket.on("reveal", (data: any) => {
         console.log("reveeeeeeeal", data);

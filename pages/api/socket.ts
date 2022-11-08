@@ -22,14 +22,38 @@ function configIO(io: Server) {
     console.log(`User connected ${socket.id}`);
 
     socket.on("join_room", (data, listener) => {
-      console.log(`${socket.id} is joining ${data}`);
+      let userIdTemp = data.userInfo.id;
+
+      console.log(`${socket.id} is joining data :${data.userInfo.id}`);
       console.log(`${socket.id} is joining ${data.userInfo}`);
       console.log(`${socket.id} is joining ${socket.id}`);
       socket.join(data.roomId);
-      const user = { ...data.userInfo, id: uuid() };
-      rooms.get(data.roomId)?.addUser(user);
 
-      listener(user.id);
+      console.log("data.roomId)", data.roomId);
+
+      /* Check if User in DataTransfer, if yes compare with user in room, if user doesn't exist add it */
+      console.log(
+        "gros if",
+        rooms
+          .get(data.roomId)
+          ?.users.filter((user) => user.id === data.userInfo.id).length === 0
+      );
+
+      if (
+        rooms
+          .get(data.roomId)
+          ?.users.filter((user) => user.id === data.userInfo.id).length === 0
+      ) {
+        console.log(
+          "rooms.get(data.roomId)?.users.",
+          rooms.get(data.roomId)?.users.length
+        );
+
+        const user = { ...data.userInfo, id: uuid() };
+        userIdTemp = user.id;
+        rooms.get(data.roomId)?.addUser(user);
+      }
+      listener(userIdTemp);
     });
 
     socket.on("leave_room", (data) => {
