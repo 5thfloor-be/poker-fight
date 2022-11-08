@@ -18,13 +18,10 @@ import { Role } from "../pages/api/model/user";
 import { UserContext } from "../context/UserContext";
 
 type JoinRoomProps = {
-  showJoinRoom: boolean;
-  setShowJoinRoom: (val: any) => void;
   roomId?: string;
 };
 
 const JoinRoom = (props: JoinRoomProps) => {
-  const showJoinRoom = props.showJoinRoom;
   const [roomId, setRoomId] = useState(props.roomId);
   const [isDev, setIsDev] = useState(1);
   const router = useRouter();
@@ -53,7 +50,7 @@ const JoinRoom = (props: JoinRoomProps) => {
   const save = () => {
     //Activate the active header
     setIsRoomActive(true);
-    props.setShowJoinRoom(false);
+
     setStorageValue("USER", {
       ...user,
       role: isDev === 1 ? Role.DEV : Role.SPECTATOR,
@@ -61,7 +58,7 @@ const JoinRoom = (props: JoinRoomProps) => {
     router.push(`room/${roomId}`);
   };
 
-  const cancel = () => props.setShowJoinRoom(false);
+  const cancel = () => router.push("/");
 
   const toggle = (val: number) => {
     setIsDev(val);
@@ -73,7 +70,7 @@ const JoinRoom = (props: JoinRoomProps) => {
         size="lg"
         centered={true}
         contentClassName="bg-dark"
-        show={showJoinRoom}
+        show={true}
         onHide={cancel}
       >
         <Modal.Header style={{ border: "none" }}>
