@@ -15,6 +15,7 @@ const Room: NextPage = () => {
   const router = useRouter();
   const roomId = router.query.id;
   const { user, setUser, setTargetPoints } = useContext(UserContext);
+  const [cardValues, setCardValues] = useState<any>([]);
 
   let socket: any;
 
@@ -43,6 +44,7 @@ const Room: NextPage = () => {
       socket.emit("get_room", { roomId: roomId }, (room: RoomModel) => {
         setRoom(room);
         setTargetPoints(room.roomOptions.targetPoints);
+        setCardValues(room.roomOptions.cardValues);
       });
     }
 
@@ -71,8 +73,6 @@ const Room: NextPage = () => {
       });
     } // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [socket]);
-
-  const cardValues: any = [1, 2, 3, 5, 8, 13];
 
   const [selectedVote, setSelectedVote] = useState(-1);
   const updateSelection = (chosenVote: number) => {
