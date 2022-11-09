@@ -50,10 +50,6 @@ const CreateRoom = (props: CreateRoomProps) => {
 
   const handleChangeCheckbox = () => {
     setCheckedVoter(!checkedVoter);
-    setUser({
-      ...user,
-      role: checkedVoter ? Role.VOTING_SCRUM_MASTER : Role.SCRUM_MASTER,
-    });
   };
 
   const deleteCard = (index: any) => {
@@ -70,7 +66,11 @@ const CreateRoom = (props: CreateRoomProps) => {
       /* Fermeture de la Modal */
       props.setShowCreateRoom(false);
 
-      setUser({ ...user, roomId: data.id });
+      setUser({
+        ...user,
+        roomId: data.id,
+        role: checkedVoter ? Role.VOTING_SCRUM_MASTER : Role.SCRUM_MASTER,
+      });
 
       router.push(`room/${data.id}`);
 

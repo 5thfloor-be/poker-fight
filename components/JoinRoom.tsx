@@ -12,7 +12,6 @@ import {
   MdOutlineTagFaces,
 } from "react-icons/md";
 import { CirclePicker } from "react-color";
-import { getStorageValue, setStorageValue } from "./UseLocalStorage";
 import { useRouter } from "next/router";
 import { Role } from "../pages/api/model/user";
 import { UserContext } from "../context/UserContext";
@@ -26,8 +25,7 @@ const JoinRoom = (props: JoinRoomProps) => {
   const [isDev, setIsDev] = useState(1);
   const router = useRouter();
 
-  const { user, setUser, isRoomActive, setIsRoomActive } =
-    useContext(UserContext);
+  const { user, setUser, setIsRoomActive } = useContext(UserContext);
 
   useEffect(() => {
     if (user === null) setUser({ name: "", color: "#ffffff", role: Role.DEV });
@@ -47,15 +45,13 @@ const JoinRoom = (props: JoinRoomProps) => {
 
   console.log(user);
 
-  const save = () => {
+  const join = () => {
     //Activate the active header
     setIsRoomActive(true);
 
-    setStorageValue("USER", {
-      ...user,
-      role: isDev === 1 ? Role.DEV : Role.SPECTATOR,
-    });
-    router.push(`room/${roomId}`);
+    setUser({ ...user, role: isDev === 1 ? Role.DEV : Role.SPECTATOR });
+
+    router.push(`/room/${roomId}`);
   };
 
   const cancel = () => router.push("/");
@@ -173,10 +169,10 @@ const JoinRoom = (props: JoinRoomProps) => {
               <div className="col-sm-6">
                 <Button
                   className="w-100 fw-bold mb-3 btn-primary"
-                  onClick={save}
+                  onClick={join}
                   disabled={roomId ? false : true}
                 >
-                  SAVE
+                  JOIN
                 </Button>
               </div>
               <div className="col-sm-6">

@@ -11,30 +11,47 @@ import { Button } from "react-bootstrap";
 import { UserContext } from "../../context/UserContext";
 import { io } from "socket.io-client";
 
-const Room: NextPage = () => {
+type RoomProps = {
+  roomy: any;
+};
+
+const Room = (props: RoomProps) => {
   const router = useRouter();
   const roomId = router.query.id;
   const { user, setUser, setTargetPoints } = useContext(UserContext);
   const [cardValues, setCardValues] = useState<any>([]);
+  const [stateSocket, setStateSocket] = useState();
+  const [room, setRoom] = useState<RoomModel>();
+  const [selectedVote, setSelectedVote] = useState(-1);
+
+  //modal
+  const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
 
   let socket: any;
 
-  const [room, setRoom] = useState<RoomModel>();
+  // Le reload asynchrone de la page remet à any la Socket
+  if (stateSocket) {
+    socket = stateSocket;
+  }
 
   /* Dans le cas si pas d'utilisateur redirect vers la Join Room */
-  if (!user.name) {
-    router.push(`join/${roomId}`);
-  }
+  useEffect(() => {
+    if (!user.name) {
+      router.push(`/join/${props.roomy}`);
+    }
+  }, []);
 
   if (room?.state === States.FIGHTING) {
     router.push(`${router.asPath}/versus`);
   }
 
   useEffect(() => {
-    console.log("Coucou");
-
-    if (!socket) {
+    if (!socket && user.name.length > 0) {
       socket = io();
+
+      setStateSocket(socket);
 
       socket.emit("join_room", { roomId, userInfo: user }, (id: string) => {
         console.log("my user id : ", user);
@@ -74,7 +91,6 @@ const Room: NextPage = () => {
     } // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [socket]);
 
-  const [selectedVote, setSelectedVote] = useState(-1);
   const updateSelection = (chosenVote: number) => {
     console.log("my vote : " + chosenVote);
     setSelectedVote(chosenVote);
@@ -89,7 +105,7 @@ const Room: NextPage = () => {
   };
   // get room from server
   const startVoting = () => {
-    console.log("start voting: Change status room to voting");
+    console.log("start voting: Change status room to voting", socket);
     socket.emit("start_voting", { roomId }, (r: any) => setRoom(r));
   };
 
@@ -126,16 +142,10 @@ const Room: NextPage = () => {
       : undefined;
   };
 
-  //modal
-  const [show, setShow] = useState(false);
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
-
   if (!room) {
     return (
-      <div className="bg-light">
-        {" "}
-        <h1>Room does not exist</h1>
+      <div className="bg-warning text-center">
+        <h1>Wait please, room is charging</h1>
       </div>
     );
   }
@@ -158,22 +168,24 @@ const Room: NextPage = () => {
       <div className="row">
         {room.users
           .filter((u) => u?.id !== user?.id)
-          .map((user, key) => (
+          .map((userMap, key) => (
             <div key={key} className="col">
-              <Card
-                value={
-                  room?.state === States.WONDROUS && !!user.id
-                    ? getVoteByUserId(user.id)
-                    : undefined
-                }
-                canClose={
-                  user.role === Role.SCRUM_MASTER ||
-                  user.role === Role.VOTING_SCRUM_MASTER
-                }
-                color={user.color}
-                name={user.name}
-                selected={!!user.id && !!getVoteByUserId(user.id)}
-              />
+              {userMap.role !== Role.SCRUM_MASTER && (
+                <Card
+                  value={
+                    room?.state === States.WONDROUS && !!userMap.id
+                      ? getVoteByUserId(userMap.id)
+                      : undefined
+                  }
+                  canClose={
+                    user.role === Role.SCRUM_MASTER ||
+                    user.role === Role.VOTING_SCRUM_MASTER
+                  }
+                  color={userMap.color}
+                  name={userMap.name}
+                  selected={!!userMap.id && !!getVoteByUserId(userMap.id)}
+                />
+              )}
             </div>
           ))}
       </div>
@@ -311,3 +323,9 @@ const Room: NextPage = () => {
 };
 
 export default Room;
+
+export async function getServerSideProps(context: any) {
+  const { id } = context.query;
+  console.log("ROOMYYYYY", id);
+  return { props: { roomy: id } };
+}
