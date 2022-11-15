@@ -26,7 +26,11 @@ export default class Room {
   }
 
   removeUser(userId: string) {
-    this.users = this.users.filter((u) => u.id);
+    this.users = this.users.filter((u) => {
+      console.log(`u.id !== userId  `, u.id !== userId)
+      return u.id !== userId;
+    });
+    console.log("users :", this.users)
     //TODO : close room when users is empty or no more scrum master
     this.stateUpdated();
   }
