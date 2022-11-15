@@ -89,6 +89,10 @@ const Versus: NextPage = () => {
         // TODO implement callback
     });
 
+    function getUserName(userId: string) {
+        return room?.users.filter(u => u.id === userId).pop()?.name || "Anonymous";
+    }
+
     function getCards(side: String, mobile: boolean = false) {
         //TODO get room and user from local storage
 
@@ -105,7 +109,7 @@ const Versus: NextPage = () => {
                 <>
                     <div className="d-none d-sm-block">
                         <div className="d-flex flex-wrap justify-content-center gap-5">
-                            {rightCards?.map((item, index) => <Card key={index} value={item.vote} name={item.userId} canClose={false}/>)}
+                            {rightCards?.map((item, index) => <Card key={index} value={item.vote} name={getUserName(item.userId)} canClose={false}/>)}
                         </div>
                     </div>
                     <div className="d-sm-none d-block">
@@ -125,7 +129,7 @@ const Versus: NextPage = () => {
                 <>
                     <div className="d-none d-sm-block">
                         <div className="d-flex flex-wrap justify-content-center gap-5">
-                            {leftCards?.map((item, index) => <Card key={index} value={item.vote} name={item.userId} canClose={false}/>)}
+                            {leftCards?.map((item, index) => <Card key={index} value={item.vote} name={getUserName(item.userId)} canClose={false}/>)}
                         </div>
                     </div>
                     <div className="d-sm-none d-block">
