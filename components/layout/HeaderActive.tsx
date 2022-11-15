@@ -81,14 +81,14 @@ const HeaderActive = () => {
               )}
             </div>
             <div className="d-none d-sm-block col-sm-3 ps-5  pt-2">
-              {isRoomActive && room?.roomOptions.targetPoints && (
+              {isRoomActive && room && room.roomOptions.targetPoints && (
                 <div className="text-center">
                   <button
                     className=" btn btn-success rounded-5 form-control fw-bold opacity-100"
                     disabled
                   >
-                    Points to achieve : {room?.currentPoints || 0}/
-                    {room?.roomOptions.targetPoints}
+                    Points to achieve : {room.currentPoints ? room.currentPoints : 0} /
+                    {room.roomOptions.targetPoints}
                   </button>
                 </div>
               )}
