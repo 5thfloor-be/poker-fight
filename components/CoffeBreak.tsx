@@ -3,7 +3,7 @@ import {useEffect, useState} from "react";
 import User, {Role} from "../pages/api/model/user";
 import Room from "../pages/api/model/room";
 import {MdCoffee, MdOutlineCoffee} from "react-icons/md";
-import {CgCoffee} from "react-icons/all";
+import {CgCoffee} from "react-icons/cg";
 
 export interface CoffeBreakProps {
     user:User,
