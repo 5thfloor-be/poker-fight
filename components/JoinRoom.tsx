@@ -170,7 +170,7 @@ const JoinRoom = (props: JoinRoomProps) => {
                 <Button
                   className="w-100 fw-bold mb-3 btn-primary"
                   onClick={join}
-                  disabled={!(roomId && user.name)}
+                  disabled={!(roomId && user?.name)}
                 >
                   JOIN
                 </Button>

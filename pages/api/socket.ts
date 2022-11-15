@@ -91,6 +91,11 @@ function configIO(io: Server) {
       socket.to(data.roomId).emit("reveal", rooms.get(data.roomId));
     });
 
+    socket.on("validate", (data) => {
+      console.log(`validate from scrum master ${JSON.stringify(data)}`);
+      rooms.get(data.roomId)?.applyFinalVote(+data.finalVote);
+    });
+
     socket.on("redo_vote", (data) => {
       console.log(`redo vote from scrum master ${JSON.stringify(data)}`);
       let room = rooms.get(data.roomId);

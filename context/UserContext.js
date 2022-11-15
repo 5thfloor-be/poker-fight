@@ -10,6 +10,7 @@ const UserContextProvider = ({ children }) => {
   });
   const [isRoomActive, setIsRoomActive] = useState(false);
   const [targetPoints, setTargetPoints] = useState(false);
+  const [currentPoints, setCurrentPoints] = useState(false);
   const [socket, setSocket] = useState();
 
   let initailValue;
@@ -33,6 +34,8 @@ const UserContextProvider = ({ children }) => {
         setSocket,
         targetPoints,
         setTargetPoints,
+        currentPoints,
+        setCurrentPoints,
         isRoomActive,
         setIsRoomActive,
       }}
