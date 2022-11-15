@@ -300,7 +300,7 @@ const CreateRoom = (props: CreateRoomProps) => {
                 </label>
               </div>
             </div>
-            <div className="row pt-3">
+            {/*<div className="row pt-3">
               <div className="col-3 col-sm-2 offset-sm-3 text-end">
                 <input
                   id="timer"
@@ -347,7 +347,7 @@ const CreateRoom = (props: CreateRoomProps) => {
                   countdown
                 </span>
               </div>
-            </div>
+            </div>*/}
             <div className="row pt-3">
               <div className="col-3 col-sm-2 offset-sm-3 form-switch text-end">
                 <input
