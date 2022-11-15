@@ -1,5 +1,4 @@
-
-import User from "./user";
+import User, {Role} from "./user";
 import UserVote from './userVote';
 
 export default class Room {
@@ -46,6 +45,11 @@ export default class Room {
         this.stateUpdated();
     }
 
+    getActiveParticipants() : User[]{
+        return this.users.filter(u => u.role !== Role.SPECTATOR);
+    }
+
+
     coffeeBreakVote(userId: string){
         const currentVote = this.coffeeBreak.get(userId) ? this.coffeeBreak.get(userId) : false
         this.coffeeBreak.set(userId, !currentVote);
@@ -54,7 +58,7 @@ export default class Room {
             totalVotes += v?1:0;
         });
 
-        this.coffeeBreakActive = totalVotes> (Math.trunc(this.users.length/2));
+        this.coffeeBreakActive = totalVotes> (Math.trunc(this.getActiveParticipants().length/2));
         this.stateUpdated();
     }
 
@@ -73,7 +77,7 @@ export default class Room {
             totalVotes += v?1:0;
         });
 
-        this.buzzerActive = totalVotes> (Math.trunc(this.users.length/2));
+        this.buzzerActive = totalVotes> (Math.trunc(this.getActiveParticipants().length/2));
         this.stateUpdated();
     }
 
