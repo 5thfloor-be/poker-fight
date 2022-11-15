@@ -116,9 +116,9 @@ function configIO(io: Server) {
       rooms.get(data.roomId)?.coffeeBreakOver();
     })
 
-    socket.on("buzz_break_vote", (data) => {
-      console.log(`buzz_break_vote ${JSON.stringify(data)}`);
-      rooms.get(data.roomId)?.buzzBreakVote(data.userId);
+    socket.on("buzzer_vote", (data) => {
+      console.log(`buzzer_vote ${JSON.stringify(data)}`);
+      rooms.get(data.roomId)?.buzzerVote(data.userId);
     });
 
     socket.on("start_voting", (data) => {
@@ -135,11 +135,6 @@ function configIO(io: Server) {
       listener(room);
     });
 
-    socket.on("force_vote", (data) => {
-      const roomId = data.roomId;
-      rooms.get(roomId)?.forceVote(data.vote);
-      socket.to(data.roomId).emit("force_vote", rooms.get(roomId));
-    });
   });
 }
 

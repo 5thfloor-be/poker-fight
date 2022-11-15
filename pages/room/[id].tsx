@@ -14,6 +14,7 @@ import CoffeBreak from "../../components/CoffeBreak";
 import Spectators from "../../components/Spectators";
 import { FaEye } from "react-icons/fa";
 import ModalSpectators from "../../components/ModalSpectators";
+import Buzzer from "../../components/Buzzer";
 
 type RoomProps = {
   roomy: any;
@@ -330,6 +331,7 @@ const Room = (props: RoomProps) => {
         </>
       </div>
       <CoffeBreak user={user} socket={socket} room={room} />
+      <Buzzer user={user} socket={socket} room={room} />
       <Modal size="lg" centered={true} contentClassName="bg-dark" show={show}>
         <Modal.Header style={{ border: "none" }}>
           <Modal.Title className="w-100">
