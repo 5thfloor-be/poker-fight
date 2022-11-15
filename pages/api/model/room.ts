@@ -36,6 +36,9 @@ export default class Room {
   }
 
   registerVote(userId: string, vote: number) {
+    if(!this.isUserInRoom(userId)){
+      return;
+    }
     console.log("registerVote - user id : ", userId);
     console.log("registerVote - vote : ", vote);
     if (
@@ -53,6 +56,10 @@ export default class Room {
     this.stateUpdated();
   }
 
+  isUserInRoom(userId: string): boolean{
+    return this.users.filter(u => u.id === userId).length !== 0
+  }
+
   allUsersVoted(){
     console.log('votes' , this.currentVotes);
     console.log('users' , this.users);
@@ -65,6 +72,9 @@ export default class Room {
   }
 
   coffeeBreakVote(userId: string) {
+    if(!this.isUserInRoom(userId)){
+      return;
+    }
     const currentVote = this.coffeeBreak.get(userId)
       ? this.coffeeBreak.get(userId)
       : false;
@@ -86,6 +96,9 @@ export default class Room {
   }
 
   buzzerVote(userId: string) {
+    if(!this.isUserInRoom(userId)){
+      return;
+    }
     const currentVote = this.buzzer.get(userId)
       ? this.buzzer.get(userId)
       : false;
