@@ -11,6 +11,7 @@ export interface CardProps {
   selected?: boolean;
   name?: string | null;
   badgeConfig?: BadgeConfig;
+  onRemoveUser?: () => void;
 }
 
 export interface BadgeConfig {
@@ -27,6 +28,7 @@ const Card = ({
   selected = false,
   name = null,
   badgeConfig = {},
+  onRemoveUser,
 }: CardProps) => {
   const popover = (
     <Popover id="popover-basic">
@@ -56,7 +58,7 @@ const Card = ({
           </div>
           {canClose && (
             <div className="col-12 col-sm-6 text-end">
-              <button className="btn btn-sm btn-danger rounded-5 float-end t">
+              <button className="btn btn-sm btn-danger rounded-5 float-end t" onClick={onRemoveUser}>
                 x
               </button>
             </div>
