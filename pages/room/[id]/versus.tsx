@@ -267,7 +267,7 @@ const Versus: NextPage = () => {
                         <div className="container">
                             {/* Début du block des cartes à ajouter */}
                             <div className="row mt-3 ms-sm-2 text-center">
-                                <Deck deck={cardValues.filter((card: number) => card != highest() && card != lowest())} updateSelection={updateSelection} />
+                                <Deck deck={cardValues?.filter((card: number) => card != highest() && card != lowest())} updateSelection={updateSelection} />
                             </div>
                         </div>
                     </Modal.Body>

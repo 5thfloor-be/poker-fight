@@ -107,10 +107,14 @@ function configIO(io: Server) {
     socket.on("vote", (data, listener) => {
       console.log(`register vot e ${JSON.stringify(data)}`);
       if (data.vote !== -1) {
-        rooms.get(data.roomId)?.registerVote(data.userId, data.vote);
-        console.log("register vot e", rooms.get(data.roomId));
-
-        listener(rooms.get(data.roomId));
+        const room = rooms.get(data.roomId);
+        room?.registerVote(data.userId, data.vote);
+        console.log("register vot e", room);
+        if(room?.allUsersVoted()){
+          rooms.get(data.roomId)?.revealVotes();
+          socket.to(data.roomId).emit("reveal", room);
+        }
+        listener(room);
       }
     });
 
