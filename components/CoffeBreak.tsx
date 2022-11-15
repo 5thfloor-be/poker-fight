@@ -3,6 +3,8 @@ import {useEffect, useState} from "react";
 import {bool} from "prop-types";
 import User, {Role} from "../pages/api/model/user";
 import Room from "../pages/api/model/room";
+import {MdCoffee, MdOutlineCoffee} from "react-icons/md";
+import {CgCoffee} from "react-icons/all";
 
 export interface CoffeBreakProps {
     user:User,
@@ -16,6 +18,7 @@ const CoffeeBreak = ({
     room
                      }:CoffeBreakProps) => {
     const [show, setShow] = useState(false);
+    const [coffeeVoted, setCoffeeVoted] = useState(false)
     const canClose = user.role === Role.SCRUM_MASTER;
 
 
@@ -30,16 +33,24 @@ const CoffeeBreak = ({
             userId :user.id,
             roomId: room.id
         })
+        setCoffeeVoted(!coffeeVoted);
     }
 
     useEffect(() =>{
-      setShow(room.coffeeBreakActive);
+        if(show !== room.coffeeBreakActive){
+            setShow(room.coffeeBreakActive);
+            if(!show) {
+                setCoffeeVoted(false);
+            }
+        }
     }, [room])
 
     return (
         <div>
-            <button id = "coffeeButton" onClick={() => vote()}>
-                coffee-icon
+            <button id = "coffeeButton" onClick={() => vote()} className="btn btn-dark text-white">
+                {coffeeVoted&&<MdCoffee />}
+                {!coffeeVoted&&<MdOutlineCoffee />}
+
             </button>
 
             <Modal
@@ -47,6 +58,7 @@ const CoffeeBreak = ({
                 centered={true}
                 contentClassName="bg-dark"
                 show={show}
+                onHide={() =>setCoffeeVoted(false)}
                 className="text-center text-white "
             >
                 <Modal.Header style={{ border: "none" }}>
@@ -57,10 +69,11 @@ const CoffeeBreak = ({
                             <h1>IT'S COFFEE TIME !!!</h1>
                             A short break to refresh the brain.
                     </div>
+                    <CgCoffee size={100} className="mt-3"/>
                 </Modal.Body>
                 <Modal.Footer style={{ border: "none" }}>
                     <div className="container">
-                        {canClose && <button onClick={finish}>FINISH</button>}
+                        {canClose && <button onClick={finish} className="btn btn-primary fw-bold mb-3 w-25">FINISH</button>}
                     </div>
                 </Modal.Footer>
             </Modal>
