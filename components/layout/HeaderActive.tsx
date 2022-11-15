@@ -4,11 +4,11 @@ import { useContext, useEffect, useState } from "react";
 import { MdAccountCircle, MdOutlineCheck } from "react-icons/md";
 import { UserContext } from "../../context/UserContext";
 import EditProfile from "../EditProfile";
-import RoomModel, { States } from '../../pages/api/model/room';
-import { io } from 'socket.io-client';
+import RoomModel, { States } from "../../pages/api/model/room";
+import { io } from "socket.io-client";
 
 const HeaderActive = () => {
-  const { isRoomActive, setIsRoomActive, user, setUser, targetPoints, currentPoints } =
+  const { isRoomActive, setIsRoomActive, user, setUser, room } =
     useContext(UserContext);
   const path = useRouter();
   const router = useRouter();
@@ -78,13 +78,14 @@ const HeaderActive = () => {
             )}
           </div>
           <div className="d-none d-sm-block col-sm-3 ps-5  pt-2">
-            {isRoomActive && targetPoints && (
+            {isRoomActive && room?.roomOptions.targetPoints && (
               <div className="text-center">
                 <button
                   className=" btn btn-success rounded-5 form-control fw-bold opacity-100"
                   disabled
                 >
-                  Points to achieve : {currentPoints || 0 }/{targetPoints}
+                  Points to achieve : {room?.currentPoints || 0}/
+                  {room?.roomOptions.targetPoints}
                 </button>
               </div>
             )}

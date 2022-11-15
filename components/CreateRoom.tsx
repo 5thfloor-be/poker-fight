@@ -127,7 +127,8 @@ const CreateRoom = (props: CreateRoomProps) => {
                     className="form-control"
                     defaultValue={user ? user.name : ""}
                     type="text"
-                    placeholder="Username"
+                    placeholder="Username (15 characters max)"
+                    maxLength={15}
                     onChange={(e) => {
                       setUser({ ...user, name: e.target.value });
                     }}

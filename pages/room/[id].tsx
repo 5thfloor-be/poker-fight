@@ -22,11 +22,9 @@ type RoomProps = {
 const Room = (props: RoomProps) => {
   const router = useRouter();
   const roomId = router.query.id;
-  const { user, setUser, setTargetPoints, setCurrentPoints } =
-    useContext(UserContext);
+  const { user, setUser, setRoom, room } = useContext(UserContext);
   const [cardValues, setCardValues] = useState<any>([]);
   const [stateSocket, setStateSocket] = useState();
-  const [room, setRoom] = useState<RoomModel>();
   const [selectedVote, setSelectedVote] = useState(-1);
   const [showSpectators, setShowSpectators] = useState(false);
 
@@ -66,8 +64,6 @@ const Room = (props: RoomProps) => {
 
       socket.emit("get_room", { roomId: roomId }, (room: RoomModel) => {
         setRoom(room);
-        setTargetPoints(room.roomOptions.targetPoints);
-        setCurrentPoints(room.currentPoints);
         setCardValues(room.roomOptions.cardValues);
       });
     }
@@ -91,7 +87,6 @@ const Room = (props: RoomProps) => {
       socket.on("room_state_update", (r: any) => {
         console.log("room state update received ", r);
         setRoom(r);
-        setCurrentPoints(r.currentPoints);
         if (room?.state === States.FIGHTING) {
           // router.push(`versus/${data.roomId}`);
         }

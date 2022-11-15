@@ -90,7 +90,8 @@ const JoinRoom = (props: JoinRoomProps) => {
                   <input
                     defaultValue={user ? user.name : ""}
                     type="text"
-                    placeholder="Username"
+                    placeholder="Username (15 characters max)"
+                    maxLength={15}
                     required={true}
                     onChange={(e) => setUser({ ...user, name: e.target.value })}
                   />
