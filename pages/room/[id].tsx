@@ -85,13 +85,19 @@ const Room = (props: RoomProps) => {
         setSelectedVote(-1);
         setRoom(data);
       });
-      socket.on("room_state_update", (r: any) => {
+      socket.on("room_state_update", (r: RoomModel) => {
         console.log("room state update received ", r);
         setRoom(r);
-        if (room?.state === States.FIGHTING) {
-          // router.push(`versus/${data.roomId}`);
-        }
       });
+
+      socket.on("user_removed", (data: any) =>{
+        console.log("user removed :", data)
+        console.log("user :", user);
+        if(data.userId === user.id){
+          console.log('leaving')
+          socket.emit("leave", {roomId: roomId})
+        }
+      })
     } // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [socket]);
 
@@ -175,6 +181,10 @@ const Room = (props: RoomProps) => {
     );
   };
 
+  const removeUser = (userToRemove: User) => {
+      socket.emit('remove_user', {roomId: room.id, userId: userToRemove.id})
+  }
+
   return (
     <div className="container">
       <div className="row">
@@ -197,6 +207,7 @@ const Room = (props: RoomProps) => {
                     color={userMap.color}
                     name={userMap.name}
                     selected={!!userMap.id && !!getVoteByUserId(userMap.id)}
+                    onRemoveUser={() => removeUser(userMap)}
                   />
                 )}
             </div>
