@@ -19,6 +19,22 @@ const SocketHandler = (req: IncomingMessage, res: any) => {
 
 function configIO(io: Server) {
   io.on("connection", (socket) => {
+    /* Supprimer une Room après un certain temps */
+    setInterval(checkValidityRooms, 10000);
+    function checkValidityRooms() {
+      const roomsToDelete = Array.from(rooms.values())
+        .filter(
+          (room) => (new Date().getTime() - room.modified.getTime()) / 1000 > 10
+        )
+        .map((room) => room.id);
+
+      roomsToDelete.forEach((roomId) => {
+        rooms.delete(roomId);
+
+        socket.leave(roomId);
+      });
+    }
+
     console.log(`User connected ${socket.id}`);
 
     socket.on("join_room", (data, listener) => {
@@ -129,10 +145,10 @@ function configIO(io: Server) {
       rooms.get(data.roomId)?.buzzerVote(data.userId);
     });
 
-    socket.on('buzzer_canceled', data => {
+    socket.on("buzzer_canceled", (data) => {
       console.log(`buzzer_canceled ${JSON.stringify(data)}`);
       rooms.get(data.roomId)?.buzzerCanceled();
-    })
+    });
 
     socket.on("start_voting", (data) => {
       console.log(`start_voting ${JSON.stringify(data)}`);
