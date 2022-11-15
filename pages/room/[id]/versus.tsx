@@ -1,14 +1,19 @@
 import type { NextPage } from 'next';
 import Head from 'next/head';
-import { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import Card from '../../../components/Card';
 import { getStorageValue } from '../../../components/UseLocalStorage';
 import Image from 'next/image';
 import RoomModel, { States } from '../../api/model/room';
 import { useRouter } from "next/router";
 import { io } from "socket.io-client";
-import User from "../../api/model/user";
+import User, { Role } from '../../api/model/user';
 import ScrumMasterActions from '../../../components/ScrumMasterActions';
+import { Button, Modal } from 'react-bootstrap';
+import { MdAccountCircle, MdCancel, MdCheckCircle } from 'react-icons/md';
+import { CirclePicker } from 'react-color';
+import { Deck } from '../../../components/Deck';
+import { UserContext } from '../../../context/UserContext';
 
 const Versus: NextPage = () => {
     const [widthScreen, setWidthScreen] = useState(0);
@@ -16,38 +21,61 @@ const Versus: NextPage = () => {
     const [stateSocket, setStateSocket] = useState();
     const router = useRouter();
     const roomId = router.query.id;
-    const [room, setRoom] = useState<RoomModel>();
-    const [myUser, setMyUser] = useState<User>(getStorageValue('USER', null));
+    const { user, setUser, setRoom, room } = useContext(UserContext);
+    const [showOtherScoreModal,setShowOtherScoreModal] = useState(false);
+    const [othercard, setOthercard] = useState(0);
+    const [cardValues, setCardValues] = useState<any>([]);
     const [reload, setReload] = useState(false);
+
 
     if (stateSocket) {
         socket = stateSocket;
-    } else {
+    }
+
+    console.log('socket ' + socket?.id);
+    if(!socket){
         socket = io();
         setStateSocket(socket);
-    }
-    console.log('reload ' + roomId + '  ' + socket.id);
-    if (roomId) {
-		console.log(`displaying room ${roomId}`)
-		socket.emit('get_room', {roomId: roomId}, (room: RoomModel) => {
+
+        socket.emit("join_room", { roomId, userInfo: user}, (id: string) => {
+            console.log("my user id : ", user.id);
+            setUser({ ...user, id: id });
+        });
+
+        socket.emit("get_room", { roomId: roomId }, (room: RoomModel) => {
             setRoom(room);
+            setCardValues(room?.roomOptions.cardValues);
             if (room.state !== States.FIGHTING) {
                 let a = router.asPath.split("/")
                 a.pop();
                 router.push(a.join("/"));
+            }        });
+    } else {
+        console.log('reload ' + socket.id)
+        socket.on("room_state_update", (r: any) => {
+            setReload(false);
+            console.log("room state update received versus ", r);
+            if (r?.state === States.STARTING || r?.state === States.VOTING) {
+                router.push('/room/'+ roomId);
+                //router.push('/room/'+ roomId);
             }
         });
-    }
-    useEffect(() => {
+
         socket.on("room_state_update", (r: any) => {
+            setReload(false);
             console.log("room state update received versus ", r);
             if (r?.state === States.STARTING) {
                 router.push('/room/'+ roomId);
+                //router.push('/room/'+ roomId);
             }
         });
-    }, [socket]);
+    }
 
 
+    const updateSelection = (chosenVote: number) => {
+        console.log("my vote : " + chosenVote);
+        setOthercard(chosenVote);
+    };
 
     const lowest = () => {
         let cards = room?.currentVotes.filter(vote => vote.vote !== -1);
@@ -67,8 +95,8 @@ const Versus: NextPage = () => {
             "validate",
             { roomId: roomId, finalVote: highest() }
         );
-        console.log("Validate: Add points and change status room to voting");
         setReload(true);
+        console.log("Validate: Add points and change status room to voting");
     }
 
     const forceLow = () => {
@@ -77,8 +105,20 @@ const Versus: NextPage = () => {
                 "validate",
                 { roomId: roomId, finalVote: lowest() }
             );
-            console.log("Validate: Add points and change status room to voting");
+        setReload(true);
+        console.log("Validate: Add points and change status room to voting");
         };
+
+    const forceOther = (other: number) => {
+        setShowOtherScoreModal(false);
+        console.log('Force Other : ', other);
+        socket.emit(
+            "validate",
+            { roomId: roomId, finalVote: other }
+        );
+        setReload(true);
+        console.log("Validate: Add points and change status room to voting");
+    };
 
     const redoVote = () => {
         console.log('Redo vote : ');
@@ -92,6 +132,8 @@ const Versus: NextPage = () => {
     function getUserName(userId: string) {
         return room?.users.filter(u => u.id === userId).pop()?.name || "Anonymous";
     }
+
+    const cancel = () => setShowOtherScoreModal(false);
 
     function getCards(side: String, mobile: boolean = false) {
         //TODO get room and user from local storage
@@ -188,26 +230,72 @@ const Versus: NextPage = () => {
                             </div>
                         </div>
                     </div>
-                    <div className="row mt-5">
-                        <div className="d-sm-none d-block offset-4 col-4">
-                            <ScrumMasterActions minValue={lowest()} maxValue={highest()} deck={[1, 3, 5, 8]} />
+                    {
+                        (user?.role == Role.SCRUM_MASTER || user?.role == Role.VOTING_SCRUM_MASTER) &&
+                        <div className="row mt-5">
+                            <div className="d-sm-none d-block offset-4 col-4">
+                                <ScrumMasterActions minValue={lowest()} maxValue={highest()} deck={[1, 3, 5, 8]} />
+                            </div>
+                            <div className="d-none d-sm-block offset-sm-2 col-sm-2">
+                                <button type='button' className='btn btn-primary fw-bold w-100' onClick={forceLow}>GO FOR {lowest()}</button>
+                            </div>
+                            <div className="d-none d-sm-block col-sm-2">
+                                <button type='button' className='btn btn-primary fw-bold w-100' onClick={forceHigh}>GO FOR {highest()}</button>
+                            </div>
+                            <div className="d-none d-sm-block col-sm-2">
+                                <button type='button' className='btn btn-primary fw-bold w-100' onClick={() => setShowOtherScoreModal(true)}>OTHER SCORE</button>
+                            </div>
+                            <div className="d-none d-sm-block col-sm-2">
+                                <button type='button' className='btn btn-primary fw-bold w-100' onClick={redoVote}>REDO VOTE</button>
+                            </div>
                         </div>
-                        <div className="d-none d-sm-block offset-sm-2 col-sm-2">
-                            <button type='button' className='btn btn-primary fw-bold w-100' onClick={forceLow}>GO FOR {lowest()}</button>
-                        </div>
-                        <div className="d-none d-sm-block col-sm-2">
-                            <button type='button' className='btn btn-primary fw-bold w-100' onClick={forceHigh}>GO FOR {highest()}</button>
-                        </div>
-                        <div className="d-none d-sm-block col-sm-2">
-                            <button type='button' className='btn btn-primary fw-bold w-100' onClick={() => ''}>OTHER SCORE</button>
-                        </div>
-                        <div className="d-none d-sm-block col-sm-2">
-                            <button type='button' className='btn btn-primary fw-bold w-100' onClick={redoVote}>REDO VOTE</button>
-                        </div>
-                    </div>
+                    }
                 </div>
-                <div></div>
             </main>
+                <Modal
+                    size="lg"
+                    className="text-white"
+                    centered={true}
+                    show={showOtherScoreModal}
+                    contentClassName="bg-dark"
+                    onHide={cancel}
+                >
+                    <Modal.Header style={{ border: "none" }}>
+                        <Modal.Title className="w-100 text-center">OTHER SCORE</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <div className="container">
+                            {/* Début du block des cartes à ajouter */}
+                            <div className="row mt-3 ms-sm-2 text-center">
+                                <Deck deck={cardValues.filter((card: number) => card != highest() && card != lowest())} updateSelection={updateSelection} />
+                            </div>
+                        </div>
+                    </Modal.Body>
+                    <Modal.Footer style={{ border: "none" }}>
+                        <div className="container">
+                            <div className="row">
+                                <div className="col-sm-6">
+                                    <Button
+                                        className="btn-lg w-100 fw-bold mb-3"
+                                        variant="danger"
+                                        onClick={cancel}
+                                    >
+                                        CANCEL
+                                    </Button>
+                                </div>
+                                <div className="col-sm-6">
+                                    <Button
+                                        className="btn-lg w-100 fw-bold mb-3"
+                                        variant="primary"
+                                        onClick={() => forceOther(othercard)}
+                                    >
+                                        VALIDATE
+                                    </Button>
+                                </div>
+                            </div>
+                        </div>
+                    </Modal.Footer>
+                </Modal>
         </>
     );
 };
