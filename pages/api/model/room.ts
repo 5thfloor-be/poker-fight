@@ -77,6 +77,12 @@ export default class Room {
         this.stateUpdated();
     }
 
+    buzzerCanceled(){
+        this.buzzer.clear();
+        this.buzzerActive = false;
+        this.stateUpdated();
+    }
+
     startVoting() {
         this.state = States.VOTING;
         this.stateUpdated();
@@ -94,6 +100,8 @@ export default class Room {
                 this.state = States.FIGHTING;
             }
         }
+        this.buzzer.clear();
+        this.buzzerActive = false;
         this.stateUpdated();
     }
 
