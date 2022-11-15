@@ -14,7 +14,7 @@ type CreateRoomProps = {
 
 const CreateRoom = (props: CreateRoomProps) => {
   const showCreateRoom = props.showCreateRoom;
-  const { user, setUser, setIsRoomActive } = useContext(UserContext);
+  const { user, setUser, setIsRoomActive, room } = useContext(UserContext);
   const [checkedVoter, setCheckedVoter] = useState(false);
   const [addCard, setAddCard] = useState(false);
   const [valueNewCard, setValueNewCard] = useState("");
@@ -137,14 +137,17 @@ const CreateRoom = (props: CreateRoomProps) => {
                 <div className="col mt-3">
                   <div className="form-switch">
                     <input
-                        id="voting-toggle"
-                        className="form-check-input p-2"
-                        type="checkbox"
-                        role="switch"
-                        checked={checkedVoter}
-                        onChange={handleChangeCheckbox}
+                      id="voting-toggle"
+                      className="form-check-input p-2"
+                      type="checkbox"
+                      role="switch"
+                      checked={checkedVoter}
+                      onChange={handleChangeCheckbox}
                     ></input>
-                    <label className="form-check-label text-white ps-2" htmlFor="voting-toggle">
+                    <label
+                      className="form-check-label text-white ps-2"
+                      htmlFor="voting-toggle"
+                    >
                       Can vote (check the box if the Scrum Master can vote too)
                     </label>
                   </div>

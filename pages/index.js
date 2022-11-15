@@ -10,9 +10,9 @@ import Credits from "../components/konami/Credits";
 import { useRouter } from "next/router";
 
 const Home = () => {
-  const { isRoomActive } = useContext(UserContext);
+  const { isRoomActive, room } = useContext(UserContext);
   const [showCreateRoom, setShowCreateRoom] = useState(false);
-  const [showJoinRoom, setShowJoinRoom] = useState(false);
+  const [showLoading, setShowLoading] = useState(false);
   const [showCredits, setShowCredits] = useState(false);
   const konami = useKonamiCode();
   const router = useRouter();
@@ -20,6 +20,11 @@ const Home = () => {
   useEffect(() => {
     if (konami) setShowCredits(true);
   }, [konami]);
+
+  const handleCreateRoom = () => {
+    setShowCreateRoom(!showCreateRoom);
+    setShowLoading(true);
+  };
 
   return (
     <div>
@@ -32,6 +37,14 @@ const Home = () => {
         />
         <link rel="icon" href="/images/favicon.png" />
       </Head>
+
+      {showLoading && isRoomActive && (
+        <>
+          <div className="loader-container">
+            <div className="spinner"></div>
+          </div>
+        </>
+      )}
 
       {/* On affiche uniquement les éléments si la Room n'est pas active */}
       {!isRoomActive && (
@@ -47,7 +60,7 @@ const Home = () => {
                 <button
                   type="button"
                   className="btn btn-primary btn-lg w-100 fw-bold"
-                  onClick={() => setShowCreateRoom(!showCreateRoom)}
+                  onClick={() => handleCreateRoom()}
                 >
                   CREATE ROOM
                 </button>
