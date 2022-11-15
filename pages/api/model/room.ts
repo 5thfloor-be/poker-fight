@@ -116,12 +116,18 @@ export default class Room {
 
     vote(vote: number) {
         this.wondrousVote = vote;
-        this.currentPoints += vote;
     }
 
     forceVote(vote: number) {
         this.vote(vote);
         this.state = States.WONDROUS;
+    }
+
+    applyFinalVote(vote: number){
+        this.currentPoints += vote;
+        this.state = States.STARTING;
+        this.currentVotes.forEach(vote => vote.vote = 0);
+        this.stateUpdated();
     }
 }
 
