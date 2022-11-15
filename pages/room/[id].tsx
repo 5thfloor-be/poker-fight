@@ -10,6 +10,9 @@ import Modal from "react-bootstrap/Modal";
 import { Button } from "react-bootstrap";
 import { UserContext } from "../../context/UserContext";
 import { io } from "socket.io-client";
+import Spectators from "../../components/Spectators";
+import { FaEye } from "react-icons/fa";
+import ModalSpectators from "../../components/ModalSpectators";
 
 type RoomProps = {
   roomy: any;
@@ -23,6 +26,7 @@ const Room = (props: RoomProps) => {
   const [stateSocket, setStateSocket] = useState();
   const [room, setRoom] = useState<RoomModel>();
   const [selectedVote, setSelectedVote] = useState(-1);
+  const [showSpectators, setShowSpectators] = useState(false);
 
   //modal
   const [show, setShow] = useState(false);
@@ -170,22 +174,23 @@ const Room = (props: RoomProps) => {
           .filter((u) => u?.id !== user?.id)
           .map((userMap, key) => (
             <div key={key} className="col">
-              {userMap.role !== Role.SCRUM_MASTER && (
-                <Card
-                  value={
-                    room?.state === States.WONDROUS && !!userMap.id
-                      ? getVoteByUserId(userMap.id)
-                      : undefined
-                  }
-                  canClose={
-                    user.role === Role.SCRUM_MASTER ||
-                    user.role === Role.VOTING_SCRUM_MASTER
-                  }
-                  color={userMap.color}
-                  name={userMap.name}
-                  selected={!!userMap.id && !!getVoteByUserId(userMap.id)}
-                />
-              )}
+              {userMap.role !== Role.SCRUM_MASTER &&
+                userMap.role !== Role.SPECTATOR && (
+                  <Card
+                    value={
+                      room?.state === States.WONDROUS && !!userMap.id
+                        ? getVoteByUserId(userMap.id)
+                        : undefined
+                    }
+                    canClose={
+                      user.role === Role.SCRUM_MASTER ||
+                      user.role === Role.VOTING_SCRUM_MASTER
+                    }
+                    color={userMap.color}
+                    name={userMap.name}
+                    selected={!!userMap.id && !!getVoteByUserId(userMap.id)}
+                  />
+                )}
             </div>
           ))}
       </div>
@@ -265,29 +270,57 @@ const Room = (props: RoomProps) => {
           </div>
         </div>
 
-        {user?.role !== Role.SCRUM_MASTER && (
-          <>
-            <div className="row">
-              <div className="col d-none d-sm-block justify-content-center">
-                {showBottomDeck()}
+        <>
+          {/* Version PC du Deck */}
+          <div className="row">
+            <div className="col-10 d-none d-sm-block justify-content-center">
+              {user?.role !== Role.SCRUM_MASTER && showBottomDeck()}
+            </div>
+            <div className="col-2 d-none d-sm-block justify-content-center">
+              <Spectators
+                roomSpectators={room.users.filter(
+                  (u) => u?.role === Role.SPECTATOR
+                )}
+              />
+            </div>
+          </div>
+
+          <div className="d-sm-none">
+            <FaEye
+              size={80}
+              onClick={() => setShowSpectators(!showSpectators)}
+            />
+            {showSpectators && (
+              <ModalSpectators
+                showSpectators={showSpectators}
+                setShowSpectators={(val) => setShowSpectators(val)}
+                roomSpectators={room.users.filter(
+                  (u) => u?.role === Role.SPECTATOR
+                )}
+              />
+            )}
+          </div>
+
+          {/* Version mobile du Deck */}
+          {user?.role !== Role.SCRUM_MASTER && (
+            <>
+              <div className="row d-sm-none mt-5 mt-sm-0 ">
+                {room.state === States.VOTING && (
+                  <div className="col text-center h-100">
+                    <button
+                      className="btn btn-lg btn-light rounded-5 fw-bold"
+                      onClick={handleShow}
+                    >
+                      <h1>
+                        <GiCardRandom />
+                      </h1>
+                    </button>
+                  </div>
+                )}
               </div>
-            </div>
-            <div className="row d-sm-none mt-5 mt-sm-0 ">
-              {room.state === States.VOTING && (
-                <div className="col text-center h-100">
-                  <button
-                    className="btn btn-lg btn-light rounded-5 fw-bold"
-                    onClick={handleShow}
-                  >
-                    <h1>
-                      <GiCardRandom />
-                    </h1>
-                  </button>
-                </div>
-              )}
-            </div>
-          </>
-        )}
+            </>
+          )}
+        </>
       </div>
       <Modal size="lg" centered={true} contentClassName="bg-dark" show={show}>
         <Modal.Header style={{ border: "none" }}>
