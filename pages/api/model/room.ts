@@ -1,5 +1,5 @@
-import User, { Role } from "./user";
-import UserVote from "./userVote";
+import User, { Role } from './user';
+import UserVote from './userVote';
 
 export default class Room {
   users: User[] = [];
@@ -47,6 +47,13 @@ export default class Room {
     // this.currentVotes.set(userId, vote);
     //TODO : if everyone has voted, send event ?
     this.stateUpdated();
+  }
+
+  allUsersVoted(){
+    console.log('votes' , this.currentVotes);
+    console.log('users' , this.users);
+    console.log(this.users.filter(user => user.canVote).length === this.currentVotes.length);
+    return this.users.filter(user => user.role != Role.SCRUM_MASTER && user.role != Role.SPECTATOR  ).length === this.currentVotes.length;
   }
 
   getActiveParticipants(): User[] {
@@ -161,7 +168,7 @@ export default class Room {
   applyFinalVote(vote: number) {
     this.currentPoints += vote;
     this.state = States.STARTING;
-    this.currentVotes.forEach((vote) => (vote.vote = 0));
+    this.resetCurrentVotes();
     this.stateUpdated();
   }
 }

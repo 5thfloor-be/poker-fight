@@ -76,7 +76,7 @@ const Card = ({
         </div>
       </div>
       {name && (
-        <div className="text-sm-center">
+        <div>
           <h3>{name}</h3>
         </div>
       )}
