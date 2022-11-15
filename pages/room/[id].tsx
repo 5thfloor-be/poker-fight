@@ -10,6 +10,7 @@ import Modal from "react-bootstrap/Modal";
 import { Button } from "react-bootstrap";
 import { UserContext } from "../../context/UserContext";
 import { io } from "socket.io-client";
+import CoffeBreak from "../../components/CoffeBreak";
 
 type RoomProps = {
   roomy: any;
@@ -289,6 +290,7 @@ const Room = (props: RoomProps) => {
           </>
         )}
       </div>
+      <CoffeBreak user={user} socket={socket} room={room}/>
       <Modal size="lg" centered={true} contentClassName="bg-dark" show={show}>
         <Modal.Header style={{ border: "none" }}>
           <Modal.Title className="w-100">
