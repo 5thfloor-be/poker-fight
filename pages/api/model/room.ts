@@ -15,6 +15,7 @@ export default class Room {
     roomOptions: RoomOptions
     onChangeCallbacks: OnChangeCallback[] = [];
     coffeeBreakActive = false;
+    buzzerActive = false;
 
 
     constructor(public id: string, roomOptions: RoomOptions) {
@@ -63,9 +64,16 @@ export default class Room {
         this.stateUpdated();
     }
 
-    buzzBreakVote(userId: string){
+    buzzerVote(userId: string){
         const currentVote = this.buzzer.get(userId) ? this.buzzer.get(userId) : false
         this.buzzer.set(userId, !currentVote);
+        this.stateUpdated();
+        let totalVotes = 0
+        this.buzzer.forEach((v, k) =>{
+            totalVotes += v?1:0;
+        });
+
+        this.buzzerActive = totalVotes> (Math.trunc(this.users.length/2));
         this.stateUpdated();
     }
 

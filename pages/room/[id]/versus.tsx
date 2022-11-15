@@ -12,13 +12,22 @@ import ScrumMasterActions from '../../../components/ScrumMasterActions';
 
 const Versus: NextPage = () => {
     const [widthScreen, setWidthScreen] = useState(0);
-    const socket = io();
+    let socket: any;
+    const [stateSocket, setStateSocket] = useState();
     const router = useRouter();
     const roomId = router.query.id;
     const [room, setRoom] = useState<RoomModel>();
     const [myUser, setMyUser] = useState<User>(getStorageValue('USER', null));
+    const [reload, setReload] = useState(false);
 
-    if (roomId !== '' && !room) {
+    if (stateSocket) {
+        socket = stateSocket;
+    } else {
+        socket = io();
+        setStateSocket(socket);
+    }
+    console.log('reload ' + roomId + '  ' + socket.id);
+    if (roomId) {
 		console.log(`displaying room ${roomId}`)
 		socket.emit('get_room', {roomId: roomId}, (room: RoomModel) => {
             setRoom(room);
@@ -29,6 +38,16 @@ const Versus: NextPage = () => {
             }
         });
     }
+    useEffect(() => {
+        socket.on("room_state_update", (r: any) => {
+            console.log("room state update received versus ", r);
+            if (r?.state === States.STARTING) {
+                router.push('/room/'+ roomId);
+            }
+        });
+    }, [socket]);
+
+
 
     const lowest = () => {
         let cards = room?.currentVotes.filter(vote => vote.vote !== -1);
@@ -44,13 +63,22 @@ const Versus: NextPage = () => {
 
     const forceHigh = () => {
         console.log('Force highest : ', highest());
-        socket.emit('force_vote', {roomId, vote: highest()});
+        socket.emit(
+            "validate",
+            { roomId: roomId, finalVote: highest() }
+        );
+        console.log("Validate: Add points and change status room to voting");
+        setReload(true);
     }
 
     const forceLow = () => {
         console.log('Force lowest : ', lowest());
-        socket.emit('force_vote', {roomId, vote: lowest()});
-    }
+            socket.emit(
+                "validate",
+                { roomId: roomId, finalVote: lowest() }
+            );
+            console.log("Validate: Add points and change status room to voting");
+        };
 
     const redoVote = () => {
         console.log('Redo vote : ');
