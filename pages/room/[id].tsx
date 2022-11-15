@@ -216,7 +216,10 @@ const Room = (props: RoomProps) => {
       <div className="row my-3">
         {(user?.role === Role.SCRUM_MASTER ||
           user?.role === Role.VOTING_SCRUM_MASTER) &&
-          room.state === States.STARTING && (
+          room.state === States.STARTING &&
+          room.users.filter(
+            (u) => u?.role === Role.DEV || u?.role === Role.VOTING_SCRUM_MASTER
+          ).length > 1 && (
             <div className="offset-3 col-6 offset-sm-5 col-sm-2">
               <button
                 type="button"
@@ -293,14 +296,19 @@ const Room = (props: RoomProps) => {
           {/* Version PC du Deck */}
           <div className="row">
             <div className="col-2 d-none d-sm-block">
-                {room.roomOptions.coffeeBreakAllowed
-                  && <CoffeBreak user={user} socket={socket} room={room} />}
+              {room.roomOptions.coffeeBreakAllowed && (
+                <CoffeBreak user={user} socket={socket} room={room} />
+              )}
 
-                {room.roomOptions.buzzerAllowed && room.state === States.VOTING
-                  && <Buzzer user={user} socket={socket} room={room}/>}
+              {room.roomOptions.buzzerAllowed &&
+                room.state === States.VOTING && (
+                  <Buzzer user={user} socket={socket} room={room} />
+                )}
             </div>
             <div className="col-8 d-none d-sm-block justify-content-center">
-              {user?.role !== Role.SCRUM_MASTER && user?.role !== Role.SPECTATOR && showBottomDeck()}
+              {user?.role !== Role.SCRUM_MASTER &&
+                user?.role !== Role.SPECTATOR &&
+                showBottomDeck()}
             </div>
             <div className="col-2 d-none d-sm-block justify-content-center">
               <Spectators
@@ -332,37 +340,35 @@ const Room = (props: RoomProps) => {
             <>
               <div className="row mt-5 mt-sm-0 text-center w-100">
                 <div className="d-sm-none col-4">
-                {room.roomOptions.coffeeBreakAllowed
-                  && <CoffeBreak user={user} socket={socket} room={room} />}
+                  {room.roomOptions.coffeeBreakAllowed && (
+                    <CoffeBreak user={user} socket={socket} room={room} />
+                  )}
                 </div>
                 <div className="d-sm-none col-4">
-                {room.state === States.VOTING && (
-                  <div>
-                    {!getVoteByUserId(user.id) &&
-                      <button
-                        className="btn text-white"
-                        onClick={handleShow}
-                      >
-                        <div className="bg-white rounded-circle p-2">
-                          <GiCardRandom color="black" size={80} />
-                        </div>
-                      </button>
-                    }
-                    {getVoteByUserId(user.id) &&
-                      <button
-                        className="btn fw-bold"
-                        onClick={handleShow}>
+                  {room.state === States.VOTING && (
+                    <div>
+                      {!getVoteByUserId(user.id) && (
+                        <button className="btn text-white" onClick={handleShow}>
+                          <div className="bg-white rounded-circle p-2">
+                            <GiCardRandom color="black" size={80} />
+                          </div>
+                        </button>
+                      )}
+                      {getVoteByUserId(user.id) && (
+                        <button className="btn fw-bold" onClick={handleShow}>
                           <div>
                             <Card value={getVoteByUserId(user.id)} />
                           </div>
-                      </button>
-                    }
-                  </div>
-                )}
+                        </button>
+                      )}
+                    </div>
+                  )}
                 </div>
                 <div className="d-sm-none col-4">
-                {room.roomOptions.buzzerAllowed && room.state === States.VOTING
-                  && <Buzzer user={user} socket={socket} room={room}/>}
+                  {room.roomOptions.buzzerAllowed &&
+                    room.state === States.VOTING && (
+                      <Buzzer user={user} socket={socket} room={room} />
+                    )}
                 </div>
               </div>
             </>
