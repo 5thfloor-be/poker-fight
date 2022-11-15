@@ -282,7 +282,7 @@ const Room = (props: RoomProps) => {
           {/* Version PC du Deck */}
           <div className="row">
             <div className="col-10 d-none d-sm-block justify-content-center">
-              {user?.role !== Role.SCRUM_MASTER && showBottomDeck()}
+              {user?.role !== Role.SCRUM_MASTER && user?.role !== Role.SPECTATOR && showBottomDeck()}
             </div>
             <div className="col-2 d-none d-sm-block justify-content-center">
               <Spectators
@@ -310,7 +310,7 @@ const Room = (props: RoomProps) => {
           </div>
 
           {/* Version mobile du Deck */}
-          {user?.role !== Role.SCRUM_MASTER && (
+          {user?.role !== Role.SCRUM_MASTER && user?.role !== Role.SPECTATOR && (
             <>
               <div className="row d-sm-none mt-5 mt-sm-0 ">
                 {room.state === States.VOTING && (
