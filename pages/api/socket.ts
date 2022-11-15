@@ -21,7 +21,7 @@ const SocketHandler = (req: IncomingMessage, res: any) => {
 function configIO(io: Server) {
   io.on("connection", (socket) => {
     /* Supprimer une Room après un certain temps */
-    setInterval(checkValidityRooms, 10000);
+    setInterval(checkValidityRooms, 30 * 60 * 30);
     function checkValidityRooms() {
       const roomsToDelete = Array.from(rooms.values())
         .filter(
