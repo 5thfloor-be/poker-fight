@@ -33,8 +33,10 @@ const UserContextProvider = (props: any) => {
 
   useEffect(() => {
     const saved = localStorage.getItem("USER");
-    initailValue = JSON.parse(saved ? saved : "");
-    setUser(initailValue);
+    if(saved){
+      initailValue = JSON.parse(saved ? saved : "");
+      setUser(initailValue);
+    }
   }, []);
 
   useEffect(() => {
