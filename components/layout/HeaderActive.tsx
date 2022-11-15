@@ -62,21 +62,21 @@ const HeaderActive = () => {
 
                   {!showAlert ? (
                     <button
-                      className=" btn btn-primary rounded-5 px-sm-3"
+                      className=" btn btn-primary rounded-5 px-sm-3 fw-bold"
                       onClick={() => {
                         navigator.clipboard.writeText(urlValue);
                         setShowAlert(!showAlert);
                       }}
                     >
-                      Copy
+                      COPY
                     </button>
                   ) : (
                     <button
                       disabled
-                      className=" btn btn-success rounded-5 px-sm-3 opacity-100"
+                      className=" btn btn-success rounded-5 px-sm-3 opacity-100 fw-bold"
                     >
                       <MdOutlineCheck color="white" className="me-1" />
-                      Copied
+                      COPIED
                     </button>
                   )}
                 </div>
@@ -106,7 +106,7 @@ const HeaderActive = () => {
                 />
                 {isRoomActive && (
                   <button onClick={quitHandler} className="btn btn-danger mt-1">
-                    <IoExitOutline color="red" size={40} />
+                    <IoExitOutline color="white" size={30} />
                   </button>
                 )}
               </div>
