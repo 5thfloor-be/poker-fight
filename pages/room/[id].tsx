@@ -90,14 +90,14 @@ const Room = (props: RoomProps) => {
         setRoom(r);
       });
 
-      socket.on("user_removed", (data: any) =>{
-        console.log("user removed :", data)
+      socket.on("user_removed", (data: any) => {
+        console.log("user removed :", data);
         console.log("user :", user);
-        if(data.userId === user.id){
-          console.log('leaving')
-          socket.emit("leave", {roomId: roomId})
+        if (data.userId === user.id) {
+          console.log("leaving");
+          socket.emit("leave", { roomId: roomId });
         }
-      })
+      });
     } // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [socket]);
 
@@ -182,8 +182,8 @@ const Room = (props: RoomProps) => {
   };
 
   const removeUser = (userToRemove: User) => {
-      socket.emit('remove_user', {roomId: room.id, userId: userToRemove.id})
-  }
+    socket.emit("remove_user", { roomId: room.id, userId: userToRemove.id });
+  };
 
   return (
     <div className="container">
@@ -319,11 +319,14 @@ const Room = (props: RoomProps) => {
             </div>
           </div>
 
-          <div className="d-sm-none">
-            <FaEye
-              size={80}
-              onClick={() => setShowSpectators(!showSpectators)}
-            />
+          <div className="d-sm-none text-center">
+            {room.users.filter((u) => u?.role === Role.SPECTATOR).length >
+              0 && (
+              <FaEye
+                size={80}
+                onClick={() => setShowSpectators(!showSpectators)}
+              />
+            )}
             {showSpectators && (
               <ModalSpectators
                 showSpectators={showSpectators}
