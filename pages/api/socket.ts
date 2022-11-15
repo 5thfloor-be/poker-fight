@@ -24,7 +24,8 @@ function configIO(io: Server) {
     function checkValidityRooms() {
       const roomsToDelete = Array.from(rooms.values())
         .filter(
-          (room) => (new Date().getTime() - room.modified.getTime()) / 1000 > 10
+          (room) =>
+            (new Date().getTime() - room.modified.getTime()) / 1000 > 8 * 3600
         )
         .map((room) => room.id);
 
