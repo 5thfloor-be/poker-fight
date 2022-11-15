@@ -84,7 +84,11 @@ function configIO(io: Server) {
 
       let roomIdTemp = Math.floor(Math.random() * 100000);
 
-      while (!!rooms.get(roomIdTemp.toString()) || roomIdTemp === 0) {
+      while (
+        !!rooms.get(roomIdTemp.toString()) ||
+        roomIdTemp === 0 ||
+        roomIdTemp < 10000
+      ) {
         roomIdTemp = Math.floor(Math.random() * 100000);
       }
 
