@@ -64,7 +64,15 @@ function configIO(io: Server) {
 
     socket.on("create_room", (data, listener) => {
       console.log(`Creating room with data `, data);
-      const roomId = uuid();
+
+      let roomIdTemp = Math.floor(Math.random() * 100000);
+
+      while (!!rooms.get(roomIdTemp.toString()) || roomIdTemp === 0) {
+        roomIdTemp = Math.floor(Math.random() * 100000);
+      }
+
+      const roomId = roomIdTemp.toString();
+
       const room = new Room(roomId, data);
       room.registerOnChangeCallback((room: Room) => {
         console.log(`room state update sent${JSON.stringify(room)}`);
@@ -111,10 +119,10 @@ function configIO(io: Server) {
       rooms.get(data.roomId)?.coffeeBreakVote(data.userId);
     });
 
-    socket.on('coffee_break_over', (data) =>{
+    socket.on("coffee_break_over", (data) => {
       console.log(`coffee_break_over ${JSON.stringify(data)}`);
       rooms.get(data.roomId)?.coffeeBreakOver();
-    })
+    });
 
     socket.on("buzzer_vote", (data) => {
       console.log(`buzzer_vote ${JSON.stringify(data)}`);
@@ -134,7 +142,6 @@ function configIO(io: Server) {
       console.log(`room : ${JSON.stringify(room)}`);
       listener(room);
     });
-
   });
 }
 
