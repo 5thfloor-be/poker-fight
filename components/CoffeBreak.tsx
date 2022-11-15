@@ -46,11 +46,12 @@ const CoffeeBreak = ({
 
     return (
         <div>
-            <button id = "coffeeButton" onClick={() => vote()} className="btn btn-dark text-white">
+            {user.role !== Role.SPECTATOR
+                &&<button id = "coffeeButton" onClick={() => vote()} className="btn btn-dark text-white">
                 {coffeeVoted&&<MdCoffee />}
                 {!coffeeVoted&&<MdOutlineCoffee />}
 
-            </button>
+            </button>}
 
             <Modal
                 size="lg"
