@@ -79,8 +79,8 @@ const Buzzer = ({
                 </Modal.Header>
                 <Modal.Body>
                     <div className="container bg-dark  ">
-                            <h1>LET'S MOVE !!!</h1>
-                            Ok, it's time to accelarate the debate or to reveal the vote.
+                            <h1>LET&apos;S MOVE !!!</h1>
+                            Ok, it&apos;s time to accelarate the debate or to reveal the vote.
                     </div>
                     <TbTruckDelivery size={100} />
                 </Modal.Body>

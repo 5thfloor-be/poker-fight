@@ -72,7 +72,7 @@ const CoffeeBreak = ({
                 </Modal.Header>
                 <Modal.Body>
                     <div className="container bg-dark  ">
-                            <h1>IT'S COFFEE TIME !!!</h1>
+                            <h1>IT&apos;S COFFEE TIME !!!</h1>
                             A short break to refresh the brain.
                     </div>
                     <CgCoffee size={100} className="mt-3"/>
