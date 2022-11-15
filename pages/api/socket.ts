@@ -121,6 +121,11 @@ function configIO(io: Server) {
       rooms.get(data.roomId)?.buzzerVote(data.userId);
     });
 
+    socket.on('buzzer_canceled', data => {
+      console.log(`buzzer_canceled ${JSON.stringify(data)}`);
+      rooms.get(data.roomId)?.buzzerCanceled();
+    })
+
     socket.on("start_voting", (data) => {
       console.log(`start_voting ${JSON.stringify(data)}`);
       rooms.get(data.roomId)?.startVoting();
