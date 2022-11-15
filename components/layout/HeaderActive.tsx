@@ -29,7 +29,7 @@ const HeaderActive = () => {
   };
 
   return (
-    <div>
+    <>
       {!!room?.id && (
         <div className="container mx-0 mw-100">
           <div
@@ -114,7 +114,7 @@ const HeaderActive = () => {
           </div>
         </div>
       )}
-    </div>
+    </>
   );
 };
 
