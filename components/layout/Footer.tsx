@@ -5,7 +5,7 @@ import styles from "../../styles/Footer.module.css";
 
 const Footer: NextPage = () => {
   return (
-    <footer className={styles.container}>
+    <footer>
       <div className="text-bg-dark pt-2 mx-0 ps-2">
         <div className="container">
           <div className="row">
