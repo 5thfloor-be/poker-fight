@@ -281,7 +281,14 @@ const Room = (props: RoomProps) => {
         <>
           {/* Version PC du Deck */}
           <div className="row">
-            <div className="col-10 d-none d-sm-block justify-content-center">
+            <div className="col-2 d-none d-sm-block">
+                {room.roomOptions.coffeeBreakAllowed
+                  && <CoffeBreak user={user} socket={socket} room={room} />}
+
+                {room.roomOptions.buzzerAllowed && room.state === States.VOTING
+                  && <Buzzer user={user} socket={socket} room={room}/>}
+            </div>
+            <div className="col-8 d-none d-sm-block justify-content-center">
               {user?.role !== Role.SCRUM_MASTER && user?.role !== Role.SPECTATOR && showBottomDeck()}
             </div>
             <div className="col-2 d-none d-sm-block justify-content-center">
@@ -312,30 +319,32 @@ const Room = (props: RoomProps) => {
           {/* Version mobile du Deck */}
           {user?.role !== Role.SCRUM_MASTER && user?.role !== Role.SPECTATOR && (
             <>
-              <div className="row d-sm-none mt-5 mt-sm-0 ">
+              <div className="row mt-5 mt-sm-0 ">
+                <div className="d-sm-none col-4">
+                {room.roomOptions.coffeeBreakAllowed
+                  && <CoffeBreak user={user} socket={socket} room={room} />}
+                </div>
+                <div className="d-sm-none  col-4">
                 {room.state === States.VOTING && (
                   <div className="col text-center h-100">
                     <button
-                      className="btn btn-lg btn-light rounded-5 fw-bold"
+                      className="btn btn-lg btn-light rounded-circle fw-bold"
                       onClick={handleShow}
                     >
-                      <h1>
-                        <GiCardRandom />
-                      </h1>
+                        <GiCardRandom size={80} />
                     </button>
                   </div>
                 )}
+                </div>
+                <div className="d-sm-none col-4">
+                {room.roomOptions.buzzerAllowed && room.state === States.VOTING
+                  && <Buzzer user={user} socket={socket} room={room}/>}
+                </div>
               </div>
             </>
           )}
         </>
       </div>
-
-      {room.roomOptions.coffeeBreakAllowed
-          && <CoffeBreak user={user} socket={socket} room={room} />}
-
-      {room.roomOptions.buzzerAllowed && room.state === States.VOTING
-          && <Buzzer user={user} socket={socket} room={room}/>}
 
       <Modal size="lg" centered={true} contentClassName="bg-dark" show={show}>
         <Modal.Header style={{ border: "none" }}>

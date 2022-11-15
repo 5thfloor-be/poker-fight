@@ -135,14 +135,16 @@ const CreateRoom = (props: CreateRoomProps) => {
                   />
                 </div>
                 <div className="col mt-3">
-                  <div className="form-check">
+                  <div className="form-switch">
                     <input
-                      className="form-check-input"
-                      type="checkbox"
-                      checked={checkedVoter}
-                      onChange={handleChangeCheckbox}
+                        id="voting-toggle"
+                        className="form-check-input p-2"
+                        type="checkbox"
+                        role="switch"
+                        checked={checkedVoter}
+                        onChange={handleChangeCheckbox}
                     ></input>
-                    <label className="form-check-label text-white ps-2">
+                    <label className="form-check-label text-white ps-2" htmlFor="voting-toggle">
                       Can vote (check the box if the Scrum Master can vote too)
                     </label>
                   </div>
@@ -298,7 +300,7 @@ const CreateRoom = (props: CreateRoomProps) => {
                 </label>
               </div>
             </div>
-            <div className="row pt-3">
+            {/*<div className="row pt-3">
               <div className="col-3 col-sm-2 offset-sm-3 text-end">
                 <input
                   id="timer"
@@ -345,7 +347,7 @@ const CreateRoom = (props: CreateRoomProps) => {
                   countdown
                 </span>
               </div>
-            </div>
+            </div>*/}
             <div className="row pt-3">
               <div className="col-3 col-sm-2 offset-sm-3 form-switch text-end">
                 <input
