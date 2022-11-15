@@ -135,11 +135,6 @@ function configIO(io: Server) {
       listener(room);
     });
 
-    socket.on("force_vote", (data) => {
-      const roomId = data.roomId;
-      rooms.get(roomId)?.forceVote(data.vote);
-      socket.to(data.roomId).emit("force_vote", rooms.get(roomId));
-    });
   });
 }
 
