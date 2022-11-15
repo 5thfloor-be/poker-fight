@@ -2,7 +2,6 @@ import { IncomingMessage } from "http";
 import { v4 as uuid } from "uuid";
 import { Server } from "socket.io";
 import Room from "./model/room";
-import {data} from "browserslist";
 
 const rooms: Map<string, Room> = new Map();
 
