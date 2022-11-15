@@ -2,6 +2,7 @@ import { IncomingMessage } from "http";
 import { v4 as uuid } from "uuid";
 import { Server } from "socket.io";
 import Room from "./model/room";
+import {data} from "browserslist";
 
 const rooms: Map<string, Room> = new Map();
 
@@ -73,11 +74,15 @@ function configIO(io: Server) {
       listener(userIdTemp);
     });
 
-    socket.on("leave_room", (data) => {
-      console.log(`${socket.id} is leaving ${data}`);
-      socket.leave(data.roomId);
-      rooms.get(data.roomId)?.removeUser(socket.id);
+    socket.on("remove_user", (data) => {
+      console.log(`${data.userId} is removed `, data);
+      rooms.get(data.roomId)?.removeUser(data.userId);
+      socket.to(data.roomId).emit('user_removed', {userId: data.userId});
     });
+
+    socket.on("leave_room", (data) =>{
+      socket.leave(data.roomId)
+    })
 
     socket.on("create_room", (data, listener) => {
       console.log(`Creating room with data `, data);
