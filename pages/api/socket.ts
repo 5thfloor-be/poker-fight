@@ -91,6 +91,11 @@ function configIO(io: Server) {
       socket.to(data.roomId).emit("reveal", rooms.get(data.roomId));
     });
 
+    socket.on("validate", (data) => {
+      console.log(`validate from scrum master ${JSON.stringify(data)}`);
+      rooms.get(data.roomId)?.applyFinalVote(+data.finalVote);
+    });
+
     socket.on("redo_vote", (data) => {
       console.log(`redo vote from scrum master ${JSON.stringify(data)}`);
       let room = rooms.get(data.roomId);
@@ -103,8 +108,13 @@ function configIO(io: Server) {
 
     socket.on("cofee_break_vote", (data) => {
       console.log(`cofee_break_vote ${JSON.stringify(data)}`);
-      rooms.get(data.roomId)?.cofeeBreakVote(data.userId);
+      rooms.get(data.roomId)?.coffeeBreakVote(data.userId);
     });
+
+    socket.on('coffee_break_over', (data) =>{
+      console.log(`coffee_break_over ${JSON.stringify(data)}`);
+      rooms.get(data.roomId)?.coffeeBreakOver();
+    })
 
     socket.on("buzz_break_vote", (data) => {
       console.log(`buzz_break_vote ${JSON.stringify(data)}`);

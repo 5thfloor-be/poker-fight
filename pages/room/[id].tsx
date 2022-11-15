@@ -10,6 +10,7 @@ import Modal from "react-bootstrap/Modal";
 import { Button } from "react-bootstrap";
 import { UserContext } from "../../context/UserContext";
 import { io } from "socket.io-client";
+import CoffeBreak from "../../components/CoffeBreak";
 import Spectators from "../../components/Spectators";
 import { FaEye } from "react-icons/fa";
 import ModalSpectators from "../../components/ModalSpectators";
@@ -21,7 +22,8 @@ type RoomProps = {
 const Room = (props: RoomProps) => {
   const router = useRouter();
   const roomId = router.query.id;
-  const { user, setUser, setTargetPoints } = useContext(UserContext);
+  const { user, setUser, setTargetPoints, setCurrentPoints } =
+    useContext(UserContext);
   const [cardValues, setCardValues] = useState<any>([]);
   const [stateSocket, setStateSocket] = useState();
   const [room, setRoom] = useState<RoomModel>();
@@ -65,6 +67,7 @@ const Room = (props: RoomProps) => {
       socket.emit("get_room", { roomId: roomId }, (room: RoomModel) => {
         setRoom(room);
         setTargetPoints(room.roomOptions.targetPoints);
+        setCurrentPoints(room.currentPoints);
         setCardValues(room.roomOptions.cardValues);
       });
     }
@@ -88,6 +91,7 @@ const Room = (props: RoomProps) => {
       socket.on("room_state_update", (r: any) => {
         console.log("room state update received ", r);
         setRoom(r);
+        setCurrentPoints(r.currentPoints);
         if (room?.state === States.FIGHTING) {
           // router.push(`versus/${data.roomId}`);
         }
@@ -131,6 +135,14 @@ const Room = (props: RoomProps) => {
   };
 
   const validate = () => {
+    socket.emit(
+      "validate",
+      { roomId: roomId, finalVote: room?.wondrousVote },
+      (r: any) => {
+        console.log("room", r);
+        setRoom(r);
+      }
+    );
     console.log("Validate: Add points and change status room to voting");
   };
 
@@ -322,6 +334,7 @@ const Room = (props: RoomProps) => {
           )}
         </>
       </div>
+      <CoffeBreak user={user} socket={socket} room={room} />
       <Modal size="lg" centered={true} contentClassName="bg-dark" show={show}>
         <Modal.Header style={{ border: "none" }}>
           <Modal.Title className="w-100">
