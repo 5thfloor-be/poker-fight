@@ -319,20 +319,33 @@ const Room = (props: RoomProps) => {
           {/* Version mobile du Deck */}
           {user?.role !== Role.SCRUM_MASTER && user?.role !== Role.SPECTATOR && (
             <>
-              <div className="row mt-5 mt-sm-0 ">
+              <div className="row mt-5 mt-sm-0 text-center w-100">
                 <div className="d-sm-none col-4">
                 {room.roomOptions.coffeeBreakAllowed
                   && <CoffeBreak user={user} socket={socket} room={room} />}
                 </div>
-                <div className="d-sm-none  col-4">
+                <div className="d-sm-none col-4">
                 {room.state === States.VOTING && (
-                  <div className="col text-center h-100">
-                    <button
-                      className="btn btn-lg btn-light rounded-circle fw-bold"
-                      onClick={handleShow}
-                    >
-                        <GiCardRandom size={80} />
-                    </button>
+                  <div>
+                    {!getVoteByUserId(user.id) &&
+                      <button
+                        className="btn text-white"
+                        onClick={handleShow}
+                      >
+                        <div className="bg-white rounded-circle p-2">
+                          <GiCardRandom color="black" size={80} />
+                        </div>
+                      </button>
+                    }
+                    {getVoteByUserId(user.id) &&
+                      <button
+                        className="btn fw-bold"
+                        onClick={handleShow}>
+                          <div>
+                            <Card value={getVoteByUserId(user.id)} />
+                          </div>
+                      </button>
+                    }
                   </div>
                 )}
                 </div>
