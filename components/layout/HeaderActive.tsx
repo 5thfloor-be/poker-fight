@@ -6,6 +6,7 @@ import { UserContext } from "../../context/UserContext";
 import EditProfile from "../EditProfile";
 import RoomModel, { States } from "../../pages/api/model/room";
 import { io } from "socket.io-client";
+import { IoExitOutline } from "react-icons/io5";
 
 const HeaderActive = () => {
   const { isRoomActive, setIsRoomActive, user, setUser, room } =
@@ -105,7 +106,7 @@ const HeaderActive = () => {
                 />
                 {isRoomActive && (
                   <button onClick={quitHandler} className="btn btn-danger mt-1">
-                    Quit
+                    <IoExitOutline color="red" size={40} />
                   </button>
                 )}
               </div>
