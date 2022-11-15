@@ -21,8 +21,14 @@ const Buzzer = ({
     const canClose = user.role === Role.SCRUM_MASTER || user.role === Role.VOTING_SCRUM_MASTER;
 
 
-    const finish = () => {
-        socket.emit("coffee_break_over", {
+    const cancel = () => {
+        socket.emit("buzzer_canceled", {
+            roomId: room.id
+        })
+    };
+
+    const reveal = () => {
+        socket.emit("reveal", {
             roomId: room.id
         })
     };
@@ -47,8 +53,8 @@ const Buzzer = ({
     return (
         <div>
             <button id = "buzzerButton" onClick={() => vote()} className="btn btn-dark text-white">
-                {buzzerVoted&&<BsSpeedometer2 />}
-                {!buzzerVoted&&<BsSpeedometer2 className="text-danger" />}
+                {buzzerVoted&&<BsSpeedometer2 className="text-danger"/>}
+                {!buzzerVoted&&<BsSpeedometer2  />}
 
             </button>
 
@@ -74,10 +80,10 @@ const Buzzer = ({
                     <div className="container">
                         <div className="row">
                             <div className="col-12 col-lg-6">
-                                {canClose && <button onClick={finish} className="btn btn-primary fw-bold mb-3 w-100">REVEAL</button>}
+                                {canClose && <button onClick={reveal} className="btn btn-primary fw-bold mb-3 w-100">REVEAL</button>}
                             </div>
                             <div className="col-12 col-lg-6">
-                                {canClose && <button onClick={finish} className="btn btn-danger fw-bold mb-3 w-100">CANCEL</button>}
+                                {canClose && <button onClick={cancel} className="btn btn-danger fw-bold mb-3 w-100">CANCEL</button>}
 
                             </div>
                         </div>
