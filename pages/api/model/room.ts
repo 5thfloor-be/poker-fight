@@ -5,7 +5,7 @@ import UserVote from './userVote';
 export default class Room {
     users: User[] = [];
     modified: Date = new Date();
-    coffeBreak: Map<string, boolean> = new Map();
+    coffeeBreak: Map<string, boolean> = new Map();
     buzzer: Map<string, boolean> = new Map();
     // currentVotes: Map<string, string> = new Map();
     currentVotes: UserVote[] = [];
@@ -14,9 +14,10 @@ export default class Room {
     currentPoints: number = 0;
     roomOptions: RoomOptions
     onChangeCallbacks: OnChangeCallback[] = [];
+    coffeeBreakActive = false;
 
 
-    constructor(private id: string, roomOptions: RoomOptions) {
+    constructor(public id: string, roomOptions: RoomOptions) {
         this.roomOptions = roomOptions;
     }
 
@@ -44,9 +45,21 @@ export default class Room {
         this.stateUpdated();
     }
 
-    cofeeBreakVote(userId: string){
-        const currentVote = this.coffeBreak.get(userId) ? this.coffeBreak.get(userId) : false
-        this.coffeBreak.set(userId, !currentVote);
+    coffeeBreakVote(userId: string){
+        const currentVote = this.coffeeBreak.get(userId) ? this.coffeeBreak.get(userId) : false
+        this.coffeeBreak.set(userId, !currentVote);
+        let totalVotes = 0
+        this.coffeeBreak.forEach((v, k) =>{
+            totalVotes += v?1:0;
+        });
+
+        this.coffeeBreakActive = totalVotes> (Math.trunc(this.users.length/2));
+        this.stateUpdated();
+    }
+
+    coffeeBreakOver(){
+        this.coffeeBreak.clear();
+        this.coffeeBreakActive = false;
         this.stateUpdated();
     }
 
