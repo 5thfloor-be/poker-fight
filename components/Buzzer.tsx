@@ -52,11 +52,12 @@ const Buzzer = ({
 
     return (
         <div>
-            <button id = "buzzerButton" onClick={() => vote()} className="btn btn-dark text-white">
-                {buzzerVoted&&<BsSpeedometer2 className="text-danger"/>}
-                {!buzzerVoted&&<BsSpeedometer2  />}
+            {user.role !== Role.SPECTATOR
+                &&<button id="buzzerButton" onClick={() => vote()} className="btn btn-dark text-white">
+                {buzzerVoted && <BsSpeedometer2 className="text-danger"/>}
+                {!buzzerVoted && <BsSpeedometer2/>}
 
-            </button>
+            </button>}
 
             <Modal
                 size="lg"

@@ -330,8 +330,13 @@ const Room = (props: RoomProps) => {
           )}
         </>
       </div>
-      <CoffeBreak user={user} socket={socket} room={room} />
-      <Buzzer user={user} socket={socket} room={room} />
+
+      {room.roomOptions.coffeeBreakAllowed
+          && <CoffeBreak user={user} socket={socket} room={room} />}
+
+      {room.roomOptions.buzzerAllowed && room.state === States.VOTING
+          && <Buzzer user={user} socket={socket} room={room}/>}
+
       <Modal size="lg" centered={true} contentClassName="bg-dark" show={show}>
         <Modal.Header style={{ border: "none" }}>
           <Modal.Title className="w-100">
