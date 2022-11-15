@@ -135,14 +135,16 @@ const CreateRoom = (props: CreateRoomProps) => {
                   />
                 </div>
                 <div className="col mt-3">
-                  <div className="form-check">
+                  <div className="form-switch">
                     <input
-                      className="form-check-input"
-                      type="checkbox"
-                      checked={checkedVoter}
-                      onChange={handleChangeCheckbox}
+                        id="voting-toggle"
+                        className="form-check-input p-2"
+                        type="checkbox"
+                        role="switch"
+                        checked={checkedVoter}
+                        onChange={handleChangeCheckbox}
                     ></input>
-                    <label className="form-check-label text-white ps-2">
+                    <label className="form-check-label text-white ps-2" htmlFor="voting-toggle">
                       Can vote (check the box if the Scrum Master can vote too)
                     </label>
                   </div>
