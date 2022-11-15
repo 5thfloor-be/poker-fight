@@ -4,6 +4,7 @@ import User, {Role} from "../pages/api/model/user";
 import Room from "../pages/api/model/room";
 import {BsSpeedometer2} from "react-icons/bs";
 import {TbTruckDelivery} from "react-icons/tb";
+import styles from "../styles/Buzzer.module.css"
 
 export interface BuzzerProps {
     user:User,
@@ -53,9 +54,15 @@ const Buzzer = ({
     return (
         <div>
             {user.role !== Role.SPECTATOR
-                &&<button id="buzzerButton" onClick={() => vote()} className="btn btn-dark text-white">
-                {buzzerVoted && <BsSpeedometer2 className="text-danger"/>}
-                {!buzzerVoted && <BsSpeedometer2/>}
+                &&<button id="buzzerButton" onClick={() => vote()} className="btn text-white">
+                {buzzerVoted && 
+                    <div className="bg-white rounded-circle p-2">
+                        <BsSpeedometer2 size={80} color="green" className="pb-2"/>
+                    </div>}
+                {!buzzerVoted &&
+                    <div className={`bg-white rounded-circle p-2 ${styles.flipX}`}>
+                        <BsSpeedometer2 size={80} color="green" className="pb-2" />
+                    </div>}
 
             </button>}
 

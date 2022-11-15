@@ -47,9 +47,15 @@ const CoffeeBreak = ({
     return (
         <div>
             {user.role !== Role.SPECTATOR
-                &&<button id = "coffeeButton" onClick={() => vote()} className="btn btn-dark text-white">
-                {coffeeVoted&&<MdCoffee />}
-                {!coffeeVoted&&<MdOutlineCoffee />}
+                &&<button id = "coffeeButton" onClick={() => vote()} className="btn text-white">
+                {coffeeVoted &&
+                    <div className="bg-white rounded-circle p-2">
+                        <MdCoffee color="green" size={80} />
+                    </div>}
+                {!coffeeVoted && 
+                    <div className="bg-white rounded-circle p-2">
+                        <MdOutlineCoffee color="green" size={80} />
+                    </div>}
 
             </button>}
 
