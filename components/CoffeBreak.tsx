@@ -1,6 +1,5 @@
 import {Modal} from "react-bootstrap";
 import {useEffect, useState} from "react";
-import {bool} from "prop-types";
 import User, {Role} from "../pages/api/model/user";
 import Room from "../pages/api/model/room";
 import {MdCoffee, MdOutlineCoffee} from "react-icons/md";
@@ -19,7 +18,7 @@ const CoffeeBreak = ({
                      }:CoffeBreakProps) => {
     const [show, setShow] = useState(false);
     const [coffeeVoted, setCoffeeVoted] = useState(false)
-    const canClose = user.role === Role.SCRUM_MASTER;
+    const canClose = user.role === Role.SCRUM_MASTER || user.role === Role.VOTING_SCRUM_MASTER;
 
 
     const finish = () => {
