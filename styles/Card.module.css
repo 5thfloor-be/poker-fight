@@ -1,14 +1,12 @@
 .customCard {
-  backgroundImage: url('/images/card-backgound.png');
-  backgroundPosition: 'center';
-  backgroundRepeat: 'no-repeat';
-  backgroundSize: 'cover';
   height: 11em;
   width: 7em;
+  margin-bottom: 5px;
 }
 
 .customCardSelected {
   background-color: yellow;
+  margin-bottom: 5px;
 }
 
 .contentCard {
@@ -22,7 +20,6 @@
 
 .logoBottom {
   transform: rotate(180deg);
-
 }
 
 @media (max-width: 576px) {
@@ -42,4 +39,3 @@
     padding-top: 1em;
   }
 }
-

@@ -2,14 +2,13 @@ import React, { useContext } from "react";
 import { UserContext } from "../../context/UserContext";
 import Footer from "./Footer";
 import HeaderActive from "./HeaderActive";
-import HeaderNonActive from "./HeaderNonActive";
 import styles from "../../styles/Layout.module.css";
 
 //Determine if where are in active Layout or not
 const Layout = ({ children }) => {
   const { isRoomActive } = useContext(UserContext);
 
-  let myHeader = <HeaderNonActive />;
+  let myHeader = "";
   let myStyle = styles.nonActive;
 
   if (isRoomActive) {

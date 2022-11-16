@@ -1,8 +1,7 @@
-import { useState, useContext, useEffect } from "react";
+import { useContext, useEffect } from "react";
 import { Button, Modal } from "react-bootstrap";
 import { MdAccountCircle } from "react-icons/md";
 import { CirclePicker } from "react-color";
-import { setStorageValue } from "./UseLocalStorage";
 import { UserContext } from "../context/UserContext";
 
 type EditProfileProps = {

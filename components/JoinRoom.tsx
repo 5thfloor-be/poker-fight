@@ -49,8 +49,15 @@ const JoinRoom = (props: JoinRoomProps) => {
     //Activate the active header
     setIsRoomActive(true);
 
-    setUser({ ...user, role: isDev === 1 ? Role.DEV : Role.SPECTATOR });
-
+    if (
+      (user.role === Role.SCRUM_MASTER ||
+        user.role === Role.VOTING_SCRUM_MASTER) &&
+      user.roomId === roomId
+    ) {
+      setUser({ ...user, role: user.role });
+    } else {
+      setUser({ ...user, role: isDev === 1 ? Role.DEV : Role.SPECTATOR });
+    }
     router.push(`/room/${roomId}`);
   };
 
@@ -128,39 +135,47 @@ const JoinRoom = (props: JoinRoomProps) => {
               </div>
             </div>
             <div className="row">
-              <ToggleButtonGroup
-                type="radio"
-                name="options"
-                defaultValue={isDev}
-                onChange={toggle}
-                className="mt-3"
-              >
-                <ToggleButton
-                  id="dev"
-                  value={1}
-                  style={
-                    isDev === 1
-                      ? { backgroundColor: "#0d6efd" }
-                      : { backgroundColor: "transparent" }
-                  }
+              {(user.role === Role.SCRUM_MASTER ||
+                user.role === Role.VOTING_SCRUM_MASTER) &&
+              user.roomId === roomId ? (
+                <div className="text-center text-white mt-3">
+                  <h3>You are the Scrum Master of this Room</h3>
+                </div>
+              ) : (
+                <ToggleButtonGroup
+                  type="radio"
+                  name="options"
+                  defaultValue={isDev}
+                  onChange={toggle}
+                  className="mt-3"
                 >
-                  <MdOutlineKeyboard className="me-3" size={28} />
-                  Developer
-                </ToggleButton>
-                <MdCode className="mx-3 mt-2" size={26} color={"white"} />
-                <ToggleButton
-                  id="spec"
-                  value={2}
-                  style={
-                    isDev === 2
-                      ? { backgroundColor: "#0d6efd" }
-                      : { backgroundColor: "transparent" }
-                  }
-                >
-                  <MdOutlineTagFaces className="me-3" size={28} />
-                  Spectactor
-                </ToggleButton>
-              </ToggleButtonGroup>
+                  <ToggleButton
+                    id="dev"
+                    value={1}
+                    style={
+                      isDev === 1
+                        ? { backgroundColor: "#0d6efd" }
+                        : { backgroundColor: "transparent" }
+                    }
+                  >
+                    <MdOutlineKeyboard className="me-3" size={28} />
+                    Developer
+                  </ToggleButton>
+                  <MdCode className="mx-3 mt-2" size={26} color={"white"} />
+                  <ToggleButton
+                    id="spec"
+                    value={2}
+                    style={
+                      isDev === 2
+                        ? { backgroundColor: "#0d6efd" }
+                        : { backgroundColor: "transparent" }
+                    }
+                  >
+                    <MdOutlineTagFaces className="me-3" size={28} />
+                    Spectactor
+                  </ToggleButton>
+                </ToggleButtonGroup>
+              )}
             </div>
           </div>
         </Modal.Body>

@@ -210,7 +210,7 @@ const CreateRoom = (props: CreateRoomProps) => {
                       pattern="[A-Za-z0-9-?_]{1,2}"
                       title="Letters, numbers, and ? only"
                       maxLength={2}
-                      size={1}
+                      size={2}
                       onChange={(e) => {
                         setValueNewCard(e.target.value);
                       }}
@@ -267,7 +267,7 @@ const CreateRoom = (props: CreateRoomProps) => {
                   pattern="[0-9]{1,3}"
                   title="Numbers only"
                   maxLength={3}
-                  size={1}
+                  size={2}
                   onChange={(e) => {
                     setRoomSettings({
                       ...roomSettings,

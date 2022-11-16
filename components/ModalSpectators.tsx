@@ -1,10 +1,4 @@
-import { useContext, useState, useEffect } from "react";
-import {
-  Button,
-  Modal,
-  ToggleButton,
-  ToggleButtonGroup,
-} from "react-bootstrap";
+import { Button, Modal } from "react-bootstrap";
 import User from "../pages/api/model/user";
 import Spectators from "./Spectators";
 

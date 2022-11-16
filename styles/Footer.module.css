@@ -5,3 +5,11 @@
   right: 0px;
   margin-bottom: 0px;
 }
+
+.containeractivefooter {
+  position: fixed;
+  bottom: 40px;
+  left: 0px;
+  right: 0px;
+  margin-bottom: 0px;
+}

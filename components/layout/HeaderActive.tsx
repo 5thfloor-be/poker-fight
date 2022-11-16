@@ -1,9 +1,8 @@
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { useContext, useEffect, useState } from "react";
-import { MdAccountCircle, MdOutlineCheck } from "react-icons/md";
+import { MdOutlineCheck } from "react-icons/md";
 import { UserContext } from "../../context/UserContext";
-import EditProfile from "../EditProfile";
 import { IoExitOutline } from "react-icons/io5";
 
 const HeaderActive = () => {
@@ -11,7 +10,6 @@ const HeaderActive = () => {
     useContext(UserContext);
   const path = useRouter();
   const router = useRouter();
-  const [showEditProfile, setShowEditProfile] = useState(false);
   const [widthScreen, setWidthScreen] = useState(0);
   const urlValue = "http://www.poker-fight.com/room/" + router.query.id;
   const [showAlert, setShowAlert] = useState(false);
@@ -29,12 +27,12 @@ const HeaderActive = () => {
   return (
     <>
       {room && room.id && (
-        <div className="container mx-0 mw-100">
+        <div className="container mx-0 mw-100 mb-2">
           <div
             className="row text-center"
-            style={widthScreen < 576 ? { paddingTop: 0 } : { paddingTop: 40 }}
+            style={widthScreen < 576 ? { paddingTop: 0 } : { paddingTop: 30 }}
           >
-            <div className="col-10 ps-1 pt-2 pt-sm-0 col-sm-3 ">
+            <div className="col-8 offset-2 ps-1 pt-2 pt-sm-1 col-sm-3 offset-sm-0">
               <Image
                 src="/images/logo-project.png"
                 width={300}
@@ -42,13 +40,8 @@ const HeaderActive = () => {
                 alt="logo"
               />
             </div>
-            <div className="col-2 d-sm-none px-1 text-center">
-              <MdAccountCircle
-                size={60}
-                color={user ? user.color : "#ffffff"}
-              />
-            </div>
-            <div className="col-12 col-sm-4 mx-0 px-0 pt-2">
+
+            <div className="col-12 col-sm-4 mx-0 px-0 pt-sm-2">
               {isRoomActive && (
                 <div className="input-group w100">
                   <input
@@ -87,27 +80,19 @@ const HeaderActive = () => {
                     className=" btn btn-success rounded-5 form-control fw-bold opacity-100"
                     disabled
                   >
-                    Points to achieve : {room.currentPoints ? room.currentPoints : 0} /
+                    Points to achieve :{" "}
+                    {room.currentPoints ? room.currentPoints : 0} /
                     {room.roomOptions.targetPoints}
                   </button>
                 </div>
               )}
             </div>
-            <div
-              className="d-none d-sm-block px-3 col-sm-1"
-              style={{ textAlign: "right" }}
-            >
-              <div className="col-sm-6">
-                <EditProfile
-                  showEditProfile={showEditProfile}
-                  setShowEditProfile={() => setShowEditProfile(true)}
-                />
-                {isRoomActive && (
-                  <button onClick={quitHandler} className="btn btn-danger mt-1">
-                    <IoExitOutline color="white" size={30} />
-                  </button>
-                )}
-              </div>
+            <div className="d-none d-sm-block px-3 col-sm-1">
+              {isRoomActive && (
+                <button onClick={quitHandler} className="btn btn-danger mt-1">
+                  <IoExitOutline color="white" size={30} />
+                </button>
+              )}
             </div>
           </div>
         </div>
