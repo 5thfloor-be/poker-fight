@@ -38,6 +38,7 @@ const CoffeeBreak = ({ user, socket, room }: CoffeBreakProps) => {
         setCoffeeVoted(false);
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [room]);
 
   return (

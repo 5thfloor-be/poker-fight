@@ -223,7 +223,7 @@ const Home = () => {
                     fontWeight: "600",
                   }}
                 >
-                  It's coffee time ! Activate that option to let the people
+                  It&apos;s coffee time ! Activate that option to let the people
                   claiming a little break if the meeting starts to get long...
                 </p>
               </div>
@@ -240,8 +240,8 @@ const Home = () => {
                     fontWeight: "600",
                   }}
                 >
-                  Maybe it's time to accelerate the discussion ? Activate that
-                  function to let the people speed up the pace.
+                  Maybe it&apos;s time to accelerate the discussion ? Activate
+                  that function to let the people speed up the pace.
                 </p>
               </div>
               <div className="col-sm-5 py-3">
