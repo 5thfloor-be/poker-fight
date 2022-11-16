@@ -47,6 +47,7 @@ const Room = (props: RoomProps) => {
     if (!user.name) {
       router.push(`/join/${props.roomy}`);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   if (room?.state === States.FIGHTING) {
