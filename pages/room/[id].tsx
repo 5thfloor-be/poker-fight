@@ -12,9 +12,10 @@ import { UserContext } from "../../context/UserContext";
 import { io } from "socket.io-client";
 import CoffeBreak from "../../components/CoffeBreak";
 import Spectators from "../../components/Spectators";
-import { FaEye } from "react-icons/fa";
+import { BsEyeglasses } from "react-icons/bs";
 import ModalSpectators from "../../components/ModalSpectators";
 import Buzzer from "../../components/Buzzer";
+import FooterActiveMobile from "../../components/layout/FooterActiveMobile";
 
 type RoomProps = {
   roomy: any;
@@ -322,8 +323,9 @@ const Room = (props: RoomProps) => {
           <div className="d-sm-none text-center">
             {room.users.filter((u) => u?.role === Role.SPECTATOR).length >
               0 && (
-              <FaEye
+              <BsEyeglasses
                 size={80}
+                color="white"
                 onClick={() => setShowSpectators(!showSpectators)}
               />
             )}
@@ -408,6 +410,7 @@ const Room = (props: RoomProps) => {
           </div>
         </Modal.Footer>
       </Modal>
+      <FooterActiveMobile />
     </div>
   );
 };

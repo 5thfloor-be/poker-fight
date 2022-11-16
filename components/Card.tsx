@@ -3,6 +3,7 @@ import Image from "next/image";
 import { MdAccountCircle } from "react-icons/md";
 import { Badge, OverlayTrigger, Popover } from "react-bootstrap";
 import { Placement } from "react-bootstrap/types";
+import { MdCancel } from "react-icons/md";
 
 export interface CardProps {
   value?: number;
@@ -48,7 +49,7 @@ const Card = ({
         }
       >
         <div className="row">
-          <div className={"d-none d-sm-block col-sm-6"}>
+          <div className="d-none d-sm-block col-sm-6">
             <Image
               alt="card"
               src="/images/favicon.png"
@@ -58,9 +59,7 @@ const Card = ({
           </div>
           {canClose && (
             <div className="col-12 col-sm-6 text-end">
-              <button className="btn btn-sm btn-danger rounded-5 float-end t" onClick={onRemoveUser}>
-                x
-              </button>
+              <MdCancel color="red" size={"26"} onClick={onRemoveUser} />
             </div>
           )}
         </div>
@@ -71,7 +70,7 @@ const Card = ({
               {value}
             </span>
           )}
-          {color && <MdAccountCircle color={color} size={60} />}
+          {color && !value && <MdAccountCircle color={color} size={60} />}
         </div>
         <div className={`d-none d-sm-block ${styles.logoBottom}`}>
           <Image alt="card" src="/images/favicon.png" width={50} height={50} />
@@ -79,7 +78,7 @@ const Card = ({
       </div>
       {name && (
         <div>
-          <h3>{name}</h3>
+          <h4 className="text-white">{name}</h4>
         </div>
       )}
       {badgeConfig && (
@@ -108,19 +107,6 @@ const Card = ({
 const style = {
   fontSize: "150px",
   color: "blue",
-  // backgroundColor: 'white'
 };
 
-const backgoundNotSelectedStyle = {
-  backgroundImage: "url('/images/card-backgound.png')",
-  backgroundPosition: "center",
-  backgroundRepeat: "no-repeat",
-  backgroundSize: "cover",
-  width: "185px",
-};
-
-const backgoundSelectedStyle = {
-  backgroundColor: "yellow",
-  width: "185px",
-};
 export default Card;

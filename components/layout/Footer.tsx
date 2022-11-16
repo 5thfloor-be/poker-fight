@@ -29,33 +29,15 @@ const Footer: NextPage = () => {
                     </a>
                   </p>
                 </div>
-                <div className="d-block d-lg-none">
-                  <p>
-                    <a
-                      className="text-decoration-none text-reset "
-                      href="https://www.linkedin.com/company/5th-floor-software"
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      <span
-                        className="p-1"
-                        style={{ backgroundColor: "#0A66C2" }}
-                      >
-                        <FaLinkedinIn size={20} />
-                      </span>{" "}
-                    </a>
-                  </p>
-                </div>
               </div>
             </div>
-
-            <div className="col-10 col-lg-6">
+            <div className="col-12 col-lg-6">
               <div className="row">
-                <div className="col-11 text-end ">
+                <div className="col-9 text-end">
                   <p>Open Source Project powered by</p>
                 </div>
                 <div
-                  className="col-1"
+                  className="col-3 pe-1"
                   style={{ position: "relative", height: "30px" }}
                 >
                   <a
