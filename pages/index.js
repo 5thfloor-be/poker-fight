@@ -72,7 +72,7 @@ const Home = () => {
                 {/* Bouton Create Room et Join Room */}
                 <button
                   type="button"
-                  className="btn btn-outline-primary fs-6 w-100"
+                  className="btn btn-outline-primary fs-6 w-100 fw-bold"
                   onClick={() => handleCreateRoom()}
                 >
                   CREATE ROOM
@@ -82,7 +82,7 @@ const Home = () => {
               <div className="col-5 col-sm-3 px-2">
                 <button
                   type="button"
-                  className="btn btn-outline-success fs-6 w-100"
+                  className="btn btn-outline-success fs-6 w-100 fw-bold"
                   onClick={() => router.push("/join")}
                 >
                   JOIN ROOM
