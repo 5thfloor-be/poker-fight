@@ -96,12 +96,14 @@ const JoinRoom = (props: JoinRoomProps) => {
                   <input
                     defaultValue={user ? user.name : ""}
                     type="text"
-                    className={user.name ? '' : 'border border-danger border-2' }
+                    className={user.name ? "" : "border border-danger border-2"}
                     placeholder="Username"
                     maxLength={15}
                     required={true}
                     onChange={(e) => setUser({ ...user, name: e.target.value })}
                   />
+                  <br />
+                  <label className="text-white">(15 characters max)</label>
                 </div>
               </div>
               <div className="col-sm-6 text-center mt-3">
@@ -125,7 +127,9 @@ const JoinRoom = (props: JoinRoomProps) => {
             <div className="row">
               <div>
                 <input
-                  className={roomId ? 'w-100' : ' w-100 border border-danger border-2' }
+                  className={
+                    roomId ? "w-100" : " w-100 border border-danger border-2"
+                  }
                   defaultValue={roomId || ""}
                   type="text"
                   placeholder="Room id"
