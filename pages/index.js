@@ -151,6 +151,10 @@ const Home = () => {
                   height={245}
                 />
               </div>
+              <div
+                className="col-4 offset-4 border-white border-top"
+                style={widthScreen < 576 ? { marginTop: 0 } : { marginTop: 70 }}
+              ></div>
             </div>
             <div
               className="row"
@@ -172,10 +176,14 @@ const Home = () => {
                     fontWeight: "600",
                   }}
                 >
-                  When there is no consensus, enter into the VS Room to open a
+                  When there is no consensus, enter into the VS Room to start a
                   debate between the lowest and the highest votes.
                 </p>
               </div>
+              <div
+                className="col-4 offset-4 border-white border-top"
+                style={widthScreen < 576 ? { marginTop: 0 } : { marginTop: 70 }}
+              ></div>
             </div>
             <div
               className="row"
@@ -189,8 +197,8 @@ const Home = () => {
                     fontWeight: "600",
                   }}
                 >
-                  You can decide to fix a goal or not for every session with a
-                  number of points to achieve.
+                  You can decide to set a goal for every session with a number
+                  of points to achieve.
                 </p>
               </div>
               <div className="col-sm-5 py-3">
@@ -201,6 +209,10 @@ const Home = () => {
                   height={331}
                 />
               </div>
+              <div
+                className="col-4 offset-4 border-white border-top"
+                style={widthScreen < 576 ? { marginTop: 0 } : { marginTop: 70 }}
+              ></div>
             </div>
             <div
               className="row"
@@ -222,10 +234,15 @@ const Home = () => {
                     fontWeight: "600",
                   }}
                 >
-                  It&apos;s coffee time ! Activate that option to let the people
-                  claiming a little break if the meeting starts to get long...
+                  It&apos;s coffee time ! Activate that option and let the
+                  people asking a little break if the meeting starts to get
+                  long...
                 </p>
               </div>
+              <div
+                className="col-4 offset-4 border-white border-top"
+                style={widthScreen < 576 ? { marginTop: 0 } : { marginTop: 70 }}
+              ></div>
             </div>
             <div
               className="row"
@@ -240,7 +257,7 @@ const Home = () => {
                   }}
                 >
                   Maybe it&apos;s time to accelerate the discussion ? Activate
-                  that function to let the people speed up the pace.
+                  that function and everyone can speed up the pace.
                 </p>
               </div>
               <div className="col-sm-5 py-3">
@@ -251,6 +268,10 @@ const Home = () => {
                   height={321}
                 />
               </div>
+              <div
+                className="col-4 offset-4 border-white border-top"
+                style={widthScreen < 576 ? { marginTop: 0 } : { marginTop: 70 }}
+              ></div>
             </div>
             <div
               className="row"
@@ -285,6 +306,10 @@ const Home = () => {
                   .
                 </p>
               </div>
+              <div
+                className="col-4 offset-4 border-white border-top"
+                style={widthScreen < 576 ? { marginTop: 0 } : { marginTop: 70 }}
+              ></div>
             </div>
             <div
               className="row"
@@ -302,9 +327,9 @@ const Home = () => {
                     fontWeight: "600",
                   }}
                 >
-                  We love Cookies but not yours ! Here there are no collection
-                  of information, no database, and no registration is required.
-                  Just start a game with your colleagues and enjoy freely.
+                  We love Cookies but not yours ! No collection of information,
+                  no database, and no registration is required. Just start a
+                  game with your colleagues and enjoy it.
                 </p>
               </div>
               <div className="col-sm-5 py-3">
