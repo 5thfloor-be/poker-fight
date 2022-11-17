@@ -33,10 +33,7 @@ const Home = () => {
   };
 
   return (
-    <div
-      className="text-white"
-      style={widthScreen < 576 ? { paddingTop: 50 } : { paddingTop: 70 }}
-    >
+    <div className="text-white">
       <Head>
         <title>Poker Fight - A new voting system for your Poker Planning</title>
         <meta
@@ -57,7 +54,9 @@ const Home = () => {
 
       {/* On affiche uniquement les éléments si la Room n'est pas active */}
       {!isRoomActive && (
-        <main>
+        <main
+          style={widthScreen < 576 ? { paddingTop: 50 } : { paddingTop: 70 }}
+        >
           <nav className="navbar fixed-top navbar-black bg-black w-100 py-1">
             <div className="container-fluid px-0 mx-0 w-100">
               <div className="col-3 ps-2 mt-2 d-none d-sm-block">
