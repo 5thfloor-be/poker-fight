@@ -1,4 +1,4 @@
-import { useContext, useState, useEffect } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import {
   Button,
   Modal,
@@ -66,7 +66,6 @@ const JoinRoom = (props: JoinRoomProps) => {
   const toggle = (val: number) => {
     setIsDev(val);
   };
-
   return (
     <div>
       <Modal
@@ -97,7 +96,8 @@ const JoinRoom = (props: JoinRoomProps) => {
                   <input
                     defaultValue={user ? user.name : ""}
                     type="text"
-                    placeholder="Username (15 characters max)"
+                    className={user.name ? '' : 'border border-danger border-2' }
+                    placeholder="Username"
                     maxLength={15}
                     required={true}
                     onChange={(e) => setUser({ ...user, name: e.target.value })}
@@ -125,7 +125,7 @@ const JoinRoom = (props: JoinRoomProps) => {
             <div className="row">
               <div>
                 <input
-                  className="w-100"
+                  className={roomId ? 'w-100' : ' w-100 border border-danger border-2' }
                   defaultValue={roomId || ""}
                   type="text"
                   placeholder="Room id"

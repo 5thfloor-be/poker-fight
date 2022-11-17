@@ -81,7 +81,6 @@ const CreateRoom = (props: CreateRoomProps) => {
   };
 
   const cancel = () => props.setShowCreateRoom(false);
-
   return (
     <>
       <Modal
@@ -124,7 +123,7 @@ const CreateRoom = (props: CreateRoomProps) => {
                 </div>
                 <div className="col">
                   <input
-                    className="form-control"
+                    className={user.name ? 'form-control' : ' form-control border border-danger border-2' }
                     required
                     defaultValue={user ? user.name : ""}
                     type="text"
