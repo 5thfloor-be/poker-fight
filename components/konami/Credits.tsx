@@ -256,7 +256,7 @@ const Credits = (props: CreditsProps) => {
                       alt="Pizza"
                       src="/images/pizza.jpg"
                       width={800}
-                      height={355}
+                      height={440}
                     />
                     <p className="mt-3 pt-3">
                       <span>...and Retro!</span>

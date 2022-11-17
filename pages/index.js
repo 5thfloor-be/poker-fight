@@ -248,7 +248,7 @@ const Home = () => {
                   src="/images/speed-up.png"
                   alt="Poker Planning"
                   width={500}
-                  height={365}
+                  height={321}
                 />
               </div>
             </div>

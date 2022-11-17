@@ -125,14 +125,16 @@ const CreateRoom = (props: CreateRoomProps) => {
                 <div className="col">
                   <input
                     className="form-control"
+                    required
                     defaultValue={user ? user.name : ""}
                     type="text"
-                    placeholder="Username (15 characters max)"
+                    placeholder="Username"
                     maxLength={15}
                     onChange={(e) => {
                       setUser({ ...user, name: e.target.value });
                     }}
                   />
+                  <label>(15 characters max)</label>
                 </div>
                 <div className="col mt-3">
                   <div className="form-switch">
