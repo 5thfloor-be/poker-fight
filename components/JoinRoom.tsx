@@ -23,6 +23,7 @@ type JoinRoomProps = {
 const JoinRoom = (props: JoinRoomProps) => {
   const [roomId, setRoomId] = useState(props.roomId);
   const [isDev, setIsDev] = useState(1);
+  const [showLoading, setShowLoading] = useState(false);
   const router = useRouter();
 
   const { user, setUser, setIsRoomActive } = useContext(UserContext);
@@ -46,6 +47,7 @@ const JoinRoom = (props: JoinRoomProps) => {
   console.log(user);
 
   const join = () => {
+    setShowLoading(true);
     //Activate the active header
     setIsRoomActive(true);
 
@@ -58,6 +60,7 @@ const JoinRoom = (props: JoinRoomProps) => {
     } else {
       setUser({ ...user, role: isDev === 1 ? Role.DEV : Role.SPECTATOR });
     }
+    // setShowLoading(false);
     router.push(`/room/${roomId}`);
   };
 
@@ -66,6 +69,14 @@ const JoinRoom = (props: JoinRoomProps) => {
   const toggle = (val: number) => {
     setIsDev(val);
   };
+
+  if (showLoading) {
+    return (
+        <div className="loader-container">
+          <div className="spinner"></div>
+        </div>
+    )
+  }
   return (
     <>
       <div className="d-flex align-items-center min-vh-100">
