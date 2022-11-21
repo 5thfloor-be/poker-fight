@@ -45,6 +45,7 @@ const Buzzer = ({ user, socket, room }: BuzzerProps) => {
         setBuzzerVoted(false);
       }
     }
+    setBuzzerVoted(!!room.buzzer.find(u => u=== user.id))
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [room]);
 

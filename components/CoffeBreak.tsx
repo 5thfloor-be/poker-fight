@@ -38,6 +38,7 @@ const CoffeeBreak = ({ user, socket, room }: CoffeBreakProps) => {
         setCoffeeVoted(false);
       }
     }
+    setCoffeeVoted(!!room.coffeeBreak.find(u => u=== user.id))
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [room]);
 
