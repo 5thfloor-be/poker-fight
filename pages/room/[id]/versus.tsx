@@ -31,7 +31,7 @@ const Versus: NextPage = () => {
 
   console.log("socket " + socket?.id);
   if (!socket) {
-    socket = io();
+    socket = io({reconnectionDelayMax:3600000});
     setStateSocket(socket);
 
     socket.emit("join_room", { roomId, userInfo: user }, (id: string) => {

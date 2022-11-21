@@ -56,7 +56,7 @@ const Room = (props: RoomProps) => {
 
   useEffect(() => {
     if (!socket && user.name.length > 0) {
-      socket = io();
+      socket = io({reconnectionDelayMax:3600000});
 
       setStateSocket(socket);
 
