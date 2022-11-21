@@ -59,14 +59,14 @@ const Versus: NextPage = () => {
       }
     });
 
-    socket.on("room_state_update", (r: any) => {
-      setReload(false);
-      console.log("room state update received versus ", r);
-      if (r?.state === States.STARTING) {
-        router.push("/room/" + roomId);
-        //router.push('/room/'+ roomId);
-      }
-    });
+    // socket.on("room_state_update", (r: any) => {
+    //   setReload(false);
+    //   console.log("room state update received versus ", r);
+    //   if (r?.state === States.STARTING) {
+    //     router.push("/room/" + roomId);
+    //     //router.push('/room/'+ roomId);
+    //   }
+    // });
   }
 
   const updateSelection = (chosenVote: number) => {
@@ -267,6 +267,10 @@ const Versus: NextPage = () => {
                 <ScrumMasterActions
                   minValue={lowest()}
                   maxValue={highest()}
+                  forceLow={forceLow}
+                  forceHigh={forceHigh}
+                  redoVote={redoVote}
+                  otherScore={() => setShowOtherScoreModal(true)}
                   deck={[1, 3, 5, 8]}
                 />
               </div>
