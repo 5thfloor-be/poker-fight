@@ -6,20 +6,25 @@ export interface ScrumMasterActionsProps {
   minValue: number;
   maxValue: number;
   deck: number[];
+  forceLow: () => void;
+  forceHigh: () => void;
+  redoVote: () => void;
+  otherScore: () => void;
 }
 
 const ScrumMasterActions = ({
   minValue,
   maxValue,
   deck,
+    forceLow,
+    forceHigh,
+    redoVote,
+    otherScore
 }: ScrumMasterActionsProps) => {
   const [showActions, setShowActions] = useState(false);
-  const [showOtherScores, setShowOtherScores] = useState(false);
 
   const toggleShowActions = () => setShowActions(!showActions);
-  const toggleShowOtherScores = () => setShowOtherScores(!showOtherScores);
-
-  const redoVote = () => {};
+  // const toggleShowOtherScores = () => setShowOtherScores(!showOtherScores);
 
   return (
     <div>
@@ -43,6 +48,7 @@ const ScrumMasterActions = ({
             <button
               type="button"
               className="btn btn-primary w-100 fw-bold mb-3"
+              onClick={forceLow}
             >
               GO FOR {minValue}
             </button>
@@ -51,6 +57,7 @@ const ScrumMasterActions = ({
             <button
               type="button"
               className="btn btn-primary w-100 fw-bold mb-3"
+              onClick={forceHigh}
             >
               GO FOR {maxValue}
             </button>
@@ -61,7 +68,7 @@ const ScrumMasterActions = ({
               className="btn btn-primary w-100 fw-bold mb-3"
               onClick={() => {
                 toggleShowActions();
-                toggleShowOtherScores();
+                otherScore();
               }}
             >
               OTHER SCORE
@@ -81,32 +88,6 @@ const ScrumMasterActions = ({
               type="button"
               className="btn btn-danger w-100 fw-bold my-3"
               onClick={toggleShowActions}
-            >
-              CANCEL
-            </button>
-          </div>
-        </Modal.Body>
-      </Modal>
-
-      <Modal centered={true} contentClassName="bg-dark" show={showOtherScores}>
-        <Modal.Header style={{ border: "none" }}>
-          <Modal.Title className="w-100">
-            <h1 className="text-white text-center">OTHER SCORE</h1>
-            <h6 className="text-white text-center">
-              Choose another vote and finish this round
-            </h6>
-          </Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <div>
-            <Deck deck={deck} updateSelection={() => []} />
-            <button
-              type="button"
-              className="btn btn-danger w-100 fw-bold my-3"
-              onClick={() => {
-                toggleShowActions();
-                toggleShowOtherScores();
-              }}
             >
               CANCEL
             </button>
