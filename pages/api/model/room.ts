@@ -4,8 +4,8 @@ import UserVote from './userVote';
 export default class Room {
   users: User[] = [];
   modified: Date = new Date();
-  coffeeBreak: Map<string, boolean> = new Map();
-  buzzer: Map<string, boolean> = new Map();
+  coffeeBreak: string[]= [];
+  buzzer: string[] = [];
   // currentVotes: Map<string, string> = new Map();
   currentVotes: UserVote[] = [];
   wondrousVote: number = -1;
@@ -75,22 +75,20 @@ export default class Room {
     if(!this.isUserInRoom(userId)){
       return;
     }
-    const currentVote = this.coffeeBreak.get(userId)
-      ? this.coffeeBreak.get(userId)
-      : false;
-    this.coffeeBreak.set(userId, !currentVote);
-    let totalVotes = 0;
-    this.coffeeBreak.forEach((v, k) => {
-      totalVotes += v ? 1 : 0;
-    });
+    const currentVote = !!this.coffeeBreak.find(u => u=== userId);
+    if(currentVote) {
+      this.coffeeBreak = this.coffeeBreak.filter(u => u!== userId)
+    }else {
+      this.coffeeBreak.push(userId);
+    }
 
     this.coffeeBreakActive =
-      totalVotes > Math.trunc(this.getActiveParticipants().length / 2);
+        this.coffeeBreak.length > Math.trunc(this.getActiveParticipants().length / 2);
     this.stateUpdated();
   }
 
   coffeeBreakOver() {
-    this.coffeeBreak.clear();
+    this.coffeeBreak = [];
     this.coffeeBreakActive = false;
     this.stateUpdated();
   }
@@ -99,23 +97,20 @@ export default class Room {
     if(!this.isUserInRoom(userId)){
       return;
     }
-    const currentVote = this.buzzer.get(userId)
-      ? this.buzzer.get(userId)
-      : false;
-    this.buzzer.set(userId, !currentVote);
-    this.stateUpdated();
-    let totalVotes = 0;
-    this.buzzer.forEach((v, k) => {
-      totalVotes += v ? 1 : 0;
-    });
+    const currentVote = !!this.buzzer.find(u => u=== userId);
+    if(currentVote) {
+      this.buzzer = this.buzzer.filter(u => u!== userId)
+    }else {
+      this.buzzer.push(userId);
+    }
 
     this.buzzerActive =
-      totalVotes > Math.trunc(this.getActiveParticipants().length / 2);
+        this.buzzer.length > Math.trunc(this.getActiveParticipants().length / 2);
     this.stateUpdated();
   }
 
   buzzerCanceled() {
-    this.buzzer.clear();
+    this.buzzer = [];
     this.buzzerActive = false;
     this.stateUpdated();
   }
@@ -141,7 +136,7 @@ export default class Room {
         this.state = States.FIGHTING;
       }
     }
-    this.buzzer.clear();
+    this.buzzer= [];
     this.buzzerActive = false;
     this.stateUpdated();
   }
