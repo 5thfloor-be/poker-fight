@@ -96,6 +96,7 @@ const Home = () => {
                     setShowEditProfile(!showEditProfile);
                   }}
                   size={widthScreen < 576 ? 40 : 60}
+                  style={{ cursor: "pointer" }}
                 />
                 {showEditProfile && (
                   <EditProfile
