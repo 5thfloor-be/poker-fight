@@ -190,11 +190,11 @@ const Room = (props: RoomProps) => {
 
   return (
     <div className="container">
-      <div className="row p-3 m-2 mt-5 playingMat">
+      <div className="row p-3 m-2 mt-5 playingMat justify-content-center">
         {room.users
           .filter((u) => u?.id !== user?.id)
           .map((userMap, key) => (
-            <div key={key} className="col">
+            <div key={key} className="col-4 col-sm-2">
               {userMap.role !== Role.SCRUM_MASTER &&
                 userMap.role !== Role.SPECTATOR && (
                   <Card
