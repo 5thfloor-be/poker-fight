@@ -16,8 +16,9 @@
 }
 
 .customCardSelected {
-  background-color: yellow;
+  background-color: #9DFFB7;
   margin-bottom: 5px;
+  border: #29FF8A .1rem solid;
 }
 
 .contentCard {
