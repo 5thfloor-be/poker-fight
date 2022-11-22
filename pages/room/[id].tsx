@@ -17,6 +17,7 @@ import ModalSpectators from "../../components/ModalSpectators";
 import Buzzer from "../../components/Buzzer";
 import FooterActiveMobile from "../../components/layout/FooterActiveMobile";
 import Versus from "../../components/Versus";
+import ScrumMasterVotingToolbar from "../../components/ScrumMasterVotingToolbar";
 
 type RoomProps = {
   roomy: any;
@@ -226,73 +227,9 @@ const Room = (props: RoomProps) => {
         </div>
       </div>
 
-      {(user?.role === Role.SCRUM_MASTER ||
-              user?.role === Role.VOTING_SCRUM_MASTER) &&
-          room.state === States.STARTING &&
-          room.users.filter(
-              (u) => u?.role === Role.DEV || u?.role === Role.VOTING_SCRUM_MASTER
-          ).length > 1 && (
-          <div className="row my-3">
-              <div className="offset-3 col-6 offset-sm-5 col-sm-2">
-                <button
-                  type="button"
-                  className="btn btn-primary fw-bold w-100"
-                  onClick={startVoting}
-                >
-                  VOTE
-                </button>
-              </div>
-        </div>
-          )}
+      <ScrumMasterVotingToolbar room={room} role={user?.role} startVoting={startVoting} redoVote={redoVote} reveal={reveal} validate={validate} />
+
       <div className="row my-3">
-        {(user?.role === Role.SCRUM_MASTER ||
-          user?.role === Role.VOTING_SCRUM_MASTER) &&
-          room.state === States.VOTING && (
-            <>
-              <div className="offset-1 col-5 offset-sm-4 col-sm-2">
-                <button
-                  type="button"
-                  className="btn btn-primary fw-bold w-100"
-                  onClick={reveal}
-                >
-                  REVEAL
-                </button>
-              </div>
-              <div className="col-5 col-sm-2">
-                <button
-                  type="button"
-                  className="btn btn-primary fw-bold w-100"
-                  onClick={redoVote}
-                >
-                  REDO VOTE
-                </button>
-              </div>
-            </>
-          )}
-        {(user?.role === Role.SCRUM_MASTER ||
-          user?.role === Role.VOTING_SCRUM_MASTER) &&
-          room.state === States.WONDROUS && (
-            <>
-              <div className="offset-1 col-5 offset-sm-4 col-sm-2">
-                <button
-                  type="button"
-                  className="btn btn-primary fw-bold w-100"
-                  onClick={validate}
-                >
-                  VALIDATE
-                </button>
-              </div>
-              <div className="col-5 col-sm-2">
-                <button
-                  type="button"
-                  className="btn btn-primary fw-bold w-100"
-                  onClick={redoVote}
-                >
-                  REDO VOTE
-                </button>
-              </div>
-            </>
-          )}
         <>
           {/* Version PC du Deck */}
           <div className="row">
