@@ -215,24 +215,35 @@ const Room = (props: RoomProps) => {
             </div>
           ))}
       </div>
-      <div className="row my-3">
-        {(user?.role === Role.SCRUM_MASTER ||
-          user?.role === Role.VOTING_SCRUM_MASTER) &&
+
+      <div className="row">
+        <div className="col text-center text-xl-center m-3 p-1 roomStatus">
+          <h3>
+            {room.state === States.WONDROUS
+                ? room.wondrousVote
+                : "Waiting for votes ..."}
+          </h3>
+        </div>
+      </div>
+
+      {(user?.role === Role.SCRUM_MASTER ||
+              user?.role === Role.VOTING_SCRUM_MASTER) &&
           room.state === States.STARTING &&
           room.users.filter(
-            (u) => u?.role === Role.DEV || u?.role === Role.VOTING_SCRUM_MASTER
+              (u) => u?.role === Role.DEV || u?.role === Role.VOTING_SCRUM_MASTER
           ).length > 1 && (
-            <div className="offset-3 col-6 offset-sm-5 col-sm-2">
-              <button
-                type="button"
-                className="btn btn-primary fw-bold w-100"
-                onClick={startVoting}
-              >
-                VOTE
-              </button>
-            </div>
+          <div className="row my-3">
+              <div className="offset-3 col-6 offset-sm-5 col-sm-2">
+                <button
+                  type="button"
+                  className="btn btn-primary fw-bold w-100"
+                  onClick={startVoting}
+                >
+                  VOTE
+                </button>
+              </div>
+        </div>
           )}
-      </div>
       <div className="row my-3">
         {(user?.role === Role.SCRUM_MASTER ||
           user?.role === Role.VOTING_SCRUM_MASTER) &&
@@ -282,18 +293,6 @@ const Room = (props: RoomProps) => {
               </div>
             </>
           )}
-        <div className="row">
-          <div className="col text-center text-xl-center mt-sm-5 mb-sm-5">
-            <button className="btn btn-lg btn-primary">
-              <h1>
-                {room.state === States.WONDROUS
-                  ? room.wondrousVote
-                  : "Waiting for votes ..."}
-              </h1>
-            </button>
-          </div>
-        </div>
-
         <>
           {/* Version PC du Deck */}
           <div className="row">
@@ -307,7 +306,7 @@ const Room = (props: RoomProps) => {
                   <Buzzer user={user} socket={socket} room={room} />
                 )}
             </div>
-            <div className="col-8 d-none d-sm-block justify-content-center">
+            <div className="col-8 d-none d-sm-block justify-content-center mt-3">
               {user?.role !== Role.SCRUM_MASTER &&
                 user?.role !== Role.SPECTATOR &&
                 showBottomDeck()}
