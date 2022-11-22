@@ -66,7 +66,7 @@ const Card = ({
 
         <div className="text-center">
           {value && (
-            <span className={`fw-bold text-primary ${styles.valueCard}`}>
+            <span className={`fw-bold ${styles.valueCard}`}>
               {value}
             </span>
           )}

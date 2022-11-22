@@ -121,8 +121,8 @@ const Versus: NextPage = () => {
     let highVal = highest();
     let lowVal = lowest();
 
-    let leftCards = cards?.filter((it) => it.vote == highVal);
-    let rightCards = cards?.filter((it) => it.vote == lowVal);
+    let leftCards = cards?.filter((it) => it.vote == lowVal);
+    let rightCards = cards?.filter((it) => it.vote == highVal);
 
     if (side == "right") {
       return (

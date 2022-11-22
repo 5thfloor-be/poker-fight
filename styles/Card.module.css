@@ -6,6 +6,7 @@
   background-color: white;
   border-radius: .5em;
   border: .1rem solid #eaeaea;
+  color: #3279f4;
 }
 
 .customCard:hover{
@@ -16,9 +17,11 @@
 }
 
 .customCardSelected {
-  background-color: #9DFFB7;
+  background-color: #b5bcf1;
   margin-bottom: 5px;
-  border: #29FF8A .1rem solid;
+  border: #c6daff .1rem solid;
+  color: white;
+  text-shadow: -1px 1px 0 #c6daff, 1px 1px 0 #c6daff, 1px -1px 0 #c6daff, -1px -1px 0 #c6daff;
 }
 
 .contentCard {
