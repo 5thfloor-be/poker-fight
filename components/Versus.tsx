@@ -1,17 +1,17 @@
 import type { NextPage } from "next";
 import Head from "next/head";
 import React, { useContext, useEffect, useState } from "react";
-import Card from "../../../components/Card";
+import Card from "./Card";
 import Image from "next/image";
-import RoomModel, { States } from "../../api/model/room";
+import RoomModel, { States } from "../pages/api/model/room";
 import { useRouter } from "next/router";
 import { io } from "socket.io-client";
-import User, { Role } from "../../api/model/user";
-import ScrumMasterActions from "../../../components/ScrumMasterActions";
+import User, { Role } from "../pages/api/model/user";
+import ScrumMasterActions from "./ScrumMasterActions";
 import { Button, Modal } from "react-bootstrap";
-import { Deck } from "../../../components/Deck";
-import { UserContext } from "../../../context/UserContext";
-import FooterActiveMobile from "../../../components/layout/FooterActiveMobile";
+import { Deck } from "./Deck";
+import { UserContext } from "../context/UserContext";
+import FooterActiveMobile from "./layout/FooterActiveMobile";
 
 const Versus: NextPage = () => {
   const [widthScreen, setWidthScreen] = useState(0);
@@ -55,18 +55,8 @@ const Versus: NextPage = () => {
       console.log("room state update received versus ", r);
       if (r?.state === States.STARTING || r?.state === States.VOTING) {
         router.push("/room/" + roomId);
-        //router.push('/room/'+ roomId);
       }
     });
-
-    // socket.on("room_state_update", (r: any) => {
-    //   setReload(false);
-    //   console.log("room state update received versus ", r);
-    //   if (r?.state === States.STARTING) {
-    //     router.push("/room/" + roomId);
-    //     //router.push('/room/'+ roomId);
-    //   }
-    // });
   }
 
   const updateSelection = (chosenVote: number) => {
@@ -117,10 +107,6 @@ const Versus: NextPage = () => {
     socket.emit("redo_vote", { roomId });
   };
 
-  useEffect(() => {
-    // TODO implement callback
-  });
-
   function getUserName(userId: string) {
     return (
       room?.users.filter((u) => u.id === userId).pop()?.name || "Anonymous"
@@ -130,8 +116,6 @@ const Versus: NextPage = () => {
   const cancel = () => setShowOtherScoreModal(false);
 
   function getCards(side: String, mobile: boolean = false) {
-    //TODO get room and user from local storage
-
     let cards = room?.currentVotes.filter((vote) => vote.vote !== -1);
 
     let highVal = highest();

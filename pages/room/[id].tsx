@@ -16,6 +16,7 @@ import { BsEyeglasses } from "react-icons/bs";
 import ModalSpectators from "../../components/ModalSpectators";
 import Buzzer from "../../components/Buzzer";
 import FooterActiveMobile from "../../components/layout/FooterActiveMobile";
+import Versus from "../../components/Versus";
 
 type RoomProps = {
   roomy: any;
@@ -50,10 +51,6 @@ const Room = (props: RoomProps) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  if (room?.state === States.FIGHTING) {
-    router.push(`${router.asPath}/versus`);
-  }
-
   useEffect(() => {
     if (!socket && user.name.length > 0) {
       socket = io({reconnectionDelayMax:3600000});
@@ -78,8 +75,7 @@ const Room = (props: RoomProps) => {
         setShow(false);
         console.log("room state", data?.state);
         if (data?.state === States.FIGHTING) {
-          console.log("push to versus");
-          router.push(`${router.asPath}/versus`);
+          <Versus />
         }
       });
       socket.on("start_voting", (data: any) => {
@@ -161,6 +157,10 @@ const Room = (props: RoomProps) => {
         )
       : undefined;
   };
+
+  if (room?.state === States.FIGHTING) {
+    return (<Versus />)
+  }
 
   if (!room) {
     return (
