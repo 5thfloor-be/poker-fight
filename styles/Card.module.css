@@ -2,6 +2,17 @@
   height: 11em;
   width: 7em;
   margin-bottom: 5px;
+  box-shadow: #222222 .5em .5em .5em;
+  background-color: white;
+  border-radius: .5em;
+  border: .1rem solid #eaeaea;
+}
+
+.customCard:hover{
+  border: #0070f3 .1rem solid;
+  top:-10px;
+  position: relative;
+  cursor: pointer;
 }
 
 .customCardSelected {
@@ -21,6 +32,7 @@
 .logoBottom {
   transform: rotate(180deg);
 }
+
 
 @media (max-width: 576px) {
   .customCard {

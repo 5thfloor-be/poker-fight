@@ -158,10 +158,12 @@ export default class Room {
   }
 
   private stateUpdated() {
+    this.modified = new Date();
     this.onChangeCallbacks.forEach((callback) => {
       console.log("callback invoked");
       callback(this);
     });
+
   }
 
   registerOnChangeCallback(callback: OnChangeCallback) {

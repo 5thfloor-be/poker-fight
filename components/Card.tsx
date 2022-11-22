@@ -44,8 +44,8 @@ const Card = ({
       <div
         className={
           !selected
-            ? `card ${styles.customCard}`
-            : `card ${styles.customCard} ${styles.customCardSelected}`
+            ? `${styles.customCard}`
+            : `${styles.customCard} ${styles.customCardSelected}`
         }
       >
         <div className="row">
