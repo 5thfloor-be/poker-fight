@@ -189,7 +189,7 @@ const Room = (props: RoomProps) => {
 
   return (
     <div className="container">
-      <div className="row">
+      <div className="row p-3 m-2 mt-5 playingMat">
         {room.users
           .filter((u) => u?.id !== user?.id)
           .map((userMap, key) => (
