@@ -3,9 +3,14 @@ import { v4 as uuid } from "uuid";
 import { Server } from "socket.io";
 import Room from "./model/room";
 import User, {Role} from "./model/user";
-import {ERROR_CODE} from "./model/ERROR_CODE";
+import {ErrorCode} from "./model/ErrorCode";
 
 const rooms: Map<string, Room> = new Map();
+
+export interface JoinRoomReturn {
+  id: string,
+  error: number
+}
 
 const SocketHandler = (req: IncomingMessage, res: any) => {
   if (res?.socket?.server.io) {
@@ -53,12 +58,12 @@ function configIO(io: Server) {
         userIdTemp = user.id;
         console.log(`room is full ? ${room?.isFull()}, user role = ${user?.role}`)
         if(room?.isFull() && user?.role === Role.DEV){
-          listener(ERROR_CODE.TOO_MANY_VOTERS);
+          listener({id: null, error: ErrorCode.TOO_MANY_VOTERS});
           return;
         }
         room?.addUser(user);
       }
-      listener(userIdTemp);
+      listener({id: userIdTemp, error: null});
     });
 
     socket.on("remove_user", (data) => {
