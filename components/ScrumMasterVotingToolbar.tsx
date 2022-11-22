@@ -27,7 +27,7 @@ const ScrumMasterVotingToolbar = (
             room.users.filter(
                 (u) => u?.role === Role.DEV || u?.role === Role.VOTING_SCRUM_MASTER
             ).length > 1 && (
-                    <div className="col-4">
+                    <div className="col-4 text-center">
                         <button
                             type="button"
                             className="btn btn-primary fw-bold"
@@ -38,7 +38,7 @@ const ScrumMasterVotingToolbar = (
                     </div>
             )}
             {room.state === States.VOTING && (
-                <div className="col-4">
+                <div className="col-4 text-center">
                     <button
                         type="button"
                         className="btn btn-primary fw-bold "
@@ -49,10 +49,10 @@ const ScrumMasterVotingToolbar = (
                 </div>)}
 
             {room.state === States.WONDROUS && (
-                <div className="col-4">
+                <div className="col-4 text-center">
                     <button
                         type="button"
-                        className="btn btn-primary fw-bold w-100"
+                        className="btn btn-primary fw-bold "
                         onClick={validate}
                     >
                         VALIDATE
@@ -62,7 +62,7 @@ const ScrumMasterVotingToolbar = (
 
             {room.state === States.WONDROUS
                 || room.state === States.VOTING
-                &&(<div className="col-4">
+                &&(<div className="col-4 text-center">
                         <button
                             type="button"
                             className="btn btn-primary fw-bold "
