@@ -1,5 +1,7 @@
-import User, { Role } from './user';
+import User, {Role} from './user';
 import UserVote from './userVote';
+
+const MAX_VOTERS = 10;
 
 export default class Room {
   users: User[] = [];
@@ -63,7 +65,6 @@ export default class Room {
   allUsersVoted(){
     console.log('votes' , this.currentVotes);
     console.log('users' , this.users);
-    console.log(this.users.filter(user => user.canVote).length === this.currentVotes.length);
     return this.users.filter(user => user.role != Role.SCRUM_MASTER && user.role != Role.SPECTATOR  ).length === this.currentVotes.length;
   }
 
@@ -184,6 +185,11 @@ export default class Room {
     this.state = States.STARTING;
     this.resetCurrentVotes();
     this.stateUpdated();
+  }
+
+  isFull(){
+    return this.users.filter(u => u.role === Role.DEV || u.role === Role.VOTING_SCRUM_MASTER)
+        .length >= MAX_VOTERS;
   }
 }
 

@@ -2,6 +2,8 @@ import { IncomingMessage } from "http";
 import { v4 as uuid } from "uuid";
 import { Server } from "socket.io";
 import Room from "./model/room";
+import User, {Role} from "./model/user";
+import {ERROR_CODE} from "./model/ERROR_CODE";
 
 const rooms: Map<string, Room> = new Map();
 
@@ -42,33 +44,19 @@ function configIO(io: Server) {
       let userIdTemp = data.userInfo.id;
 
       console.log(`${socket.id} is joining data :${data.userInfo.id}`);
-      console.log(`${socket.id} is joining ${data.userInfo}`);
-      console.log(`${socket.id} is joining ${socket.id}`);
       socket.join(data.roomId);
-
-      console.log("data.roomId)", data.roomId);
-
-      /* Check if User in DataTransfer, if yes compare with user in room, if user doesn't exist add it */
-      console.log(
-        "gros if",
-        rooms
-          .get(data.roomId)
-          ?.users.filter((user) => user.id === data.userInfo.id).length === 0
-      );
-
-      if (
-        rooms
-          .get(data.roomId)
-          ?.users.filter((user) => user.id === data.userInfo.id).length === 0
-      ) {
-        console.log(
-          "rooms.get(data.roomId)?.users.",
-          rooms.get(data.roomId)?.users.length
-        );
+      let room = rooms.get(data.roomId);
+      if (  room?.users.filter((user) => user.id === data.userInfo.id).length === 0) {
+        console.log("rooms.get(data.roomId)?.users.", room?.users.length);
 
         const user = { ...data.userInfo, id: uuid() };
         userIdTemp = user.id;
-        rooms.get(data.roomId)?.addUser(user);
+        console.log(`room is full ? ${room?.isFull()}, user role = ${user?.role}`)
+        if(room?.isFull() && user?.role === Role.DEV){
+          listener(ERROR_CODE.TOO_MANY_VOTERS);
+          return;
+        }
+        room?.addUser(user);
       }
       listener(userIdTemp);
     });
