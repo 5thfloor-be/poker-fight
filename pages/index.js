@@ -8,6 +8,7 @@ import { useRouter } from "next/router";
 import Image from "next/image";
 import { MdAccountCircle } from "react-icons/md";
 import EditProfile from "../components/EditProfile";
+import Script from 'next/script';
 
 const Home = () => {
   const { user, isRoomActive } = useContext(UserContext);
@@ -31,6 +32,10 @@ const Home = () => {
     setShowCreateRoom(!showCreateRoom);
     setShowLoading(true);
   };
+
+  if (typeof window !== "undefined") {
+    matomo();
+  }
 
   return (
     <div className="text-white">
@@ -373,4 +378,17 @@ export async function getServerSideProps() {
       //socket: socket
     },
   };
+}
+
+export function matomo() {
+  var _paq = window._paq = window._paq || [];
+  _paq.push(['trackPageView']);
+  _paq.push(['enableLinkTracking']);
+  (function() {
+    var u="//35.189.207.201/";
+    _paq.push(['setTrackerUrl', u+'matomo.php']);
+    _paq.push(['setSiteId', '2']);
+    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+    g.async=true; g.src=u+'matomo.js'; s.parentNode.insertBefore(g,s);
+  })();
 }
