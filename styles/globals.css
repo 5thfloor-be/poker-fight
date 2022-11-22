@@ -52,3 +52,10 @@ a {
     transform: rotate(360deg);
   }
 }
+
+.playingMat{
+  border-left: .3rem #FFFF0066 solid;
+  border-right: .3rem #FFFF0066 solid;
+  border-radius: 1em;
+  background-color:  #FFFF0015;
+}

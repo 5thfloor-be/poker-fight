@@ -241,7 +241,7 @@ const Versus: NextPage = () => {
           </h4>
         </div>
         <div className="container" style={{ marginTop: "5%" }}>
-          <div className="row">
+          <div className="row playingMat p-3 m-2 mt-5 ">
             <div className="col-4">
               <div>{getCards("left")}</div>
             </div>
