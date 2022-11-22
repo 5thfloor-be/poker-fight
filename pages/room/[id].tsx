@@ -1,23 +1,23 @@
-import { NextPage } from "next";
-import { useRouter } from "next/router";
-import { useEffect, useState, useContext } from "react";
+import {useRouter} from "next/router";
+import {useContext, useEffect, useState} from "react";
 import Card from "../../components/Card";
-import User, { Role } from "../api/model/user";
-import RoomModel, { States } from "../api/model/room";
-import { GiCardRandom } from "react-icons/gi";
-import { Deck } from "../../components/Deck";
+import User, {Role} from "../api/model/user";
+import RoomModel, {States} from "../api/model/room";
+import {GiCardRandom} from "react-icons/gi";
+import {Deck} from "../../components/Deck";
 import Modal from "react-bootstrap/Modal";
-import { Button } from "react-bootstrap";
-import { UserContext } from "../../context/UserContext";
-import { io } from "socket.io-client";
+import {Button} from "react-bootstrap";
+import {UserContext} from "../../context/UserContext";
+import {io} from "socket.io-client";
 import CoffeBreak from "../../components/CoffeBreak";
 import Spectators from "../../components/Spectators";
-import { BsEyeglasses } from "react-icons/bs";
+import {BsEyeglasses} from "react-icons/bs";
 import ModalSpectators from "../../components/ModalSpectators";
 import Buzzer from "../../components/Buzzer";
 import FooterActiveMobile from "../../components/layout/FooterActiveMobile";
 import Versus from "../../components/Versus";
 import ScrumMasterVotingToolbar from "../../components/ScrumMasterVotingToolbar";
+import {ERROR_CODE} from "../api/model/ERROR_CODE";
 
 type RoomProps = {
   roomy: any;
@@ -58,7 +58,12 @@ const Room = (props: RoomProps) => {
 
       setStateSocket(socket);
 
-      socket.emit("join_room", { roomId, userInfo: user }, (id: string) => {
+      socket.emit("join_room", { roomId, userInfo: user }, (id: string| ERROR_CODE) => {
+        if(id === ERROR_CODE.TOO_MANY_VOTERS){
+          console.log(id)
+          alert("Sorry, the room is full (already 10 voters).");
+          router.push("/");
+        }
         console.log("my user id : ", user);
         setUser({ ...user, id: id });
       });
