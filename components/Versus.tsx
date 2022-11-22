@@ -12,6 +12,8 @@ import { Button, Modal } from "react-bootstrap";
 import { Deck } from "./Deck";
 import { UserContext } from "../context/UserContext";
 import FooterActiveMobile from "./layout/FooterActiveMobile";
+import {ErrorCode} from "../pages/api/model/ErrorCode";
+import {JoinRoomReturn} from "../pages/api/socket";
 
 const Versus: NextPage = () => {
   const [widthScreen, setWidthScreen] = useState(0);
@@ -34,10 +36,15 @@ const Versus: NextPage = () => {
     socket = io({reconnectionDelayMax:3600000});
     setStateSocket(socket);
 
-    socket.emit("join_room", { roomId, userInfo: user }, (id: string) => {
-      console.log("my user id : ", user.id);
-      setUser({ ...user, id: id });
+    socket.emit("join_room", { roomId, userInfo: user }, (data: JoinRoomReturn) => {
+      console.log(`data - ${!!data.error}`, data)
+      if(data.error !== null){
+        router.push(`/error-page/${data.error}`, );
+      }
+      console.log("my user id : ", user);
+      setUser({ ...user, id: data.id });
     });
+
 
     socket.emit("get_room", { roomId: roomId }, (room: RoomModel) => {
       setRoom(room);

@@ -17,7 +17,8 @@ import Buzzer from "../../components/Buzzer";
 import FooterActiveMobile from "../../components/layout/FooterActiveMobile";
 import Versus from "../../components/Versus";
 import ScrumMasterVotingToolbar from "../../components/ScrumMasterVotingToolbar";
-import {ERROR_CODE} from "../api/model/ERROR_CODE";
+import {ErrorCode} from "../api/model/ErrorCode";
+import {JoinRoomReturn} from "../api/socket";
 
 type RoomProps = {
   roomy: any;
@@ -58,14 +59,13 @@ const Room = (props: RoomProps) => {
 
       setStateSocket(socket);
 
-      socket.emit("join_room", { roomId, userInfo: user }, (id: string| ERROR_CODE) => {
-        if(id === ERROR_CODE.TOO_MANY_VOTERS){
-          console.log(id)
-          alert("Sorry, the room is full (already 10 voters).");
-          router.push("/");
+      socket.emit("join_room", { roomId, userInfo: user }, (data: JoinRoomReturn) => {
+          console.log(`data - ${!!data.error}`, data)
+        if(data.error !== null){
+          router.push(`/error-page/${data.error}`, );
         }
         console.log("my user id : ", user);
-        setUser({ ...user, id: id });
+        setUser({ ...user, id: data.id });
       });
 
       socket.emit("get_room", { roomId: roomId }, (room: RoomModel) => {
