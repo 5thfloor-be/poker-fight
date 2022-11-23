@@ -94,7 +94,7 @@ function configIO(io: Server) {
       const room = new Room(roomId, data);
       room.registerOnChangeCallback((room: Room) => {
         console.log(`room state update sent${JSON.stringify(room)}`);
-        io.to(roomId).emit("room_state_update", room);
+        socket.to(roomId).emit("room_state_update", room);
       });
       rooms.set(roomId, room);
 
@@ -133,7 +133,7 @@ function configIO(io: Server) {
       room?.resetCurrentVotes();
       room?.startVoting();
 
-      io.in(data.roomId).emit("start_voting", rooms.get(data.roomId));
+      socket.to(data.roomId).emit("start_voting", rooms.get(data.roomId));
     });
 
     socket.on("cofee_break_vote", (data) => {
@@ -160,7 +160,7 @@ function configIO(io: Server) {
       console.log(`start_voting ${JSON.stringify(data)}`);
       rooms.get(data.roomId)?.startVoting();
 
-      io.in(data.roomId).emit("start_voting", rooms.get(data.roomId));
+      socket.to(data.roomId).emit("start_voting", rooms.get(data.roomId));
     });
 
     socket.on("get_room", (data, listener) => {
