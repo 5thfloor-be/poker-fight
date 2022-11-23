@@ -109,7 +109,7 @@ const Versus: NextPage = () => {
               />
               <div className="container text-center">
               {rightCards?.map((item, index) => (
-                  <h4 className="text-white fw-bold">{getUserName(item.userId)}</h4>
+                  <h4 key={index} className="text-white fw-bold">{getUserName(item.userId)}</h4>
               ))}
               </div>
             </div>
@@ -128,7 +128,7 @@ const Versus: NextPage = () => {
               />
               <div className="container text-center">
                 {leftCards?.map((item, index) => (
-                    <h4 className="text-white fw-bold">{getUserName(item.userId)}</h4>
+                    <h4 key={index} className="text-white fw-bold">{getUserName(item.userId)}</h4>
                 ))}
               </div>
             </div>
