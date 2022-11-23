@@ -76,7 +76,7 @@ const Room = (props: RoomProps) => {
       socket.emit("get_room", { roomId: roomId }, (room: RoomModel) => {
         console.log('emit : get room user : ', user)
         setRoom(room);
-        setCardValues(room.roomOptions.cardValues);
+        setCardValues(room?.roomOptions.cardValues);
       });
     }
 
@@ -107,8 +107,10 @@ const Room = (props: RoomProps) => {
       socket.on("room_state_update", (r: RoomModel) => {
         console.log("received : room state update received ", r);
         setRoom(r);
+        if (r?.state === States.STARTING || r?.state === States.VOTING) {
+          router.push("/room/" + roomId);
+        }
       });
-
       socket.on("user_removed", (data: any) => {
         console.log("received : user removed", data);
         if (data.userId === user.id) {
