@@ -63,6 +63,10 @@ function configIO(io: Server) {
       listener({id: userIdTemp, error: null});
     });
 
+    socket.on('disconnect', function()
+    {
+      console.log("A client has disconnected.");
+    });
     socket.on("remove_user", (data) => {
       console.log(`${data.userId} is removed `, data);
       rooms.get(data.roomId)?.removeUser(data.userId);
