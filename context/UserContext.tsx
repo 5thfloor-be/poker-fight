@@ -1,6 +1,8 @@
 import Room from "../pages/api/model/room";
 
 import { createContext, useState, useEffect } from "react";
+import { io } from 'socket.io-client';
+import { Socket } from 'socket.io';
 
 interface AppContextInterface {
   user: any;
@@ -9,6 +11,8 @@ interface AppContextInterface {
   setRoom: (newvalue: Room) => void;
   isRoomActive: any;
   setIsRoomActive: (newvalue: any) => void;
+  socket: any;
+  setSocket: (newvalue: any) => void;
 }
 
 export const UserContext = createContext<AppContextInterface>({
@@ -18,6 +22,8 @@ export const UserContext = createContext<AppContextInterface>({
   setRoom: () => undefined,
   isRoomActive: null,
   setIsRoomActive: () => undefined,
+  socket: undefined,
+  setSocket: () => undefined
 });
 
 const UserContextProvider = (props: any) => {
@@ -28,7 +34,7 @@ const UserContextProvider = (props: any) => {
   });
   const [isRoomActive, setIsRoomActive] = useState(false);
   const [room, setRoom] = useState<Room>();
-
+  const [socket, setSocket] = useState(io())
   let initailValue;
 
   useEffect(() => {
@@ -52,6 +58,8 @@ const UserContextProvider = (props: any) => {
         setRoom,
         isRoomActive,
         setIsRoomActive,
+        socket,
+        setSocket
       }}
     >
       {props.children}
