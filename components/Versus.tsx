@@ -17,13 +17,21 @@ import {JoinRoomReturn} from "../pages/api/socket";
 
 const Versus: NextPage = () => {
   const [widthScreen, setWidthScreen] = useState(0);
+  let socket: any;
   const [stateSocket, setStateSocket] = useState();
   const router = useRouter();
   const roomId = router.query.id;
-  const { user, setUser, setRoom, room, socket } = useContext(UserContext);
+  const { user, setUser, setRoom, room } = useContext(UserContext);
   const [showOtherScoreModal, setShowOtherScoreModal] = useState(false);
   const [othercard, setOthercard] = useState(0);
   const [reload, setReload] = useState(false);
+
+  if (stateSocket) {
+    socket = stateSocket;
+  } else {
+      socket = io({reconnectionDelayMax:3600000});
+      setStateSocket(socket);
+  }
 
   const updateSelection = (chosenVote: number) => {
     setOthercard(chosenVote);
