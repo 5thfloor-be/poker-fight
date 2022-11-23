@@ -43,20 +43,17 @@ function configIO(io: Server) {
       });
     }
 
-    console.log(`User connected ${socket.id}`);
+    console.log(`User connected to server ${socket.id}`);
 
     socket.on("join_room", (data, listener) => {
       let userIdTemp = data.userInfo.id;
 
-      console.log(`${socket.id} is joining data :${data.userInfo.id}`);
+      console.log(`${socket.id} is joining room ${data.roomId}`);
       socket.join(data.roomId);
       let room = rooms.get(data.roomId);
       if (  room?.users.filter((user) => user.id === data.userInfo.id).length === 0) {
-        console.log("rooms.get(data.roomId)?.users.", room?.users.length);
-
         const user = { ...data.userInfo, id: uuid() };
         userIdTemp = user.id;
-        console.log(`room is full ? ${room?.isFull()}, user role = ${user?.role}`)
         if(room?.isFull() && user?.role === Role.DEV){
           listener({id: null, error: ErrorCode.TOO_MANY_VOTERS});
           return;

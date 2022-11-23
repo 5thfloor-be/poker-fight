@@ -66,53 +66,59 @@ const Room = (props: RoomProps) => {
       setStateSocket(socket);
 
       socket.emit("join_room", { roomId, userInfo: user }, (data: JoinRoomReturn) => {
-          console.log(`data - ${!!data.error}`, data)
+          console.log('emit : join room user : ', user)
         if(data.error !== null){
           router.push(`/error-page/${data.error}`, );
         }
-        console.log("my user id : ", user);
         setUser({ ...user, id: data.id });
       });
 
       socket.emit("get_room", { roomId: roomId }, (room: RoomModel) => {
+        console.log('emit : get room user : ', user)
         setRoom(room);
         setCardValues(room.roomOptions.cardValues);
       });
     }
 
     if (socket) {
+      socket.on("reconnect", () => {
+        socket.emit("join_room", { roomId, userInfo: user }, (data: JoinRoomReturn) => {
+          console.log('emit : reconnection user : ', user);
+          if(data.error !== null){
+            router.push(`/error-page/${data.error}`, );
+          }
+          setUser({ ...user, id: data.id });
+        });
+        // ...
+      });
       socket.on("reveal", (data: any) => {
-        console.log("reveeeeeeeal", data);
+        console.log("received : reveal", data);
         setRoom(data);
         setShow(false);
-        console.log("room state", data?.state);
         if (data?.state === States.FIGHTING) {
           <Versus />
         }
       });
       socket.on("start_voting", (data: any) => {
-        console.log("startVotiiiiing", data);
+        console.log("received : start voting", data);
         setSelectedVote(-1);
         setRoom(data);
       });
       socket.on("room_state_update", (r: RoomModel) => {
-        console.log("room state update received ", r);
+        console.log("received : room state update received ", r);
         setRoom(r);
       });
 
       socket.on("user_removed", (data: any) => {
-        console.log("user removed :", data);
-        console.log("user :", user);
+        console.log("received : user removed", data);
         if (data.userId === user.id) {
-          console.log("leaving");
-          socket.emit("leave", { roomId: roomId });
+          socket.emit("emit : leave front", { roomId: roomId });
         }
       });
     } // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [socket]);
 
   const updateSelection = (chosenVote: number) => {
-    console.log("my vote : " + chosenVote);
     setSelectedVote(chosenVote);
     setShow(false);
     socket.emit(
@@ -125,23 +131,20 @@ const Room = (props: RoomProps) => {
   };
   // get room from server
   const startVoting = () => {
-    console.log("start voting: Change status room to voting", socket);
+    console.log("emit : start voting: Change status room to voting", socket);
     socket.emit("start_voting", { roomId }, (r: any) => setRoom(r));
   };
 
   const reveal = () => {
-    console.log("reveal: Change status room to voted");
+    console.log("emit : reveal: Change status room to voted");
     socket.emit("reveal", { roomId }, (r: any) => {
-      console.log(room?.currentVotes);
-      console.log("room", r);
       setRoom(r);
     });
   };
 
   const redoVote = () => {
-    console.log("redo vote: Change status vote to voting");
+    console.log("emit : redo vote: Change status vote to voting");
     socket.emit("redo_vote", { roomId }, (r: any) => {
-      console.log("room", r);
       setRoom(r);
     });
   };
@@ -151,11 +154,9 @@ const Room = (props: RoomProps) => {
       "validate",
       { roomId: roomId, finalVote: room?.wondrousVote },
       (r: any) => {
-        console.log("room", r);
         setRoom(r);
       }
     );
-    console.log("Validate: Add points and change status room to voting");
   };
 
   const getVoteByUserId = (userId: string) => {
