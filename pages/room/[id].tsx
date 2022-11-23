@@ -24,7 +24,7 @@ type RoomProps = {
 };
 
 const roomStateText = new Map([
-    [States.STARTING, 'Waiting for next round...'],
+    [States.STARTING, 'Waiting for the next round...'],
     [States.VOTING, 'Time to vote !'],
     [States.WONDROUS, 'PERFECT !!!!!'],
     [States.FIGHTING, "Looks like we don't agree... "],
