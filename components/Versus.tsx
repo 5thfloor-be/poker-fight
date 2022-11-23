@@ -100,32 +100,18 @@ const Versus: NextPage = () => {
     if (side == "right") {
       return (
         <>
-          <div className="d-none d-sm-block">
-            <div className="d-flex flex-wrap justify-content-center gap-5">
-              {rightCards?.map((item, index) => (
-                <Card
-                  key={index}
-                  value={item.vote}
-                  name={getUserName(item.userId)}
-                  canClose={false}
-                />
-              ))}
-            </div>
-          </div>
-          <div className="d-sm-none d-block">
-            <div className="d-flex flex-wrap justify-content-center gap-5">
+          <div >
+            <div className="d-flex flex-wrap justify-content-center">
               <Card
-                value={highVal}
-                canClose={false}
-                badgeConfig={{
-                  badgeText: "" + rightCards?.length,
-                  popupText: rightCards?.map((item, index) => (
-                    <div key={index}>{item.userId}</div>
-                  )),
-                  position: "left",
-                  popupTitle: "Voters",
-                }}
+                  value={highVal}
+                  name={""}
+                  canClose={false}
               />
+              <div className="container text-center">
+              {rightCards?.map((item, index) => (
+                  <h4 className="text-white fw-bold">{getUserName(item.userId)}</h4>
+              ))}
+              </div>
             </div>
           </div>
         </>
@@ -133,32 +119,18 @@ const Versus: NextPage = () => {
     } else {
       return (
         <>
-          <div className="d-none d-sm-block">
-            <div className="d-flex flex-wrap justify-content-center gap-5">
-              {leftCards?.map((item, index) => (
-                <Card
-                  key={index}
-                  value={item.vote}
-                  name={getUserName(item.userId)}
-                  canClose={false}
-                />
-              ))}
-            </div>
-          </div>
-          <div className="d-sm-none d-block">
-            <div className="d-flex flex-wrap justify-content-center gap-5">
+          <div>
+            <div className="d-flex flex-wrap justify-content-center">
               <Card
-                value={lowVal}
-                canClose={false}
-                badgeConfig={{
-                  badgeText: "" + leftCards?.length,
-                  popupText: leftCards?.map((item, index) => (
-                    <div key={index}>{item.userId}</div>
-                  )),
-                  position: "right",
-                  popupTitle: "Voters",
-                }}
+                  value={lowVal}
+                  name={""}
+                  canClose={false}
               />
+              <div className="container text-center">
+                {leftCards?.map((item, index) => (
+                    <h4 className="text-white fw-bold">{getUserName(item.userId)}</h4>
+                ))}
+              </div>
             </div>
           </div>
         </>
@@ -202,7 +174,7 @@ const Versus: NextPage = () => {
             <div className="col-4">
               <div>{getCards("left")}</div>
             </div>
-            <div className="col-4">
+            <div className="col-4 px-0 my-auto">
               <Image
                 className="text-white"
                 src="/images/versus.png"
