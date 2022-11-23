@@ -19,20 +19,21 @@ const FooterActiveMobile: NextPage = () => {
 
   return (
     <>
-      {isRoomActive && room && room.roomOptions.targetPoints && (
+      {isRoomActive && (
         <footer className={styles.containeractivefooter}>
           <div className="container d-sm-none mx-0 mw-100 pb-3">
             <div className="row">
-              <div className="col-10 px-1">
-                <button
-                  className="btn btn-success rounded-5 form-control fw-bold opacity-100"
-                  disabled
-                >
-                  Points to achieve :{" "}
-                  {room.currentPoints ? room.currentPoints : 0} /
-                  {room.roomOptions.targetPoints}
-                </button>
-              </div>
+              {room && room.roomOptions.targetPoints && (
+                <div className="col-10 px-1">
+                  <button
+                    className="btn btn-success rounded-5 form-control fw-bold opacity-100"
+                    disabled
+                  >
+                    Score : {room.currentPoints ? room.currentPoints : 0} /
+                    {room.roomOptions.targetPoints}
+                  </button>
+                </div>
+              )}
               <div className="col-2 px-2">
                 <button onClick={quitHandler} className="btn btn-danger">
                   <IoExitOutline color="white" size={20} />
