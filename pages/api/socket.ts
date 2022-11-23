@@ -17,7 +17,7 @@ const SocketHandler = (req: IncomingMessage, res: any) => {
     console.log("Socket is already running");
   } else {
     console.log("Socket is initializing");
-    const io = new Server({...res.socket?.server, pingTimeout: 600000});
+    const io = new Server(res.socket?.server, {pingTimeout: 600000});
     configIO(io);
     res.socket.server.io = io;
   }
