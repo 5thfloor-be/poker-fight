@@ -24,46 +24,13 @@ const Versus: NextPage = () => {
   const { user, setUser, setRoom, room } = useContext(UserContext);
   const [showOtherScoreModal, setShowOtherScoreModal] = useState(false);
   const [othercard, setOthercard] = useState(0);
-  const [cardValues, setCardValues] = useState<any>([]);
   const [reload, setReload] = useState(false);
 
   if (stateSocket) {
     socket = stateSocket;
-  }
-
-  console.log("socket " + socket?.id);
-  if (!socket) {
-    socket = io({reconnectionDelayMax:3600000});
-    setStateSocket(socket);
-
-    socket.emit("emit : join_room", { roomId, userInfo: user }, (data: JoinRoomReturn) => {
-      console.log('versus emitted : join_room')
-      if(data.error !== null){
-        router.push(`/error-page/${data.error}`, );
-      }
-      console.log("my user id : ", user);
-      setUser({ ...user, id: data.id });
-    });
-
-
-    socket.emit("get_room", { roomId: roomId }, (room: RoomModel) => {
-      console.log('versus emitted : get_room')
-      setRoom(room);
-      setCardValues(room?.roomOptions.cardValues);
-      if (room.state !== States.FIGHTING) {
-        let a = router.asPath.split("/");
-        a.pop();
-        router.push(a.join("/"));
-      }
-    });
   } else {
-    socket.on("room_state_update", (r: any) => {
-      setReload(false);
-      console.log("versus : room state update received ", r);
-      if (r?.state === States.STARTING || r?.state === States.VOTING) {
-        router.push("/room/" + roomId);
-      }
-    });
+      socket = io({reconnectionDelayMax:3600000});
+      setStateSocket(socket);
   }
 
   const updateSelection = (chosenVote: number) => {
@@ -320,9 +287,9 @@ const Versus: NextPage = () => {
             {/* Début du block des cartes à ajouter */}
             <div className="row mt-3 ms-sm-2 text-center">
               <Deck
-                deck={cardValues?.filter(
+                deck={room ? room.roomOptions?.cardValues?.filter(
                   (card: number) => card != highest() && card != lowest()
-                )}
+                ) :  []}
                 updateSelection={updateSelection}
               />
             </div>
