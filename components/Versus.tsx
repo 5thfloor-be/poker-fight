@@ -36,8 +36,8 @@ const Versus: NextPage = () => {
     socket = io({reconnectionDelayMax:3600000});
     setStateSocket(socket);
 
-    socket.emit("join_room", { roomId, userInfo: user }, (data: JoinRoomReturn) => {
-      console.log(`data - ${!!data.error}`, data)
+    socket.emit("emit : join_room", { roomId, userInfo: user }, (data: JoinRoomReturn) => {
+      console.log('versus emitted : join_room')
       if(data.error !== null){
         router.push(`/error-page/${data.error}`, );
       }
@@ -47,6 +47,7 @@ const Versus: NextPage = () => {
 
 
     socket.emit("get_room", { roomId: roomId }, (room: RoomModel) => {
+      console.log('versus emitted : get_room')
       setRoom(room);
       setCardValues(room?.roomOptions.cardValues);
       if (room.state !== States.FIGHTING) {
@@ -56,10 +57,9 @@ const Versus: NextPage = () => {
       }
     });
   } else {
-    console.log("reload " + socket.id);
     socket.on("room_state_update", (r: any) => {
       setReload(false);
-      console.log("room state update received versus ", r);
+      console.log("versus : room state update received ", r);
       if (r?.state === States.STARTING || r?.state === States.VOTING) {
         router.push("/room/" + roomId);
       }
@@ -67,7 +67,6 @@ const Versus: NextPage = () => {
   }
 
   const updateSelection = (chosenVote: number) => {
-    console.log("my vote : " + chosenVote);
     setOthercard(chosenVote);
   };
 
