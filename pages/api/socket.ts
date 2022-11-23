@@ -67,10 +67,6 @@ function configIO(io: Server) {
     {
       console.log("A client has disconnected.");
     });
-
-    socket.on('hello', function () {
-      console.log("hello")
-    })
     socket.on("remove_user", (data) => {
       console.log(`${data.userId} is removed `, data);
       rooms.get(data.roomId)?.removeUser(data.userId);
