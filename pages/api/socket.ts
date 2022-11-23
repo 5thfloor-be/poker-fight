@@ -69,7 +69,7 @@ function configIO(io: Server) {
     socket.on("remove_user", (data) => {
       console.log(`${data.userId} is removed `, data);
       rooms.get(data.roomId)?.removeUser(data.userId);
-      socket.to(data.roomId).emit('user_removed', {userId: data.userId});
+      io.to(data.roomId).emit('user_removed', {userId: data.userId});
     });
 
     socket.on("leave_room", (data) =>{
@@ -94,7 +94,7 @@ function configIO(io: Server) {
       const room = new Room(roomId, data);
       room.registerOnChangeCallback((room: Room) => {
         console.log(`room state update sent${JSON.stringify(room)}`);
-        socket.to(roomId).emit("room_state_update", room);
+        io.to(roomId).emit("room_state_update", room);
       });
       rooms.set(roomId, room);
 
@@ -109,7 +109,7 @@ function configIO(io: Server) {
         console.log("register vot e", room);
         if(room?.allUsersVoted()){
           rooms.get(data.roomId)?.revealVotes();
-          socket.to(data.roomId).emit("reveal", room);
+          io.to(data.roomId).emit("reveal", room);
         }
         listener(room);
       }
@@ -118,7 +118,7 @@ function configIO(io: Server) {
     socket.on("reveal", (data) => {
       console.log(`reveal from scrum master ${JSON.stringify(data)}`);
       rooms.get(data.roomId)?.revealVotes();
-      socket.to(data.roomId).emit("reveal", rooms.get(data.roomId));
+      io.to(data.roomId).emit("reveal", rooms.get(data.roomId));
     });
 
     socket.on("validate", (data) => {
@@ -133,7 +133,7 @@ function configIO(io: Server) {
       room?.resetCurrentVotes();
       room?.startVoting();
 
-      socket.to(data.roomId).emit("start_voting", rooms.get(data.roomId));
+      io.to(data.roomId).emit("start_voting", rooms.get(data.roomId));
     });
 
     socket.on("cofee_break_vote", (data) => {
@@ -160,7 +160,7 @@ function configIO(io: Server) {
       console.log(`start_voting ${JSON.stringify(data)}`);
       rooms.get(data.roomId)?.startVoting();
 
-      socket.to(data.roomId).emit("start_voting", rooms.get(data.roomId));
+      io.to(data.roomId).emit("start_voting", rooms.get(data.roomId));
     });
 
     socket.on("get_room", (data, listener) => {
