@@ -78,11 +78,6 @@ const Room = (props: RoomProps) => {
         setRoom(room);
         setCardValues(room?.roomOptions.cardValues);
       });
-
-
-      const keepalive = setInterval(() => {
-        socket.emit("hello");
-      }, 15000);
     }
 
     if (socket) {
