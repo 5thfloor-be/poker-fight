@@ -40,45 +40,49 @@ const Card = ({
     </Popover>
   );
   return (
-    <div>
-      <div
-        className={
-          !selected
-            ? `${styles.customCard}`
-            : `${styles.customCard} ${styles.customCardSelected}`
-        }
-      >
-        <div className="row">
-          <div className="d-none d-sm-block col-sm-6">
-            <Image
-              alt="card"
-              src="/images/favicon.png"
-              width={50}
-              height={50}
-            />
-          </div>
-          {canClose && (
-            <div className="col-12 col-sm-6 text-end">
-              <MdCancel color="red" size={"26"} onClick={onRemoveUser} />
+    <div className='container'>
+      <div className='row justify-content-center'>
+        <div
+          className={
+            !selected
+              ? `container ${styles.customCard} col-1`
+              : `container ${styles.customCard} ${styles.customCardSelected}`
+          }
+        >
+          <div className="row h-25">
+            <div className="d-none d-sm-block col-sm-6 px-2">
+              <Image
+                alt="card"
+                src="/images/favicon.png"
+                width={50}
+                height={50}
+              />
             </div>
-          )}
-        </div>
+            {canClose && (
+              <div className="col-12 col-sm-6 text-end">
+                <MdCancel color="red" size={"26"} onClick={onRemoveUser} />
+              </div>
+            )}
+          </div>
 
-        <div className="text-center">
-          {value && (
-            <span className={`fw-bold ${styles.valueCard}`}>
-              {value}
-            </span>
-          )}
-          {color && !value && <MdAccountCircle color={color} size={60} />}
-        </div>
-        <div className={`d-none d-sm-block ${styles.logoBottom}`}>
-          <Image alt="card" src="/images/favicon.png" width={50} height={50} />
+          <div className="row text-center h-50">
+            {value && (
+              <span className={`fw-bold ${styles.valueCard}`}>
+                {value}
+              </span>
+            )}
+            {color && !value && <MdAccountCircle color={color} size={60} />}
+          </div>
+          <div className="row justify-content-end h-25">
+            <div className={`d-none d-sm-block col-6 px-2 ${styles.logoBottom}`}>
+              <Image alt="card" src="/images/favicon.png" width={50} height={50} />
+            </div>
+          </div>
         </div>
       </div>
       {name && (
         <div>
-          <h4 className="text-white">{name}</h4>
+          <h4 className="text-light w-100 text-center fw-bold">{name}</h4>
         </div>
       )}
       {badgeConfig && (

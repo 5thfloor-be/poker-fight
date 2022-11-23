@@ -22,7 +22,7 @@ const selectIndex = ( index: number) => {
     <div className="container">
       <div className="row">
         {deck.map((score, index) => (
-          <div className="col" key={score} onClick={() => selectIndex(index)}>
+          <div className="col mb-3" key={score} onClick={() => selectIndex(index)}>
             <Card key={score} value={score} canClose={canClose} selected={selectedIndex === index} />
           </div>
         ))}
