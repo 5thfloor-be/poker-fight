@@ -11,7 +11,7 @@ const HeaderActive = () => {
   const path = useRouter();
   const router = useRouter();
   const [widthScreen, setWidthScreen] = useState(0);
-  const urlValue = "http://www.poker-fight.com/room/" + router.query.id;
+  const urlValue = "https://www.poker-fight.com/room/" + router.query.id;
   const [showAlert, setShowAlert] = useState(false);
 
   useEffect(() => {
@@ -48,7 +48,7 @@ const HeaderActive = () => {
                     disabled
                     className="rounded-5 form-control mx-1 mx-sm-3"
                     type="text"
-                    value={urlValue}
+                    value={urlValue.substring(12)}
                   />
 
                   {!showAlert ? (
@@ -59,7 +59,7 @@ const HeaderActive = () => {
                         setShowAlert(!showAlert);
                       }}
                     >
-                      COPY
+                      COPY URL
                     </button>
                   ) : (
                     <button
@@ -80,8 +80,7 @@ const HeaderActive = () => {
                     className=" btn btn-success rounded-5 form-control fw-bold opacity-100"
                     disabled
                   >
-                    Points to achieve :{" "}
-                    {room.currentPoints ? room.currentPoints : 0} /
+                    SCORE : {room.currentPoints ? room.currentPoints : 0} /
                     {room.roomOptions.targetPoints}
                   </button>
                 </div>
