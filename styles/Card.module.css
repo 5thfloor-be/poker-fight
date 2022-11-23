@@ -10,7 +10,6 @@
 }
 
 .customCard:hover{
-  border: #0070f3 .1rem solid;
   top:-10px;
   position: relative;
   cursor: pointer;
