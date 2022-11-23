@@ -3,9 +3,9 @@
   width: 7em;
   margin-bottom: 5px;
   box-shadow: #222222 .5em .5em .5em;
-  background-color: white;
+  background-color: #EFEFEF;
   border-radius: .5em;
-  border: .1rem solid #eaeaea;
+  border: .1rem #888888 solid;
   color: #3279f4;
 }
 

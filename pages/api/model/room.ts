@@ -1,7 +1,7 @@
 import User, {Role} from './user';
 import UserVote from './userVote';
 
-const MAX_VOTERS = 10;
+const MAX_VOTERS = 3;
 
 export default class Room {
   users: User[] = [];

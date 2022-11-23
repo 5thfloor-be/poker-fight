@@ -17,12 +17,18 @@ import Buzzer from "../../components/Buzzer";
 import FooterActiveMobile from "../../components/layout/FooterActiveMobile";
 import Versus from "../../components/Versus";
 import ScrumMasterVotingToolbar from "../../components/ScrumMasterVotingToolbar";
-import {ErrorCode} from "../api/model/ErrorCode";
 import {JoinRoomReturn} from "../api/socket";
 
 type RoomProps = {
   roomy: any;
 };
+
+const roomStateText = new Map([
+    [States.STARTING, 'Waiting for next round...'],
+    [States.VOTING, 'Time to vote !'],
+    [States.WONDROUS, 'PERFECT !!!!!'],
+    [States.FIGHTING, "Looks like we don't agree... "],
+])
 
 const Room = (props: RoomProps) => {
   const router = useRouter();
@@ -195,40 +201,43 @@ const Room = (props: RoomProps) => {
 
   return (
     <div className="container">
-      <div className="row p-3 m-2 mt-5 playingMat justify-content-center">
-        {room.users
-          .filter((u) => u?.id !== user?.id)
-          .map((userMap, key) => (
-            <div key={key} className="col-4 col-sm-2">
-              {userMap.role !== Role.SCRUM_MASTER &&
-                userMap.role !== Role.SPECTATOR && (
-                  <Card
-                    value={
-                      room?.state === States.WONDROUS && !!userMap.id
-                        ? getVoteByUserId(userMap.id)
-                        : undefined
-                    }
-                    canClose={
-                      user.role === Role.SCRUM_MASTER ||
-                      user.role === Role.VOTING_SCRUM_MASTER
-                    }
-                    color={userMap.color}
-                    name={userMap.name}
-                    selected={!!userMap.id && !!getVoteByUserId(userMap.id)}
-                    onRemoveUser={() => removeUser(userMap)}
-                  />
-                )}
-            </div>
-          ))}
-      </div>
+      {room.users?.length > 1 &&
+          <div className="row p-3 m-2 mt-5 playingMat justify-content-center">
+            {room.users
+                .filter((u) => u?.id !== user?.id)
+                .map((userMap, key) => (
+                    <div key={key} className="col-4 col-sm-2">
+                      {userMap.role !== Role.SCRUM_MASTER &&
+                          userMap.role !== Role.SPECTATOR && (
+                              <Card
+                                  value={
+                                    room?.state === States.WONDROUS && !!userMap.id
+                                        ? getVoteByUserId(userMap.id)
+                                        : undefined
+                                  }
+                                  canClose={
+                                      user.role === Role.SCRUM_MASTER ||
+                                      user.role === Role.VOTING_SCRUM_MASTER
+                                  }
+                                  color={userMap.color}
+                                  name={userMap.name}
+                                  selected={!!userMap.id && !!getVoteByUserId(userMap.id)}
+                                  onRemoveUser={() => removeUser(userMap)}
+                              />
+                          )}
+                    </div>
+                ))}
+          </div>
+      }
+
 
       <div className="row">
         <div className="col text-center text-xl-center m-3 p-1 roomStatus">
           <h3>
-            {room.state === States.WONDROUS
-                ? room.wondrousVote
-                : "Waiting for votes ..."}
+            {roomStateText.get(room.state)}
           </h3>
+          {
+            room.state == States.WONDROUS&&<h1>{room.wondrousVote}</h1>}
         </div>
       </div>
 

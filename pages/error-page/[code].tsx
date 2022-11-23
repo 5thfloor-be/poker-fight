@@ -1,6 +1,8 @@
 import {ErrorCode} from "../api/model/ErrorCode";
 import Image from "next/image";
 import {useRouter} from "next/router";
+import {useContext} from "react";
+import {UserContext} from "../../context/UserContext";
 
 
 const errorMessages = new Map<ErrorCode, String>([
@@ -11,6 +13,10 @@ const ErrorPage = () => {
 
     const router = useRouter();
     const errorCode = router.query.code as string;
+    const { setIsRoomActive, user, setUser } =
+        useContext(UserContext);
+    setIsRoomActive(false);
+    setUser({ ...user, role: "" });
 
     const goHome = () => {
         router.push("/");
