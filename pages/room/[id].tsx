@@ -33,7 +33,7 @@ const roomStateText = new Map([
 const Room = (props: RoomProps) => {
   const router = useRouter();
   const roomId = router.query.id;
-  const { user, setUser, setRoom, room, socket } = useContext(UserContext);
+  const { user, setUser, setRoom, room } = useContext(UserContext);
   const [cardValues, setCardValues] = useState<any>([]);
   const [stateSocket, setStateSocket] = useState();
   const [selectedVote, setSelectedVote] = useState(-1);
@@ -44,6 +44,13 @@ const Room = (props: RoomProps) => {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
+  let socket: any;
+
+  // Le reload asynchrone de la page remet à any la Socket
+  if (stateSocket) {
+    socket = stateSocket;
+  }
+
   /* Dans le cas si pas d'utilisateur redirect vers la Join Room */
   useEffect(() => {
     if (!user.name) {
@@ -53,7 +60,11 @@ const Room = (props: RoomProps) => {
   }, []);
 
   useEffect(() => {
-    if (user.name.length > 0) {
+    if (!socket && user.name.length > 0) {
+      socket = io({reconnectionDelayMax:3600000});
+
+      setStateSocket(socket);
+
       socket.emit("join_room", { roomId, userInfo: user }, (data: JoinRoomReturn) => {
           console.log('emit : join room user : ', user)
         if(data.error !== null){
@@ -69,6 +80,7 @@ const Room = (props: RoomProps) => {
       });
     }
 
+    if (socket) {
       socket.on("reconnect", () => {
         socket.emit("join_room", { roomId, userInfo: user }, (data: JoinRoomReturn) => {
           console.log('emit : reconnection user : ', user);
@@ -104,7 +116,8 @@ const Room = (props: RoomProps) => {
         if (data.userId === user.id) {
           socket.emit("emit : leave front", { roomId: roomId });
         }
-      });// eslint-disable-next-line react-hooks/exhaustive-deps
+      });
+    } // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [socket]);
 
   const updateSelection = (chosenVote: number) => {
