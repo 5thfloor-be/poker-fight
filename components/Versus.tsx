@@ -36,7 +36,7 @@ const Versus: NextPage = () => {
     socket = io({reconnectionDelayMax:3600000});
     setStateSocket(socket);
 
-    socket.emit("emit : join_room", { roomId, userInfo: user }, (data: JoinRoomReturn) => {
+    socket.emit("join_room", { roomId, userInfo: user }, (data: JoinRoomReturn) => {
       console.log('versus emitted : join_room')
       if(data.error !== null){
         router.push(`/error-page/${data.error}`, );
