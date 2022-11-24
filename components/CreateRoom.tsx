@@ -178,10 +178,12 @@ const CreateRoom = (props: CreateRoomProps) => {
             </div>
             {/* Début du block des cartes à ajouter */}
             <div className="row mt-3 ms-sm-2 text-center">
-              <div>Choose cards values</div>
+              <div>
+                <h4>Choose cards values</h4>
+              </div>
               {roomSettings.cardValues.map((card, key) => (
                 <div
-                  className="col-2 bg-light text-primary fw-bold fs-1 mx-2 my-2 rounded"
+                  className="col-3 col-sm-2 bg-light text-primary fw-bold fs-1 mx-2 my-2 rounded"
                   key={key}
                 >
                   {card}
@@ -197,10 +199,10 @@ const CreateRoom = (props: CreateRoomProps) => {
                   )}
                 </div>
               ))}
-              <div className="col-2 bg-light text-primary fw-bold mx-2 my-2 rounded">
+              <div className="col-3 col-sm-2 bg-light text-primary fw-bold mx-2 my-2 rounded">
                 {!addCard ? (
                   <div
-                    className="fs-1 pt-3"
+                    className="fs-1 py-3"
                     onClick={() => setAddCard(!addCard)}
                   >
                     +
@@ -262,7 +264,7 @@ const CreateRoom = (props: CreateRoomProps) => {
             </div>
             {/* Début du block de settings de la Room */}
             <div className="row pt-3">
-              <div className="col-3 col-sm-2 offset-sm-3 text-end">
+              <div className="col-4 col-sm-2 offset-sm-3 text-end">
                 <input
                   id="pointsachieved"
                   className="rounded p-2"
@@ -272,7 +274,7 @@ const CreateRoom = (props: CreateRoomProps) => {
                   pattern="[0-9]{1,3}"
                   title="Numbers only"
                   maxLength={3}
-                  size={2}
+                  size={3}
                   onChange={(e) => {
                     setRoomSettings({
                       ...roomSettings,
@@ -302,7 +304,7 @@ const CreateRoom = (props: CreateRoomProps) => {
                   />
                 )}
               </div>
-              <div className="col-9 col-sm-6 text-start pt-2">
+              <div className="col-8 col-sm-6 text-start pt-2">
                 <label className="form-label ps-2">
                   Number of points to achieve
                 </label>
@@ -357,7 +359,7 @@ const CreateRoom = (props: CreateRoomProps) => {
               </div>
             </div>*/}
             <div className="row pt-3">
-              <div className="col-3 col-sm-2 offset-sm-3 form-switch text-end">
+              <div className="col-4 col-sm-2 offset-sm-3 form-switch text-end">
                 <input
                   className="form-check-input p-2"
                   type="checkbox"
@@ -372,7 +374,7 @@ const CreateRoom = (props: CreateRoomProps) => {
                   }}
                 />
               </div>
-              <div className="col-9 col-sm-6 text-start">
+              <div className="col-8 col-sm-6 text-start">
                 <label
                   className="form-label ps-2"
                   htmlFor="flexSwitchCheckDefault"
@@ -382,7 +384,7 @@ const CreateRoom = (props: CreateRoomProps) => {
               </div>
             </div>
             <div className="row pt-3">
-              <div className="col-3 col-sm-2 offset-sm-3 form-switch text-end">
+              <div className="col-4 col-sm-2 offset-sm-3 form-switch text-end">
                 <input
                   className="form-check-input p-2"
                   type="checkbox"
@@ -397,7 +399,7 @@ const CreateRoom = (props: CreateRoomProps) => {
                   }}
                 />
               </div>
-              <div className="col-9 col-sm-6 text-start">
+              <div className="col-8 col-sm-6 text-start">
                 <label className="form-label ps-2" htmlFor="flexSwitchBuzzer">
                   Allow players to speed up discussion
                 </label>
