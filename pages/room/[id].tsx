@@ -1,34 +1,34 @@
-import {useRouter} from "next/router";
-import {useContext, useEffect, useState} from "react";
+import { useRouter } from "next/router";
+import { useContext, useEffect, useState } from "react";
 import Card from "../../components/Card";
-import User, {Role} from "../api/model/user";
-import RoomModel, {States} from "../api/model/room";
-import {GiCardRandom} from "react-icons/gi";
-import {Deck} from "../../components/Deck";
+import User, { Role } from "../api/model/user";
+import RoomModel, { States } from "../api/model/room";
+import { GiCardRandom } from "react-icons/gi";
+import { Deck } from "../../components/Deck";
 import Modal from "react-bootstrap/Modal";
-import {Button} from "react-bootstrap";
-import {UserContext} from "../../context/UserContext";
-import {io} from "socket.io-client";
+import { Button } from "react-bootstrap";
+import { UserContext } from "../../context/UserContext";
+import { io } from "socket.io-client";
 import CoffeBreak from "../../components/CoffeBreak";
 import Spectators from "../../components/Spectators";
-import {BsEyeglasses} from "react-icons/bs";
+import { BsEyeglasses } from "react-icons/bs";
 import ModalSpectators from "../../components/ModalSpectators";
 import Buzzer from "../../components/Buzzer";
 import FooterActiveMobile from "../../components/layout/FooterActiveMobile";
 import Versus from "../../components/Versus";
 import ScrumMasterVotingToolbar from "../../components/ScrumMasterVotingToolbar";
-import {JoinRoomReturn} from "../api/socket";
+import { JoinRoomReturn } from "../api/socket";
 
 type RoomProps = {
   roomy: any;
 };
 
 const roomStateText = new Map([
-    [States.STARTING, 'Waiting for the next round...'],
-    [States.VOTING, 'Time to vote !'],
-    [States.WONDROUS, 'PERFECT !!!!!'],
-    [States.FIGHTING, "Looks like we don't agree... "],
-])
+  [States.STARTING, "Waiting for the next round..."],
+  [States.VOTING, "Time to vote !"],
+  [States.WONDROUS, "PERFECT !!!!!"],
+  [States.FIGHTING, "Looks like we don't agree... "],
+]);
 
 const Room = (props: RoomProps) => {
   const router = useRouter();
@@ -61,20 +61,24 @@ const Room = (props: RoomProps) => {
 
   useEffect(() => {
     if (!socket && user.name.length > 0) {
-      socket = io({reconnectionDelayMax:3600000});
+      socket = io({ reconnectionDelayMax: 3600000 });
 
       setStateSocket(socket);
 
-      socket.emit("join_room", { roomId, userInfo: user }, (data: JoinRoomReturn) => {
-          console.log('emit : join room user : ', user)
-        if(data.error !== null){
-          router.push(`/error-page/${data.error}`, );
+      socket.emit(
+        "join_room",
+        { roomId, userInfo: user },
+        (data: JoinRoomReturn) => {
+          console.log("emit : join room user : ", user);
+          if (data.error !== null) {
+            router.push(`/error-page/${data.error}`);
+          }
+          setUser({ ...user, id: data.id });
         }
-        setUser({ ...user, id: data.id });
-      });
+      );
 
       socket.emit("get_room", { roomId: roomId }, (room: RoomModel) => {
-        console.log('emit : get room user : ', user)
+        console.log("emit : get room user : ", user);
         setRoom(room);
         setCardValues(room?.roomOptions.cardValues);
       });
@@ -82,13 +86,17 @@ const Room = (props: RoomProps) => {
 
     if (socket) {
       socket.on("reconnect", () => {
-        socket.emit("join_room", { roomId, userInfo: user }, (data: JoinRoomReturn) => {
-          console.log('emit : reconnection user : ', user);
-          if(data.error !== null){
-            router.push(`/error-page/${data.error}`, );
+        socket.emit(
+          "join_room",
+          { roomId, userInfo: user },
+          (data: JoinRoomReturn) => {
+            console.log("emit : reconnection user : ", user);
+            if (data.error !== null) {
+              router.push(`/error-page/${data.error}`);
+            }
+            setUser({ ...user, id: data.id });
           }
-          setUser({ ...user, id: data.id });
-        });
+        );
         // ...
       });
       socket.on("reveal", (data: any) => {
@@ -96,7 +104,7 @@ const Room = (props: RoomProps) => {
         setRoom(data);
         setShow(false);
         if (data?.state === States.FIGHTING) {
-          <Versus />
+          <Versus />;
         }
       });
       socket.on("start_voting", (data: any) => {
@@ -174,7 +182,7 @@ const Room = (props: RoomProps) => {
   };
 
   if (room?.state === States.FIGHTING) {
-    return (<Versus />)
+    return <Versus />;
   }
 
   if (!room) {
@@ -204,47 +212,50 @@ const Room = (props: RoomProps) => {
 
   return (
     <div className="container">
-      {room.users?.length > 1 &&
-          <div className="row p-3 m-2 mt-5 playingMat justify-content-center">
-            {room.users
-                .filter((u) => u?.id !== user?.id)
-                .map((userMap, key) => (
-                    <div key={key} className="col-4 col-sm-2">
-                      {userMap.role !== Role.SCRUM_MASTER &&
-                          userMap.role !== Role.SPECTATOR && (
-                              <Card
-                                  value={
-                                    room?.state === States.WONDROUS && !!userMap.id
-                                        ? getVoteByUserId(userMap.id)
-                                        : undefined
-                                  }
-                                  canClose={
-                                      user.role === Role.SCRUM_MASTER ||
-                                      user.role === Role.VOTING_SCRUM_MASTER
-                                  }
-                                  color={userMap.color}
-                                  name={userMap.name}
-                                  selected={!!userMap.id && !!getVoteByUserId(userMap.id)}
-                                  onRemoveUser={() => removeUser(userMap)}
-                              />
-                          )}
-                    </div>
-                ))}
-          </div>
-      }
-
+      {room.users?.length > 1 && (
+        <div className="row p-3 m-2 mt-5 playingMat justify-content-center">
+          {room.users
+            .filter((u) => u?.id !== user?.id)
+            .map((userMap, key) => (
+              <div key={key} className="col-4 col-sm-2">
+                {userMap.role !== Role.SCRUM_MASTER &&
+                  userMap.role !== Role.SPECTATOR && (
+                    <Card
+                      value={
+                        room?.state === States.WONDROUS && !!userMap.id
+                          ? getVoteByUserId(userMap.id)
+                          : undefined
+                      }
+                      canClose={
+                        user.role === Role.SCRUM_MASTER ||
+                        user.role === Role.VOTING_SCRUM_MASTER
+                      }
+                      color={userMap.color}
+                      name={userMap.name}
+                      selected={!!userMap.id && !!getVoteByUserId(userMap.id)}
+                      onRemoveUser={() => removeUser(userMap)}
+                    />
+                  )}
+              </div>
+            ))}
+        </div>
+      )}
 
       <div className="row">
         <div className="col text-center text-xl-center m-3 p-1 roomStatus">
-          <h3>
-            {roomStateText.get(room.state)}
-          </h3>
-          {
-            room.state == States.WONDROUS&&<h1>{room.wondrousVote}</h1>}
+          <h3>{roomStateText.get(room.state)}</h3>
+          {room.state == States.WONDROUS && <h1>{room.wondrousVote}</h1>}
         </div>
       </div>
 
-      <ScrumMasterVotingToolbar room={room} role={user?.role} startVoting={startVoting} redoVote={redoVote} reveal={reveal} validate={validate} />
+      <ScrumMasterVotingToolbar
+        room={room}
+        role={user?.role}
+        startVoting={startVoting}
+        redoVote={redoVote}
+        reveal={reveal}
+        validate={validate}
+      />
 
       <div className="row my-3">
         <>
@@ -274,30 +285,10 @@ const Room = (props: RoomProps) => {
             </div>
           </div>
 
-          <div className="d-sm-none text-center">
-            {room.users.filter((u) => u?.role === Role.SPECTATOR).length >
-              0 && (
-              <BsEyeglasses
-                size={80}
-                color="white"
-                onClick={() => setShowSpectators(!showSpectators)}
-              />
-            )}
-            {showSpectators && (
-              <ModalSpectators
-                showSpectators={showSpectators}
-                setShowSpectators={(val) => setShowSpectators(val)}
-                roomSpectators={room.users.filter(
-                  (u) => u?.role === Role.SPECTATOR
-                )}
-              />
-            )}
-          </div>
-
           {/* Version mobile du Deck */}
           {user?.role !== Role.SCRUM_MASTER && user?.role !== Role.SPECTATOR && (
             <>
-              <div className="row mt-5 mt-sm-0 text-center w-100">
+              <div className="row mt-2 mt-sm-0 text-center w-100">
                 <div className="d-sm-none col-4">
                   {room.roomOptions.coffeeBreakAllowed && (
                     <CoffeBreak user={user} socket={socket} room={room} />
@@ -332,6 +323,27 @@ const Room = (props: RoomProps) => {
               </div>
             </>
           )}
+
+          {/* Version Mobile des Spectateurs */}
+          <div className="d-sm-none text-center">
+            {room.users.filter((u) => u?.role === Role.SPECTATOR).length >
+              0 && (
+              <BsEyeglasses
+                size={70}
+                color="white"
+                onClick={() => setShowSpectators(!showSpectators)}
+              />
+            )}
+            {showSpectators && (
+              <ModalSpectators
+                showSpectators={showSpectators}
+                setShowSpectators={(val) => setShowSpectators(val)}
+                roomSpectators={room.users.filter(
+                  (u) => u?.role === Role.SPECTATOR
+                )}
+              />
+            )}
+          </div>
         </>
       </div>
 
