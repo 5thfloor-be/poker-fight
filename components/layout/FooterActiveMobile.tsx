@@ -29,7 +29,7 @@ const FooterActiveMobile: NextPage = () => {
                     className="btn btn-success rounded-5 form-control fw-bold opacity-100"
                     disabled
                   >
-                    Score : {room.currentPoints ? room.currentPoints : 0} /
+                    SCORE : {room.currentPoints ? room.currentPoints : 0} /
                     {room.roomOptions.targetPoints}
                   </button>
                 </div>
