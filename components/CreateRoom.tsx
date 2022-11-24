@@ -136,6 +136,12 @@ const CreateRoom = (props: CreateRoomProps) => {
                     onChange={(e) => {
                       setUser({ ...user, name: e.target.value });
                     }}
+                    onKeyPress={(event) => {
+                      if (event.key === "Enter" && user?.name) {
+                        // Validation au clavier
+                        createRoom();
+                      }
+                    }}
                   />
                   <label>(15 characters max)</label>
                 </div>
