@@ -38,6 +38,11 @@ const Room = (props: RoomProps) => {
   const [stateSocket, setStateSocket] = useState();
   const [selectedVote, setSelectedVote] = useState(-1);
   const [showSpectators, setShowSpectators] = useState(false);
+  const [widthScreen, setWidthScreen] = useState(0);
+
+  useEffect(() => {
+    setWidthScreen(window.innerWidth);
+  }, []);
 
   //modal
   const [show, setShow] = useState(false);
@@ -211,187 +216,208 @@ const Room = (props: RoomProps) => {
   };
 
   return (
-    <div className="container">
-      {room.users?.length > 1 && (
-        <div className="row p-3 m-2 mt-5 playingMat justify-content-center">
-          {room.state !== States.WONDROUS ? (
-            room.users
-              .filter((u) => u?.id !== user?.id)
-              .map((userMap, key) => (
-                <div key={key} className="col-4 col-sm-2">
-                  {userMap.role !== Role.SCRUM_MASTER &&
-                    userMap.role !== Role.SPECTATOR && (
-                      <Card
-                        value={
-                          room?.state === States.WONDROUS && !!userMap.id
-                            ? getVoteByUserId(userMap.id)
-                            : undefined
-                        }
-                        canClose={
-                          user.role === Role.SCRUM_MASTER ||
-                          user.role === Role.VOTING_SCRUM_MASTER
-                        }
-                        color={userMap.color}
-                        name={userMap.name}
-                        selected={!!userMap.id && !!getVoteByUserId(userMap.id)}
-                        onRemoveUser={() => removeUser(userMap)}
-                      />
+    /* Rajouter un espace pour centrer le bloc si le User en cours est Spectateur ou Scrum Master non votant */
+    <div
+      style={
+        (user.role === Role.SPECTATOR || user.role === Role.SCRUM_MASTER) &&
+        widthScreen > 576
+          ? { paddingTop: 60 }
+          : { paddingTop: 0 }
+      }
+    >
+      <div className="container">
+        {room.users?.length > 1 && (
+          <div className="row p-3 m-2 mt-5 playingMat justify-content-center">
+            {room.state !== States.WONDROUS ? (
+              room.users
+                .filter((u) => u?.id !== user?.id)
+                .map((userMap, key) => (
+                  <div key={key} className="col-4 col-sm-2">
+                    {userMap.role !== Role.SCRUM_MASTER &&
+                      userMap.role !== Role.SPECTATOR && (
+                        <Card
+                          value={
+                            room?.state === States.WONDROUS && !!userMap.id
+                              ? getVoteByUserId(userMap.id)
+                              : undefined
+                          }
+                          canClose={
+                            user.role === Role.SCRUM_MASTER ||
+                            user.role === Role.VOTING_SCRUM_MASTER
+                          }
+                          color={userMap.color}
+                          name={userMap.name}
+                          selected={
+                            !!userMap.id && !!getVoteByUserId(userMap.id)
+                          }
+                          onRemoveUser={() => removeUser(userMap)}
+                        />
+                      )}
+                  </div>
+                ))
+            ) : (
+              <Image
+                src="/images/perfect.png"
+                alt="Poker Planning"
+                width={333}
+                height={85}
+              />
+            )}
+          </div>
+        )}
+
+        {/* Partie Perfect */}
+        <div className="row">
+          <div className="col text-center text-xl-center m-3 p-1 roomStatus">
+            <h3>{roomStateText.get(room.state)}</h3>
+            {room.state == States.WONDROUS && (
+              <h1 className="fw-bold" style={{ fontSize: "60px" }}>
+                {room.wondrousVote}
+              </h1>
+            )}
+          </div>
+        </div>
+
+        <ScrumMasterVotingToolbar
+          room={room}
+          role={user?.role}
+          startVoting={startVoting}
+          redoVote={redoVote}
+          reveal={reveal}
+          validate={validate}
+        />
+
+        <div className="row my-3">
+          <>
+            {/* Version PC du Deck */}
+            <div
+              className="row"
+              style={
+                widthScreen < 576 ? { paddingBottom: 0 } : { paddingBottom: 40 }
+              }
+            >
+              <div className="col-2 d-none d-sm-block">
+                {room.roomOptions.coffeeBreakAllowed && (
+                  <CoffeBreak user={user} socket={socket} room={room} />
+                )}
+
+                {room.roomOptions.buzzerAllowed &&
+                  room.state === States.VOTING && (
+                    <Buzzer user={user} socket={socket} room={room} />
+                  )}
+              </div>
+              <div className="col-8 d-none d-sm-block justify-content-center mt-3">
+                {user?.role !== Role.SCRUM_MASTER &&
+                  user?.role !== Role.SPECTATOR &&
+                  room.state !== States.WONDROUS &&
+                  showBottomDeck()}
+              </div>
+              {/* Version PC des Spectateurs */}
+              <div className="col-2 d-none d-sm-block justify-content-center">
+                <Spectators
+                  roomSpectators={room.users.filter(
+                    (u) => u?.role === Role.SPECTATOR
+                  )}
+                />
+              </div>
+            </div>
+
+            {/* Version mobile du Deck */}
+            {user?.role !== Role.SCRUM_MASTER && user?.role !== Role.SPECTATOR && (
+              <>
+                <div className="row mt-2 mt-sm-0 text-center w-100">
+                  <div className="d-sm-none col-4">
+                    {room.roomOptions.coffeeBreakAllowed && (
+                      <CoffeBreak user={user} socket={socket} room={room} />
                     )}
+                  </div>
+                  <div className="d-sm-none col-4">
+                    {room.state === States.VOTING && (
+                      <div>
+                        {!getVoteByUserId(user.id) && (
+                          <button
+                            className="btn text-white"
+                            onClick={handleShow}
+                          >
+                            <div className="bg-white rounded-circle p-2">
+                              <GiCardRandom color="black" size={80} />
+                            </div>
+                          </button>
+                        )}
+                        {getVoteByUserId(user.id) && (
+                          <button className="btn fw-bold" onClick={handleShow}>
+                            <div>
+                              <Card value={getVoteByUserId(user.id)} />
+                            </div>
+                          </button>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                  <div className="d-sm-none col-4">
+                    {room.roomOptions.buzzerAllowed &&
+                      room.state === States.VOTING && (
+                        <Buzzer user={user} socket={socket} room={room} />
+                      )}
+                  </div>
                 </div>
-              ))
-          ) : (
-            <Image
-              src="/images/perfect.png"
-              alt="Poker Planning"
-              width={333}
-              height={85}
-            />
-          )}
-        </div>
-      )}
+              </>
+            )}
 
-      {/* Partie Perfect */}
-      <div className="row">
-        <div className="col text-center text-xl-center m-3 p-1 roomStatus">
-          <h3>{roomStateText.get(room.state)}</h3>
-          {room.state == States.WONDROUS && (
-            <h1 className="fw-bold" style={{ fontSize: "60px" }}>
-              {room.wondrousVote}
-            </h1>
-          )}
-        </div>
-      </div>
-
-      <ScrumMasterVotingToolbar
-        room={room}
-        role={user?.role}
-        startVoting={startVoting}
-        redoVote={redoVote}
-        reveal={reveal}
-        validate={validate}
-      />
-
-      <div className="row my-3">
-        <>
-          {/* Version PC du Deck */}
-          <div className="row">
-            <div className="col-2 d-none d-sm-block">
-              {room.roomOptions.coffeeBreakAllowed && (
-                <CoffeBreak user={user} socket={socket} room={room} />
+            {/* Version Mobile des Spectateurs */}
+            <div className="d-sm-none text-center">
+              {room.users.filter((u) => u?.role === Role.SPECTATOR).length >
+                0 && (
+                <BsEyeglasses
+                  size={70}
+                  color="white"
+                  onClick={() => setShowSpectators(!showSpectators)}
+                />
               )}
-
-              {room.roomOptions.buzzerAllowed &&
-                room.state === States.VOTING && (
-                  <Buzzer user={user} socket={socket} room={room} />
-                )}
-            </div>
-            <div className="col-8 d-none d-sm-block justify-content-center mt-3">
-              {user?.role !== Role.SCRUM_MASTER &&
-                user?.role !== Role.SPECTATOR &&
-                room.state !== States.WONDROUS &&
-                showBottomDeck()}
-            </div>
-            <div className="col-2 d-none d-sm-block justify-content-center">
-              <Spectators
-                roomSpectators={room.users.filter(
-                  (u) => u?.role === Role.SPECTATOR
-                )}
-              />
-            </div>
-          </div>
-
-          {/* Version mobile du Deck */}
-          {user?.role !== Role.SCRUM_MASTER && user?.role !== Role.SPECTATOR && (
-            <>
-              <div className="row mt-2 mt-sm-0 text-center w-100">
-                <div className="d-sm-none col-4">
-                  {room.roomOptions.coffeeBreakAllowed && (
-                    <CoffeBreak user={user} socket={socket} room={room} />
+              {showSpectators && (
+                <ModalSpectators
+                  showSpectators={showSpectators}
+                  setShowSpectators={(val) => setShowSpectators(val)}
+                  roomSpectators={room.users.filter(
+                    (u) => u?.role === Role.SPECTATOR
                   )}
-                </div>
-                <div className="d-sm-none col-4">
-                  {room.state === States.VOTING && (
-                    <div>
-                      {!getVoteByUserId(user.id) && (
-                        <button className="btn text-white" onClick={handleShow}>
-                          <div className="bg-white rounded-circle p-2">
-                            <GiCardRandom color="black" size={80} />
-                          </div>
-                        </button>
-                      )}
-                      {getVoteByUserId(user.id) && (
-                        <button className="btn fw-bold" onClick={handleShow}>
-                          <div>
-                            <Card value={getVoteByUserId(user.id)} />
-                          </div>
-                        </button>
-                      )}
-                    </div>
-                  )}
-                </div>
-                <div className="d-sm-none col-4">
-                  {room.roomOptions.buzzerAllowed &&
-                    room.state === States.VOTING && (
-                      <Buzzer user={user} socket={socket} room={room} />
-                    )}
+                />
+              )}
+            </div>
+          </>
+        </div>
+
+        <Modal size="lg" centered={true} contentClassName="bg-dark" show={show}>
+          <Modal.Header style={{ border: "none" }}>
+            <Modal.Title className="w-100">
+              <p className="text-white text-center">CHOOSE CARD</p>
+            </Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <div className="container">
+              <div className="row">
+                <Deck deck={cardValues} updateSelection={updateSelection} />
+              </div>
+            </div>
+          </Modal.Body>
+          <Modal.Footer style={{ border: "none" }}>
+            <div className="container">
+              <div className="row">
+                <div className="sm-6">
+                  <Button
+                    className="w-100 mb-3"
+                    variant="danger"
+                    onClick={handleClose}
+                  >
+                    CANCEL
+                  </Button>
                 </div>
               </div>
-            </>
-          )}
-
-          {/* Version Mobile des Spectateurs */}
-          <div className="d-sm-none text-center">
-            {room.users.filter((u) => u?.role === Role.SPECTATOR).length >
-              0 && (
-              <BsEyeglasses
-                size={70}
-                color="white"
-                onClick={() => setShowSpectators(!showSpectators)}
-              />
-            )}
-            {showSpectators && (
-              <ModalSpectators
-                showSpectators={showSpectators}
-                setShowSpectators={(val) => setShowSpectators(val)}
-                roomSpectators={room.users.filter(
-                  (u) => u?.role === Role.SPECTATOR
-                )}
-              />
-            )}
-          </div>
-        </>
+            </div>
+          </Modal.Footer>
+        </Modal>
+        <FooterActiveMobile />
       </div>
-
-      <Modal size="lg" centered={true} contentClassName="bg-dark" show={show}>
-        <Modal.Header style={{ border: "none" }}>
-          <Modal.Title className="w-100">
-            <p className="text-white text-center">CHOOSE CARD</p>
-          </Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <div className="container">
-            <div className="row">
-              <Deck deck={cardValues} updateSelection={updateSelection} />
-            </div>
-          </div>
-        </Modal.Body>
-        <Modal.Footer style={{ border: "none" }}>
-          <div className="container">
-            <div className="row">
-              <div className="sm-6">
-                <Button
-                  className="w-100 mb-3"
-                  variant="danger"
-                  onClick={handleClose}
-                >
-                  CANCEL
-                </Button>
-              </div>
-            </div>
-          </div>
-        </Modal.Footer>
-      </Modal>
-      <FooterActiveMobile />
     </div>
   );
 };
