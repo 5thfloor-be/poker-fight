@@ -267,7 +267,7 @@ const CreateRoom = (props: CreateRoomProps) => {
               <div className="col-4 col-sm-2 offset-sm-3 text-end">
                 <input
                   id="pointsachieved"
-                  className="rounded p-2"
+                  className="rounded p-2 text-center"
                   type="text"
                   placeholder="Value"
                   value={roomSettings.targetPoints}
@@ -290,19 +290,6 @@ const CreateRoom = (props: CreateRoomProps) => {
                     }
                   }}
                 />
-                {roomSettings.targetPoints.length > 0 && (
-                  <MdCancel
-                    className="ms-2"
-                    color="red"
-                    size={"26"}
-                    onClick={() => {
-                      setRoomSettings({
-                        ...roomSettings,
-                        targetPoints: "",
-                      });
-                    }}
-                  />
-                )}
               </div>
               <div className="col-8 col-sm-6 text-start pt-2">
                 <label className="form-label ps-2">
