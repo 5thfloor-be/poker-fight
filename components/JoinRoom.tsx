@@ -72,10 +72,10 @@ const JoinRoom = (props: JoinRoomProps) => {
 
   if (showLoading) {
     return (
-        <div className="loader-container">
-          <div className="spinner"></div>
-        </div>
-    )
+      <div className="loader-container">
+        <div className="spinner"></div>
+      </div>
+    );
   }
   return (
     <>
@@ -84,9 +84,9 @@ const JoinRoom = (props: JoinRoomProps) => {
           <div className="row">
             <div className="col-12 col-sm-8 offset-sm-2 bg-dark rounded-4">
               <div className="row justify-content-center py-3">
-                <h1 className="text-white text-center">JOIN ROOM</h1>
+                <h4 className="text-white text-center">JOIN ROOM</h4>
               </div>
-              <div className="row py-3">
+              <div className="row py-2">
                 <div className="col-sm-6 text-center">
                   <div className="col-12">
                     <MdAccountCircle
@@ -132,7 +132,7 @@ const JoinRoom = (props: JoinRoomProps) => {
                   </div>
                 </div>
               </div>
-              <div className="row py-3">
+              <div className="row py-1">
                 <div className="col-6 offset-3">
                   <input
                     className={
@@ -146,53 +146,55 @@ const JoinRoom = (props: JoinRoomProps) => {
                   />
                 </div>
               </div>
-              <div className="row py-1 mx-1">
-                {(user.role === Role.SCRUM_MASTER ||
-                  user.role === Role.VOTING_SCRUM_MASTER) &&
-                user.roomId === roomId ? (
-                  <div className="text-center text-white mt-3">
-                    <h3>You are the Scrum Master of this Room</h3>
-                  </div>
-                ) : (
-                  <ToggleButtonGroup
-                    type="radio"
-                    name="options"
-                    defaultValue={isDev}
-                    onChange={toggle}
-                    className="mt-3 px-0"
-                  >
-                    <ToggleButton
-                      id="dev"
-                      value={1}
-                      style={
-                        isDev === 1
-                          ? { backgroundColor: "#0d6efd" }
-                          : { backgroundColor: "transparent" }
-                      }
+              <div className="row py-3 mx-1">
+                <div className="col-12 col-sm-8 offset-sm-2">
+                  {(user.role === Role.SCRUM_MASTER ||
+                    user.role === Role.VOTING_SCRUM_MASTER) &&
+                  user.roomId === roomId ? (
+                    <div className="text-center text-white mt-3">
+                      <h3>You are the Scrum Master of this Room</h3>
+                    </div>
+                  ) : (
+                    <ToggleButtonGroup
+                      type="radio"
+                      name="options"
+                      defaultValue={isDev}
+                      onChange={toggle}
+                      className="mt-3 px-0 w-100"
                     >
-                      <MdOutlineKeyboard className="me-3" size={28} />
-                      Developer
-                    </ToggleButton>
-                    <MdCode className="mx-3 mt-2" size={26} color={"white"} />
-                    <ToggleButton
-                      id="spec"
-                      value={2}
-                      style={
-                        isDev === 2
-                          ? { backgroundColor: "#0d6efd" }
-                          : { backgroundColor: "transparent" }
-                      }
-                    >
-                      <MdOutlineTagFaces className="me-3" size={28} />
-                      Spectactor
-                    </ToggleButton>
-                  </ToggleButtonGroup>
-                )}
+                      <ToggleButton
+                        id="dev"
+                        value={1}
+                        style={
+                          isDev === 1
+                            ? { backgroundColor: "#0d6efd" }
+                            : { backgroundColor: "transparent" }
+                        }
+                      >
+                        <MdOutlineKeyboard className="me-3" size={28} />
+                        Developer
+                      </ToggleButton>
+                      <MdCode className="mx-3 mt-2" size={26} color={"white"} />
+                      <ToggleButton
+                        id="spec"
+                        value={2}
+                        style={
+                          isDev === 2
+                            ? { backgroundColor: "#0d6efd" }
+                            : { backgroundColor: "transparent" }
+                        }
+                      >
+                        <MdOutlineTagFaces className="me-3" size={28} />
+                        Spectactor
+                      </ToggleButton>
+                    </ToggleButtonGroup>
+                  )}
+                </div>
               </div>
               <div className="row py-3">
                 <div className="col-sm-5 offset-sm-1">
                   <Button
-                    className="w-100 fw-bold mb-3 btn-primary"
+                    className="w-100 fw-bold mb-3 btn-lg btn-primary"
                     onClick={join}
                     disabled={!(roomId && user?.name)}
                   >
@@ -201,7 +203,7 @@ const JoinRoom = (props: JoinRoomProps) => {
                 </div>
                 <div className="col-sm-5 ">
                   <Button
-                    className="w-100 fw-bold mb-3 btn-danger"
+                    className="w-100 fw-bold mb-3 btn-lg btn-danger"
                     onClick={cancel}
                   >
                     CANCEL
