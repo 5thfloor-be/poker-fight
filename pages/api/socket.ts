@@ -2,14 +2,14 @@ import { IncomingMessage } from "http";
 import { v4 as uuid } from "uuid";
 import { Server } from "socket.io";
 import Room from "./model/room";
-import User, {Role} from "./model/user";
-import {ErrorCode} from "./model/ErrorCode";
+import User, { Role } from "./model/user";
+import { ErrorCode } from "./model/ErrorCode";
 
 const rooms: Map<string, Room> = new Map();
 
 export interface JoinRoomReturn {
-  id: string,
-  error: number
+  id: string;
+  error: number;
 }
 
 const SocketHandler = (req: IncomingMessage, res: any) => {
@@ -17,7 +17,7 @@ const SocketHandler = (req: IncomingMessage, res: any) => {
     console.log("Socket is already running");
   } else {
     console.log("Socket is initializing");
-    const io = new Server(res.socket?.server, {pingTimeout: 600000});
+    const io = new Server(res.socket?.server, { pingTimeout: 600000 });
     configIO(io);
     res.socket.server.io = io;
   }
@@ -51,31 +51,37 @@ function configIO(io: Server) {
       console.log(`${socket.id} is joining room ${data.roomId}`);
       socket.join(data.roomId);
       let room = rooms.get(data.roomId);
-      if (  room?.users.filter((user) => user.id === data.userInfo.id).length === 0) {
+      if (!room) {
+        listener({ id: null, error: ErrorCode.ROOM_NOT_EXISTS });
+        return;
+      }
+      if (
+        room?.users.filter((user) => user.id === data.userInfo.id).length === 0
+      ) {
         const user = { ...data.userInfo, id: uuid() };
         userIdTemp = user.id;
-        if(room?.isFull() && user?.role === Role.DEV){
-          listener({id: null, error: ErrorCode.TOO_MANY_VOTERS});
+        if (room?.isFull() && user?.role === Role.DEV) {
+          listener({ id: null, error: ErrorCode.TOO_MANY_VOTERS });
           return;
         }
+
         room?.addUser(user);
       }
-      listener({id: userIdTemp, error: null});
+      listener({ id: userIdTemp, error: null });
     });
 
-    socket.on('disconnect', function()
-    {
+    socket.on("disconnect", function () {
       console.log("A client has disconnected.");
     });
     socket.on("remove_user", (data) => {
       console.log(`${data.userId} is removed `, data);
       rooms.get(data.roomId)?.removeUser(data.userId);
-      io.to(data.roomId).emit('user_removed', {userId: data.userId});
+      io.to(data.roomId).emit("user_removed", { userId: data.userId });
     });
 
-    socket.on("leave_room", (data) =>{
-      socket.leave(data.roomId)
-    })
+    socket.on("leave_room", (data) => {
+      socket.leave(data.roomId);
+    });
 
     socket.on("create_room", (data, listener) => {
       console.log(`Creating room with data `, data);
@@ -108,7 +114,7 @@ function configIO(io: Server) {
         const room = rooms.get(data.roomId);
         room?.registerVote(data.userId, data.vote);
         console.log("register vot e", room);
-        if(room?.allUsersVoted()){
+        if (room?.allUsersVoted()) {
           rooms.get(data.roomId)?.revealVotes();
           io.to(data.roomId).emit("reveal", room);
         }
