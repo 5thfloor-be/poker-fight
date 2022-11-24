@@ -109,6 +109,12 @@ const JoinRoom = (props: JoinRoomProps) => {
                       onChange={(e) =>
                         setUser({ ...user, name: e.target.value })
                       }
+                      onKeyPress={(event) => {
+                        if (event.key === "Enter" && roomId && user?.name) {
+                          // Validation au clavier
+                          join();
+                        }
+                      }}
                     />
                     <br />
                     <label className="text-white">(15 characters max)</label>
@@ -143,6 +149,12 @@ const JoinRoom = (props: JoinRoomProps) => {
                     placeholder="Room id"
                     required={true}
                     onChange={(e) => setRoomId(e.target.value)}
+                    onKeyPress={(event) => {
+                      if (event.key === "Enter" && roomId && user?.name) {
+                        // Validation au clavier
+                        join();
+                      }
+                    }}
                   />
                 </div>
               </div>
