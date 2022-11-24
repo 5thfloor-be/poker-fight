@@ -232,28 +232,30 @@ const Room = (props: RoomProps) => {
               room.users
                 .filter((u) => u?.id !== user?.id)
                 .map((userMap, key) => (
-                  <div key={key} className="col-4 col-sm-2">
+                  <>
                     {userMap.role !== Role.SCRUM_MASTER &&
                       userMap.role !== Role.SPECTATOR && (
-                        <Card
-                          value={
-                            room?.state === States.WONDROUS && !!userMap.id
-                              ? getVoteByUserId(userMap.id)
-                              : undefined
-                          }
-                          canClose={
-                            user.role === Role.SCRUM_MASTER ||
-                            user.role === Role.VOTING_SCRUM_MASTER
-                          }
-                          color={userMap.color}
-                          name={userMap.name}
-                          selected={
-                            !!userMap.id && !!getVoteByUserId(userMap.id)
-                          }
-                          onRemoveUser={() => removeUser(userMap)}
-                        />
+                        <div key={key} className="col-4 col-sm-2">
+                          <Card
+                            value={
+                              room?.state === States.WONDROUS && !!userMap.id
+                                ? getVoteByUserId(userMap.id)
+                                : undefined
+                            }
+                            canClose={
+                              user.role === Role.SCRUM_MASTER ||
+                              user.role === Role.VOTING_SCRUM_MASTER
+                            }
+                            color={userMap.color}
+                            name={userMap.name}
+                            selected={
+                              !!userMap.id && !!getVoteByUserId(userMap.id)
+                            }
+                            onRemoveUser={() => removeUser(userMap)}
+                          />
+                        </div>
                       )}
-                  </div>
+                  </>
                 ))
             ) : (
               <Image
