@@ -10,9 +10,10 @@
 }
 
 .customCard:hover{
-  top:-10px;
+  top:-.7em;
   position: relative;
   cursor: pointer;
+  box-shadow: #222222 .8em 1.1em .9em;
 }
 
 .customCardSelected {
