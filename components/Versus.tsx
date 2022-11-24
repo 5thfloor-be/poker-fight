@@ -3,17 +3,14 @@ import Head from "next/head";
 import React, { useContext, useEffect, useState } from "react";
 import Card from "./Card";
 import Image from "next/image";
-import RoomModel, { States } from "../pages/api/model/room";
 import { useRouter } from "next/router";
 import { io } from "socket.io-client";
-import User, { Role } from "../pages/api/model/user";
+import { Role } from "../pages/api/model/user";
 import ScrumMasterActions from "./ScrumMasterActions";
 import { Button, Modal } from "react-bootstrap";
 import { Deck } from "./Deck";
 import { UserContext } from "../context/UserContext";
 import FooterActiveMobile from "./layout/FooterActiveMobile";
-import {ErrorCode} from "../pages/api/model/ErrorCode";
-import {JoinRoomReturn} from "../pages/api/socket";
 
 const Versus: NextPage = () => {
   const [widthScreen, setWidthScreen] = useState(0);
@@ -26,11 +23,15 @@ const Versus: NextPage = () => {
   const [othercard, setOthercard] = useState(0);
   const [reload, setReload] = useState(false);
 
+  useEffect(() => {
+    setWidthScreen(window.innerWidth);
+  }, []);
+
   if (stateSocket) {
     socket = stateSocket;
   } else {
-      socket = io({reconnectionDelayMax:3600000});
-      setStateSocket(socket);
+    socket = io({ reconnectionDelayMax: 3600000 });
+    setStateSocket(socket);
   }
 
   const updateSelection = (chosenVote: number) => {
@@ -100,17 +101,15 @@ const Versus: NextPage = () => {
     if (side == "right") {
       return (
         <>
-          <div >
+          <div>
             <div className="d-flex flex-wrap justify-content-center">
-              <Card
-                  value={highVal}
-                  name={""}
-                  canClose={false}
-              />
+              <Card value={highVal} name={""} canClose={false} />
               <div className="container text-center">
-              {rightCards?.map((item, index) => (
-                  <h4 key={index} className="text-white fw-bold">{getUserName(item.userId)}</h4>
-              ))}
+                {rightCards?.map((item, index) => (
+                  <h4 key={index} className="text-white fw-bold">
+                    {getUserName(item.userId)}
+                  </h4>
+                ))}
               </div>
             </div>
           </div>
@@ -121,14 +120,12 @@ const Versus: NextPage = () => {
         <>
           <div>
             <div className="d-flex flex-wrap justify-content-center">
-              <Card
-                  value={lowVal}
-                  name={""}
-                  canClose={false}
-              />
+              <Card value={lowVal} name={""} canClose={false} />
               <div className="container text-center">
                 {leftCards?.map((item, index) => (
-                    <h4 key={index} className="text-white fw-bold">{getUserName(item.userId)}</h4>
+                  <h4 key={index} className="text-white fw-bold">
+                    {getUserName(item.userId)}
+                  </h4>
                 ))}
               </div>
             </div>
@@ -147,7 +144,7 @@ const Versus: NextPage = () => {
           content="Discover a new voting system for your Poker Planning, with fun
                   and innovative features."
         />
-        <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" href="/images/favicon.ico" />
       </Head>
 
       <main>
@@ -169,9 +166,9 @@ const Versus: NextPage = () => {
             it.
           </h4>
         </div>
-        <div className="container" style={{ marginTop: "5%" }}>
-          <div className="row playingMat p-3 m-2 mt-5 ">
-            <div className="col-4">
+        <div className="container px-0 px-sm-3" style={{ marginTop: "5%" }}>
+          <div className="row playingMat py-3 px-0 p-sm-3 m-2 mt-5 ">
+            <div className="col-4 px-0 px-sm-3">
               <div>{getCards("left")}</div>
             </div>
             <div className="col-4 px-0 my-auto">
@@ -181,11 +178,11 @@ const Versus: NextPage = () => {
                 layout="responsive"
                 objectFit="contain"
                 alt="logo"
-                height="200px"
-                width="400px"
+                height={widthScreen > 576 ? "200px" : "272px"}
+                width={widthScreen > 576 ? "400px" : "381px"}
               />
             </div>
-            <div className="col-4">
+            <div className="col-4 px-0 px-sm-3">
               <div>{getCards("right")}</div>
             </div>
           </div>
@@ -259,9 +256,13 @@ const Versus: NextPage = () => {
             {/* Début du block des cartes à ajouter */}
             <div className="row mt-3 ms-sm-2 text-center">
               <Deck
-                deck={room ? room.roomOptions?.cardValues?.filter(
-                  (card: number) => card != highest() && card != lowest()
-                ) :  []}
+                deck={
+                  room
+                    ? room.roomOptions?.cardValues?.filter(
+                        (card: number) => card != highest() && card != lowest()
+                      )
+                    : []
+                }
                 updateSelection={updateSelection}
               />
             </div>
