@@ -2,14 +2,14 @@
     transform: scaleX(-1);
   }
 
-.buzzerButton{
+.coffeeButton{
     box-shadow: #222222 .5em .5em .5em;
     border: grey .3em solid;
-    color: #d98989;
+    color: #b08f7d;
     background-color: #FFFFFF;
 }
 
-.buzzerButton:hover{
-    border: #a60606 .3em solid;
-    color: #a60606;
+.coffeeButton:hover{
+    border: #52230a .3em solid;
+    color: #52230a;
 }

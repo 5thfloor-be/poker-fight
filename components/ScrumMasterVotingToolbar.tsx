@@ -32,7 +32,7 @@ const ScrumMasterVotingToolbar = ({
             <div className="col-6 col-sm-4 text-center">
               <button
                 type="button"
-                className="btn btn-primary fw-bold"
+                className="btn btn-primary  btn-lg fw-bold"
                 onClick={startVoting}
               >
                 START VOTING
@@ -43,7 +43,7 @@ const ScrumMasterVotingToolbar = ({
           <div className="col-6 col-sm-4 text-center">
             <button
               type="button"
-              className="btn btn-primary fw-bold "
+              className="btn btn-primary  btn-lg fw-bold "
               onClick={reveal}
             >
               REVEAL
@@ -55,7 +55,7 @@ const ScrumMasterVotingToolbar = ({
           <div className="col-6 col-sm-4 text-center">
             <button
               type="button"
-              className="btn btn-primary fw-bold "
+              className="btn btn-primary  btn-lg fw-bold "
               onClick={validate}
             >
               VALIDATE
@@ -68,7 +68,7 @@ const ScrumMasterVotingToolbar = ({
             <div className="col-6 col-sm-4 text-center">
               <button
                 type="button"
-                className="btn btn-primary fw-bold "
+                className="btn btn-danger  btn-lg fw-bold "
                 onClick={redoVote}
               >
                 REDO VOTE
