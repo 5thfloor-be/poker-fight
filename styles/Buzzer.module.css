@@ -4,12 +4,12 @@
 
 .buzzerButton{
     box-shadow: #222222 .5em .5em .5em;
-    border: grey .3em inset;
+    border: grey .3em solid;
     color: #d98989;
     background-color: #FFFFFF;
 }
 
 .buzzerButton:hover{
-    border: #a60606 .3em inset;
+    border: #a60606 .3em solid;
     color: #a60606;
 }
