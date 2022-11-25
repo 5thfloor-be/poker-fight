@@ -12,6 +12,8 @@
     "@emotion/react": "^11.10.4",
     "@emotion/styled": "^11.10.4",
     "@fontsource/roboto": "^4.5.8",
+    "@socket.io/redis-adapter": "^7.2.0",
+    "@types/redis": "^4.0.11",
     "bootstrap": "^5.2.1",
     "cors": "^2.8.5",
     "express": "^4.18.1",
@@ -22,6 +24,7 @@
     "react-color": "^2.19.3",
     "react-dom": "18.2.0",
     "react-icons": "^4.6.0",
+    "redis": "^4.5.1",
     "socket.io": "^4.5.2",
     "socket.io-client": "^4.5.2",
     "uuid": "^9.0.0"
