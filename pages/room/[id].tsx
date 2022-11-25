@@ -90,6 +90,17 @@ const Room = (props: RoomProps) => {
     }
 
     if (socket) {
+      socket.on('connect', () => {
+        console.log('connected');
+      });
+
+      socket.on('disconnect', (err: string) => {
+        console.log('server disconnected: ', err);
+        if (err === 'io server disconnect') {
+          // Reconnect manually if the disconnection was initiated by the server
+          socket.connect();
+        }
+      });
       socket.on("reconnect", () => {
         socket.emit(
           "join_room",
