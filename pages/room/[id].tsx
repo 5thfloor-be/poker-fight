@@ -298,16 +298,20 @@ const Room = (props: RoomProps) => {
                 widthScreen < 576 ? { paddingBottom: 0 } : { paddingBottom: 40 }
               }
             >
-              <div className="col-2 d-none d-sm-block">
-                {room.roomOptions.coffeeBreakAllowed && (
-                  <CoffeBreak user={user} socket={socket} room={room} />
+              {user?.role !== Role.SCRUM_MASTER &&
+                user?.role !== Role.SPECTATOR && (
+                  <div className="col-2 d-none d-sm-block">
+                    {room.roomOptions.coffeeBreakAllowed && (
+                      <CoffeBreak user={user} socket={socket} room={room} />
+                    )}
+
+                    {room.roomOptions.buzzerAllowed &&
+                      room.state === States.VOTING && (
+                        <Buzzer user={user} socket={socket} room={room} />
+                      )}
+                  </div>
                 )}
 
-                {room.roomOptions.buzzerAllowed &&
-                  room.state === States.VOTING && (
-                    <Buzzer user={user} socket={socket} room={room} />
-                  )}
-              </div>
               <div className="col-8 d-none d-sm-block justify-content-center mt-3">
                 {user?.role !== Role.SCRUM_MASTER &&
                   user?.role !== Role.SPECTATOR &&

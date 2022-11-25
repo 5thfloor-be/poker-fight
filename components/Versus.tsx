@@ -149,21 +149,21 @@ const Versus: NextPage = () => {
 
       <main>
         <div className="text-center text-white">
-          <div className="d-sm-block d-none">
+          <div>
             <h1
               style={{ fontSize: "50px", fontWeight: "bold" }}
-              className="mx-0"
+              className="mx-0 pt-sm-5 pt-3"
             >
               LET&apos;S FIGHT !
             </h1>
           </div>
           <h4 className="pt-2 d-sm-block d-none">
             Hey, it seems like we&apos;re not all aligned. Let&apos;s talk about
-            it.
+            it. Here are the lowest and the biggest votes.
           </h4>
-          <h4 className="pt-5 pb-5 d-block d-sm-none">
+          <h4 className="py-2 px-1 d-block d-sm-none">
             Hey, it seems like we&apos;re not all aligned. Let&apos;s talk about
-            it.
+            it. Here are the lowest and the biggest votes.
           </h4>
         </div>
         <div className="container px-0 px-sm-3" style={{ marginTop: "5%" }}>
