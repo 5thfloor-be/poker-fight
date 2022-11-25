@@ -4,6 +4,8 @@ import User, { Role } from "../pages/api/model/user";
 import Room from "../pages/api/model/room";
 import { MdCoffee, MdOutlineCoffee } from "react-icons/md";
 import { CgCoffee } from "react-icons/cg";
+import {inspect} from "util";
+import styles from "../styles/CoffeeBreak.module.css";
 
 export interface CoffeBreakProps {
   user: User;
@@ -48,16 +50,16 @@ const CoffeeBreak = ({ user, socket, room }: CoffeBreakProps) => {
         <button
           id="coffeeButton"
           onClick={() => vote()}
-          className="btn text-white"
+          className="btn"
         >
           {coffeeVoted && (
-            <div className="bg-white rounded-circle p-2">
-              <MdCoffee color="green" size={80} />
+            <div className={`rounded-circle p-2 ${styles.coffeeButton}`}>
+              <MdCoffee color="#52170a" size={80} />
             </div>
           )}
           {!coffeeVoted && (
-            <div className="bg-white rounded-circle p-2">
-              <MdOutlineCoffee color="grey" size={80} />
+            <div className={`rounded-circle p-2 ${styles.coffeeButton}`}>
+              <MdOutlineCoffee  size={80} />
             </div>
           )}
         </button>
