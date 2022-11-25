@@ -96,7 +96,7 @@ const Room = (props: RoomProps) => {
 
       socket.on('disconnect', (err: string) => {
         console.log('server disconnected: ', err);
-        if (err === 'io server disconnect') {
+        if (err === 'io server disconnect' || 'transport error') {
           // Reconnect manually if the disconnection was initiated by the server
           socket.connect();
         }
@@ -141,17 +141,6 @@ const Room = (props: RoomProps) => {
           socket.emit("emit : leave front", { roomId: roomId });
         }
       });
-
-      // Listen for disconnect event
-      socket.on('disconnect', (err:string) => {
-        console.log('server disconnected: ', err);
-        if (err === 'io server disconnect') {
-          // Reconnect manually if the disconnection was initiated by the server
-          socket.connect();
-        }
-      });
-
-
     } // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [socket]);
 
