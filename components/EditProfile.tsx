@@ -109,7 +109,7 @@ const EditProfile = (props: EditProfileProps) => {
               <div className="col-sm-6">
                 {user && user.name && user.name.length > 0 ? (
                   <Button
-                    className="w-100 fw-bold mb-3"
+                    className="btn-lg w-100 fw-bold mb-3"
                     variant="primary"
                     onClick={save}
                   >
@@ -118,7 +118,7 @@ const EditProfile = (props: EditProfileProps) => {
                 ) : (
                   <Button
                     disabled
-                    className="w-100 fw-bold mb-3"
+                    className="btn-lg w-100 fw-bold mb-3"
                     variant="primary"
                   >
                     SAVE
@@ -127,7 +127,7 @@ const EditProfile = (props: EditProfileProps) => {
               </div>
               <div className="col-sm-6">
                 <Button
-                  className="w-100 fw-bold mb-3"
+                  className="btn-lg w-100 fw-bold mb-3"
                   variant="danger"
                   onClick={cancel}
                 >
