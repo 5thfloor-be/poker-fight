@@ -59,7 +59,7 @@ const Buzzer = ({ user, socket, room }: BuzzerProps) => {
         >
           {buzzerVoted && (
             <div className={`rounded-circle p-2 ${styles.buzzerButton}`}>
-              <BsSpeedometer2 size={80} color="#a60606" className="pb-2" />
+              <BsSpeedometer2 size={80} color="green" className="pb-2" />
             </div>
           )}
           {!buzzerVoted && (

@@ -54,7 +54,7 @@ const CoffeeBreak = ({ user, socket, room }: CoffeBreakProps) => {
         >
           {coffeeVoted && (
             <div className={`rounded-circle p-2 ${styles.coffeeButton}`}>
-              <MdCoffee color="#52170a" size={80} />
+              <MdCoffee color="green" size={80} />
             </div>
           )}
           {!coffeeVoted && (
