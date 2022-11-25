@@ -148,26 +148,16 @@ const Versus: NextPage = () => {
       </Head>
 
       <main>
-        <div className="text-center text-white">
-          <div>
-            <h1
-              style={{ fontSize: "50px", fontWeight: "bold" }}
-              className="mx-0 pt-sm-5 pt-3"
-            >
-              LET&apos;S FIGHT !
-            </h1>
-          </div>
-          <h4 className="pt-2 d-sm-block d-none">
-            Hey, it seems like we&apos;re not all aligned. Let&apos;s talk about
-            it. Here are the lowest and the biggest votes.
-          </h4>
-          <h4 className="py-2 px-1 d-block d-sm-none">
-            Hey, it seems like we&apos;re not all aligned. Let&apos;s talk about
-            it. Here are the lowest and the biggest votes.
-          </h4>
+        <div className="text-center text-white pt-3">
+          <h1
+            style={{ fontSize: "50px", fontWeight: "bold" }}
+            className="mx-0 pt-3 pb-1"
+          >
+            LET&apos;S FIGHT !
+          </h1>
         </div>
-        <div className="container px-0 px-sm-3" style={{ marginTop: "5%" }}>
-          <div className="row playingMat py-3 px-0 p-sm-3 m-2 mt-5 ">
+        <div className="container px-0 px-sm-3">
+          <div className="row playingMat py-3 px-0 p-sm-3 m-2 mt-sm-5 mt-3">
             <div className="col-4 px-0 px-sm-3">
               <div>{getCards("left")}</div>
             </div>
@@ -186,9 +176,24 @@ const Versus: NextPage = () => {
               <div>{getCards("right")}</div>
             </div>
           </div>
+
+          {/* Partie texte explicatif */}
+          <div className="row">
+            <div className="col text-center text-xl-center m-3 p-1 roomStatus">
+              <h4 className="pt-2 d-sm-block d-none">
+                Hey, it seems like we&apos;re not all aligned. Let&apos;s talk
+                about it. Here are the lowest and the highest votes.
+              </h4>
+              <h4 className="py-2 px-1 d-block d-sm-none">
+                Hey, it seems like we&apos;re not all aligned. Let&apos;s talk
+                about it. Here are the lowest and the highest votes.
+              </h4>
+            </div>
+          </div>
+
           {(user?.role == Role.SCRUM_MASTER ||
             user?.role == Role.VOTING_SCRUM_MASTER) && (
-            <div className="row mt-5">
+            <div className="row mt-3">
               <div className="d-sm-none d-block offset-4 col-4">
                 <ScrumMasterActions
                   minValue={lowest()}
@@ -203,7 +208,7 @@ const Versus: NextPage = () => {
               <div className="d-none d-sm-block offset-sm-2 col-sm-2">
                 <button
                   type="button"
-                  className="btn btn-primary fw-bold w-100"
+                  className="btn btn-lg btn-primary fw-bold w-100"
                   onClick={forceLow}
                 >
                   GO FOR {lowest()}
@@ -212,7 +217,7 @@ const Versus: NextPage = () => {
               <div className="d-none d-sm-block col-sm-2">
                 <button
                   type="button"
-                  className="btn btn-primary fw-bold w-100"
+                  className="btn btn-lg btn-primary fw-bold w-100"
                   onClick={forceHigh}
                 >
                   GO FOR {highest()}
@@ -221,7 +226,7 @@ const Versus: NextPage = () => {
               <div className="d-none d-sm-block col-sm-2">
                 <button
                   type="button"
-                  className="btn btn-primary fw-bold w-100"
+                  className="btn btn-lg btn-secondary fw-bold w-100"
                   onClick={() => setShowOtherScoreModal(true)}
                 >
                   OTHER SCORE
@@ -230,7 +235,7 @@ const Versus: NextPage = () => {
               <div className="d-none d-sm-block col-sm-2">
                 <button
                   type="button"
-                  className="btn btn-primary fw-bold w-100"
+                  className="btn btn-lg btn-danger fw-bold w-100"
                   onClick={redoVote}
                 >
                   REDO VOTE
@@ -274,19 +279,19 @@ const Versus: NextPage = () => {
               <div className="col-sm-6">
                 <Button
                   className="btn-lg w-100 fw-bold mb-3"
-                  variant="danger"
-                  onClick={cancel}
+                  variant="primary"
+                  onClick={() => forceOther(othercard)}
                 >
-                  CANCEL
+                  VALIDATE
                 </Button>
               </div>
               <div className="col-sm-6">
                 <Button
                   className="btn-lg w-100 fw-bold mb-3"
-                  variant="primary"
-                  onClick={() => forceOther(othercard)}
+                  variant="danger"
+                  onClick={cancel}
                 >
-                  VALIDATE
+                  CANCEL
                 </Button>
               </div>
             </div>
