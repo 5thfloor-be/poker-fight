@@ -298,19 +298,16 @@ const Room = (props: RoomProps) => {
                 widthScreen < 576 ? { paddingBottom: 0 } : { paddingBottom: 40 }
               }
             >
-              {user?.role !== Role.SCRUM_MASTER &&
-                user?.role !== Role.SPECTATOR && (
-                  <div className="col-2 d-none d-sm-block">
-                    {room.roomOptions.coffeeBreakAllowed && (
-                      <CoffeBreak user={user} socket={socket} room={room} />
-                    )}
-
-                    {room.roomOptions.buzzerAllowed &&
-                      room.state === States.VOTING && (
-                        <Buzzer user={user} socket={socket} room={room} />
-                      )}
-                  </div>
+              <div className="col-2 d-none d-sm-block">
+                {room.roomOptions.coffeeBreakAllowed && (
+                  <CoffeBreak user={user} socket={socket} room={room} />
                 )}
+
+                {room.roomOptions.buzzerAllowed &&
+                  room.state === States.VOTING && (
+                    <Buzzer user={user} socket={socket} room={room} />
+                  )}
+              </div>
 
               <div className="col-8 d-none d-sm-block justify-content-center mt-3">
                 {user?.role !== Role.SCRUM_MASTER &&
@@ -329,46 +326,41 @@ const Room = (props: RoomProps) => {
             </div>
 
             {/* Version mobile du Deck */}
-            {user?.role !== Role.SCRUM_MASTER && user?.role !== Role.SPECTATOR && (
-              <>
-                <div className="row mt-2 mt-sm-0 text-center w-100">
-                  <div className="d-sm-none col-4">
-                    {room.roomOptions.coffeeBreakAllowed && (
-                      <CoffeBreak user={user} socket={socket} room={room} />
-                    )}
-                  </div>
-                  <div className="d-sm-none col-4">
-                    {room.state === States.VOTING && (
-                      <div>
-                        {!getVoteByUserId(user.id) && (
-                          <button
-                            className="btn text-white"
-                            onClick={handleShow}
-                          >
-                            <div className="bg-white rounded-circle p-2">
-                              <GiCardRandom color="black" size={80} />
-                            </div>
-                          </button>
-                        )}
-                        {getVoteByUserId(user.id) && (
-                          <button className="btn fw-bold" onClick={handleShow}>
-                            <div>
-                              <Card value={getVoteByUserId(user.id)} />
-                            </div>
-                          </button>
-                        )}
-                      </div>
-                    )}
-                  </div>
-                  <div className="d-sm-none col-4">
-                    {room.roomOptions.buzzerAllowed &&
-                      room.state === States.VOTING && (
-                        <Buzzer user={user} socket={socket} room={room} />
+            <div className="row mt-2 mt-sm-0 text-center w-100">
+              <div className="d-sm-none col-4">
+                {room.roomOptions.coffeeBreakAllowed && (
+                  <CoffeBreak user={user} socket={socket} room={room} />
+                )}
+              </div>
+              <div className="d-sm-none col-4">
+                {user?.role !== Role.SCRUM_MASTER &&
+                  user?.role !== Role.SPECTATOR &&
+                  room.state === States.VOTING && (
+                    <div>
+                      {!getVoteByUserId(user.id) && (
+                        <button className="btn text-white" onClick={handleShow}>
+                          <div className="bg-white rounded-circle p-2">
+                            <GiCardRandom color="black" size={80} />
+                          </div>
+                        </button>
                       )}
-                  </div>
-                </div>
-              </>
-            )}
+                      {getVoteByUserId(user.id) && (
+                        <button className="btn fw-bold" onClick={handleShow}>
+                          <div>
+                            <Card value={getVoteByUserId(user.id)} />
+                          </div>
+                        </button>
+                      )}
+                    </div>
+                  )}
+              </div>
+              <div className="d-sm-none col-4">
+                {room.roomOptions.buzzerAllowed &&
+                  room.state === States.VOTING && (
+                    <Buzzer user={user} socket={socket} room={room} />
+                  )}
+              </div>
+            </div>
 
             {/* Version Mobile des Spectateurs */}
             <div className="d-sm-none text-center">

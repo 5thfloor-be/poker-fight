@@ -45,26 +45,24 @@ const Buzzer = ({ user, socket, room }: BuzzerProps) => {
         setBuzzerVoted(false);
       }
     }
-    setBuzzerVoted(!!room.buzzer.find(u => u=== user.id))
+    setBuzzerVoted(!!room.buzzer.find((u) => u === user.id));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [room]);
 
   return (
     <div>
-      {user.role !== Role.SPECTATOR && (
-        <button
-          id="buzzerButton"
-          onClick={() => vote()}
-          className={`btn `}
-        >
+      {user.role !== Role.SPECTATOR && user?.role !== Role.SCRUM_MASTER && (
+        <button id="buzzerButton" onClick={() => vote()} className={`btn `}>
           {buzzerVoted && (
             <div className={`rounded-circle p-2 ${styles.buzzerButton}`}>
               <BsSpeedometer2 size={80} color="green" className="pb-2" />
             </div>
           )}
           {!buzzerVoted && (
-            <div className={`rounded-circle p-2 ${styles.flipX} ${styles.buzzerButton}`}>
-              <BsSpeedometer2 size={80}  className="pb-2" />
+            <div
+              className={`rounded-circle p-2 ${styles.flipX} ${styles.buzzerButton}`}
+            >
+              <BsSpeedometer2 size={80} className="pb-2" />
             </div>
           )}
         </button>
