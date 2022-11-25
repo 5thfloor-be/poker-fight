@@ -4,6 +4,8 @@ import { Server } from "socket.io";
 import Room from "./model/room";
 import User, { Role } from "./model/user";
 import { ErrorCode } from "./model/ErrorCode";
+import { createClient } from 'redis';
+import { createAdapter } from '@socket.io/redis-adapter';
 
 const rooms: Map<string, Room> = new Map();
 
@@ -13,11 +15,21 @@ export interface JoinRoomReturn {
 }
 
 const SocketHandler = (req: IncomingMessage, res: any) => {
+
   if (res?.socket?.server.io) {
     console.log("Socket is already running");
   } else {
     console.log("Socket is initializing");
     const io = new Server(res.socket?.server, { pingTimeout: 600000 });
+
+    const pubClient = createClient({ url: "redis://10.96.221.35:6379"});
+    const subClient = pubClient.duplicate();
+
+    Promise.all([pubClient.connect(), subClient.connect()]).then(() => {
+      io.adapter(createAdapter(pubClient, subClient));
+      io.listen(3000);
+    });
+
     configIO(io);
     res.socket.server.io = io;
   }
