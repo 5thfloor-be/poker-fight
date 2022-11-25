@@ -55,16 +55,16 @@ const Buzzer = ({ user, socket, room }: BuzzerProps) => {
         <button
           id="buzzerButton"
           onClick={() => vote()}
-          className="btn text-white"
+          className={`btn `}
         >
           {buzzerVoted && (
-            <div className="bg-white rounded-circle p-2">
-              <BsSpeedometer2 size={80} color="green" className="pb-2" />
+            <div className={`rounded-circle p-2 ${styles.buzzerButton}`}>
+              <BsSpeedometer2 size={80} color="#a60606" className="pb-2" />
             </div>
           )}
           {!buzzerVoted && (
-            <div className={`bg-white rounded-circle p-2 ${styles.flipX}`}>
-              <BsSpeedometer2 size={80} color="grey" className="pb-2" />
+            <div className={`rounded-circle p-2 ${styles.flipX} ${styles.buzzerButton}`}>
+              <BsSpeedometer2 size={80}  className="pb-2" />
             </div>
           )}
         </button>
