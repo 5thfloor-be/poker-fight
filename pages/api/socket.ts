@@ -22,7 +22,7 @@ const SocketHandler = (req: IncomingMessage, res: any) => {
     console.log("Socket is initializing");
     const io = new Server(res.socket?.server, { pingTimeout: 600000 });
 
-    const pubClient = createClient({ url: "redis://10.96.221.35:6379"});
+    const pubClient = createClient({ url: `redis://10.96.221.35:6379`});
     const subClient = pubClient.duplicate();
 
     Promise.all([pubClient.connect(), subClient.connect()]).then(() => {

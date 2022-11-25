@@ -227,7 +227,7 @@ const Room = (props: RoomProps) => {
           <Card selected={false} canClose={false} value={selectedVote} />
         )}
         {room.state === States.VOTING && (
-          <Deck deck={cardValues} updateSelection={updateSelection} />
+          <Deck deck={cardValues} updateSelection={updateSelection} currentVote={getVoteByUserId(user.id)}/>
         )}
       </>
     );

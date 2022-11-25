@@ -6,9 +6,19 @@ export interface DeckProps {
   updateSelection: Function;
   canClose?: boolean;
   isLocked?: boolean;
+  currentVote?: number
 }
-export const Deck = ({ deck, updateSelection, canClose, isLocked }: DeckProps) => {
+export const Deck = ({ deck, updateSelection, canClose, isLocked, currentVote }: DeckProps) => {
 const [selectedIndex, setSelectedIndex] = useState(-1);
+
+useEffect(() => {
+    if(currentVote) {
+        console.log(`selectedIndex ${selectedIndex}, current vote ${currentVote}, deck`, deck)
+    }else{
+        setSelectedIndex(deck.indexOf(-1));
+    }
+
+},[currentVote, deck]);
 
 const selectIndex = ( index: number) => {
     console.log('deck ' + index);
