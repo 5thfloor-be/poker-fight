@@ -16,10 +16,10 @@ const ScrumMasterActions = ({
   minValue,
   maxValue,
   deck,
-    forceLow,
-    forceHigh,
-    redoVote,
-    otherScore
+  forceLow,
+  forceHigh,
+  redoVote,
+  otherScore,
 }: ScrumMasterActionsProps) => {
   const [showActions, setShowActions] = useState(false);
 
@@ -65,7 +65,7 @@ const ScrumMasterActions = ({
           <div>
             <button
               type="button"
-              className="btn btn-primary w-100 fw-bold mb-3"
+              className="btn btn-secondary w-100 fw-bold mb-3"
               onClick={() => {
                 toggleShowActions();
                 otherScore();
