@@ -4,7 +4,7 @@ import User, { Role } from "../pages/api/model/user";
 import Room from "../pages/api/model/room";
 import { MdCoffee, MdOutlineCoffee } from "react-icons/md";
 import { CgCoffee } from "react-icons/cg";
-import {inspect} from "util";
+import { inspect } from "util";
 import styles from "../styles/CoffeeBreak.module.css";
 
 export interface CoffeBreakProps {
@@ -40,18 +40,14 @@ const CoffeeBreak = ({ user, socket, room }: CoffeBreakProps) => {
         setCoffeeVoted(false);
       }
     }
-    setCoffeeVoted(!!room.coffeeBreak.find(u => u=== user.id))
+    setCoffeeVoted(!!room.coffeeBreak.find((u) => u === user.id));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [room]);
 
   return (
     <div>
-      {user.role !== Role.SPECTATOR && (
-        <button
-          id="coffeeButton"
-          onClick={() => vote()}
-          className="btn"
-        >
+      {user.role !== Role.SPECTATOR && user?.role !== Role.SCRUM_MASTER && (
+        <button id="coffeeButton" onClick={() => vote()} className="btn">
           {coffeeVoted && (
             <div className={`rounded-circle p-2 ${styles.coffeeButton}`}>
               <MdCoffee color="green" size={80} />
@@ -59,7 +55,7 @@ const CoffeeBreak = ({ user, socket, room }: CoffeBreakProps) => {
           )}
           {!coffeeVoted && (
             <div className={`rounded-circle p-2 ${styles.coffeeButton}`}>
-              <MdOutlineCoffee  size={80} />
+              <MdOutlineCoffee size={80} />
             </div>
           )}
         </button>
