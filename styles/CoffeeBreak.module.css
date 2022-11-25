@@ -1,0 +1,15 @@
+.flipX {
+    transform: scaleX(-1);
+  }
+
+.coffeeButton{
+    box-shadow: #222222 .5em .5em .5em;
+    border: grey .3em solid;
+    color: #b08f7d;
+    background-color: #FFFFFF;
+}
+
+.coffeeButton:hover{
+    border: #52230a .3em solid;
+    color: #52230a;
+}
