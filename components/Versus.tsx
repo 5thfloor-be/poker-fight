@@ -179,7 +179,7 @@ const Versus: NextPage = () => {
 
           {/* Partie texte explicatif */}
           <div className="row">
-            <div className="col text-center text-xl-center m-3 p-1 roomStatus roomStatusVersus">
+            <div className="col text-center text-xl-center m-3 p-1 roomStatus">
               <h4 className="pt-2 d-sm-block d-none">
                 Hey, it seems like we&apos;re not all aligned. Let&apos;s talk
                 about it. Here are the lowest and the highest votes.

@@ -62,10 +62,5 @@ a {
 
 .roomStatus{
   border-radius: 1em;
-  /*background-color: #d3d2d2;*/
-}
-
-.roomStatusVersus {
-  background-color: #a91a1a;
-  color: white;
+  background-color:  #FFFFFF44;
 }
