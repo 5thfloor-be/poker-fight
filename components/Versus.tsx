@@ -1,5 +1,4 @@
 import type { NextPage } from "next";
-import Head from "next/head";
 import React, { useContext, useEffect, useState } from "react";
 import Card from "./Card";
 import Image from "next/image";
@@ -137,114 +136,103 @@ const Versus: NextPage = () => {
 
   return (
     <>
-      <Head>
-        <title>Poker Fight - A new voting system for your Poker Planning</title>
-        <meta
-          name="description"
-          content="Discover a new voting system for your Poker Planning, with fun
-                  and innovative features."
-        />
-        <link rel="icon" href="/images/favicon.ico" />
-      </Head>
-
-      <main>
-        <div className="text-center text-white pt-3">
-          <h1
-            style={{ fontSize: "50px", fontWeight: "bold" }}
-            className="mx-0 pt-3 pb-1"
-          >
-            LET&apos;S FIGHT !
-          </h1>
+      <div className="text-center text-white pt-3">
+        <h1
+          style={{ fontSize: "50px", fontWeight: "bold" }}
+          className="mx-0 pt-3 pb-1"
+        >
+          LET&apos;S FIGHT !
+        </h1>
+      </div>
+      <div className="container px-0 px-sm-3">
+        <div className="row playingMat py-3 px-0 p-sm-3 m-2 mt-sm-5 mt-3">
+          <div className="col-4 px-0 px-sm-3">
+            <div>{getCards("left")}</div>
+          </div>
+          <div className="col-4 px-0 my-auto">
+            <Image
+              className="text-white"
+              src="/images/versus.png"
+              layout="responsive"
+              objectFit="contain"
+              alt="logo"
+              height={widthScreen > 576 ? "200px" : "272px"}
+              width={widthScreen > 576 ? "400px" : "381px"}
+            />
+          </div>
+          <div className="col-4 px-0 px-sm-3">
+            <div>{getCards("right")}</div>
+          </div>
         </div>
-        <div className="container px-0 px-sm-3">
-          <div className="row playingMat py-3 px-0 p-sm-3 m-2 mt-sm-5 mt-3">
-            <div className="col-4 px-0 px-sm-3">
-              <div>{getCards("left")}</div>
-            </div>
-            <div className="col-4 px-0 my-auto">
-              <Image
-                className="text-white"
-                src="/images/versus.png"
-                layout="responsive"
-                objectFit="contain"
-                alt="logo"
-                height={widthScreen > 576 ? "200px" : "272px"}
-                width={widthScreen > 576 ? "400px" : "381px"}
+
+        {/* Partie texte explicatif */}
+        <div className="row">
+          <div className="col text-center text-xl-center m-3 p-1 roomStatus">
+            <h4 className="pt-2 d-sm-block d-none">
+              Hey, it seems like we&apos;re not all aligned. Let&apos;s talk
+              about it. Here are the lowest and the highest votes.
+            </h4>
+            <h4 className="py-2 px-1 d-block d-sm-none">
+              Hey, it seems like we&apos;re not all aligned. Let&apos;s talk
+              about it. Here are the lowest and the highest votes.
+            </h4>
+          </div>
+        </div>
+
+        {(user?.role == Role.SCRUM_MASTER ||
+          user?.role == Role.VOTING_SCRUM_MASTER) && (
+          <div className="row mt-3">
+            <div className="d-sm-none d-block offset-4 col-4">
+              <ScrumMasterActions
+                minValue={lowest()}
+                maxValue={highest()}
+                forceLow={forceLow}
+                forceHigh={forceHigh}
+                redoVote={redoVote}
+                otherScore={() => setShowOtherScoreModal(true)}
+                deck={[1, 3, 5, 8]}
               />
             </div>
-            <div className="col-4 px-0 px-sm-3">
-              <div>{getCards("right")}</div>
+            <div className="d-none d-sm-block offset-sm-2 col-sm-2">
+              <button
+                type="button"
+                className="btn btn-lg btn-primary fw-bold w-100"
+                onClick={forceLow}
+              >
+                GO FOR {lowest()}
+              </button>
+            </div>
+            <div className="d-none d-sm-block col-sm-2">
+              <button
+                type="button"
+                className="btn btn-lg btn-primary fw-bold w-100"
+                onClick={forceHigh}
+              >
+                GO FOR {highest()}
+              </button>
+            </div>
+            <div className="d-none d-sm-block col-sm-2">
+              <button
+                type="button"
+                className="btn btn-lg btn-secondary fw-bold w-100"
+                onClick={() => setShowOtherScoreModal(true)}
+              >
+                OTHER SCORE
+              </button>
+            </div>
+            <div className="d-none d-sm-block col-sm-2">
+              <button
+                type="button"
+                className="btn btn-lg btn-danger fw-bold w-100"
+                onClick={redoVote}
+              >
+                REDO VOTE
+              </button>
             </div>
           </div>
+        )}
+      </div>
 
-          {/* Partie texte explicatif */}
-          <div className="row">
-            <div className="col text-center text-xl-center m-3 p-1 roomStatus">
-              <h4 className="pt-2 d-sm-block d-none">
-                Hey, it seems like we&apos;re not all aligned. Let&apos;s talk
-                about it. Here are the lowest and the highest votes.
-              </h4>
-              <h4 className="py-2 px-1 d-block d-sm-none">
-                Hey, it seems like we&apos;re not all aligned. Let&apos;s talk
-                about it. Here are the lowest and the highest votes.
-              </h4>
-            </div>
-          </div>
-
-          {(user?.role == Role.SCRUM_MASTER ||
-            user?.role == Role.VOTING_SCRUM_MASTER) && (
-            <div className="row mt-3">
-              <div className="d-sm-none d-block offset-4 col-4">
-                <ScrumMasterActions
-                  minValue={lowest()}
-                  maxValue={highest()}
-                  forceLow={forceLow}
-                  forceHigh={forceHigh}
-                  redoVote={redoVote}
-                  otherScore={() => setShowOtherScoreModal(true)}
-                  deck={[1, 3, 5, 8]}
-                />
-              </div>
-              <div className="d-none d-sm-block offset-sm-2 col-sm-2">
-                <button
-                  type="button"
-                  className="btn btn-lg btn-primary fw-bold w-100"
-                  onClick={forceLow}
-                >
-                  GO FOR {lowest()}
-                </button>
-              </div>
-              <div className="d-none d-sm-block col-sm-2">
-                <button
-                  type="button"
-                  className="btn btn-lg btn-primary fw-bold w-100"
-                  onClick={forceHigh}
-                >
-                  GO FOR {highest()}
-                </button>
-              </div>
-              <div className="d-none d-sm-block col-sm-2">
-                <button
-                  type="button"
-                  className="btn btn-lg btn-secondary fw-bold w-100"
-                  onClick={() => setShowOtherScoreModal(true)}
-                >
-                  OTHER SCORE
-                </button>
-              </div>
-              <div className="d-none d-sm-block col-sm-2">
-                <button
-                  type="button"
-                  className="btn btn-lg btn-danger fw-bold w-100"
-                  onClick={redoVote}
-                >
-                  REDO VOTE
-                </button>
-              </div>
-            </div>
-          )}
-        </div>
-      </main>
       <Modal
         size="lg"
         className="text-white"
