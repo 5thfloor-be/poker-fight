@@ -1,13 +1,13 @@
 .flipX {
-    transform: scaleX(-1);
-  }
-
-.buzzerButton{
-    box-shadow: #222222 .5em .5em .5em;
-    color: grey;
-    background-color: #FFFFFF;
+  transform: scaleX(-1);
 }
 
-.buzzerButton:hover{
-    color: green;
+.buzzerButton {
+  box-shadow: #222222 0.5em 0.5em 0.5em;
+  color: grey;
+  background-color: #ffffff;
+}
+
+.buzzerButton:hover {
+  color: green;
 }

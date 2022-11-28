@@ -17,6 +17,7 @@ const Buzzer = ({ user, socket, room }: BuzzerProps) => {
   const [buzzerVoted, setBuzzerVoted] = useState(false);
   const canClose =
     user.role === Role.SCRUM_MASTER || user.role === Role.VOTING_SCRUM_MASTER;
+  const [hasVotes, setHasVotes] = useState(false);
 
   const cancel = () => {
     socket.emit("buzzer_canceled", {
@@ -37,6 +38,10 @@ const Buzzer = ({ user, socket, room }: BuzzerProps) => {
     });
     setBuzzerVoted(!buzzerVoted);
   };
+
+  useEffect(() => {
+    setHasVotes(room.currentVotes.length > 0);
+  }, [room]);
 
   useEffect(() => {
     if (show !== room.buzzerActive) {
@@ -104,17 +109,23 @@ const Buzzer = ({ user, socket, room }: BuzzerProps) => {
         <Modal.Footer style={{ border: "none" }}>
           <div className="container">
             <div className="row">
-              <div className="col-12 col-lg-6">
-                {canClose && (
-                  <button
-                    onClick={reveal}
-                    className="btn btn-primary fw-bold mb-3 w-100"
-                  >
-                    REVEAL
-                  </button>
-                )}
-              </div>
-              <div className="col-12 col-lg-6">
+              {hasVotes && (
+                <div className="col-12 col-sm-6">
+                  {canClose && (
+                    <button
+                      onClick={reveal}
+                      className="btn btn-primary fw-bold mb-3 w-100"
+                    >
+                      REVEAL
+                    </button>
+                  )}
+                </div>
+              )}
+              <div
+                className={
+                  hasVotes ? "col-12 col-sm-6" : "col-12 col-sm-6 offset-sm-3"
+                }
+              >
                 {canClose && (
                   <button
                     onClick={cancel}
