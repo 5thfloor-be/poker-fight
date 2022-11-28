@@ -3,6 +3,7 @@ import { useContext, useEffect, useState } from "react";
 import Card from "../../components/Card";
 import User, { Role } from "../api/model/user";
 import RoomModel, { States } from "../api/model/room";
+import { GiCardRandom } from "react-icons/gi";
 import { Deck } from "../../components/Deck";
 import Modal from "react-bootstrap/Modal";
 import { Button } from "react-bootstrap";
@@ -284,14 +285,7 @@ const Room = (props: RoomProps) => {
 
         {/* Partie Perfect */}
         <div className="row">
-          <div
-            className="col text-center text-xl-center m-3 p-1 roomStatus"
-            style={
-              room.state === States.VOTING || room.state === States.STARTING
-                ? { backgroundColor: "#d3d2d2", color: "black" }
-                : { backgroundColor: "#1b622c", color: "white" }
-            }
-          >
+          <div className="col text-center text-xl-center m-3 p-1 roomStatus">
             <h3>{roomStateText.get(room.state)}</h3>
             {room.state == States.WONDROUS && (
               <h1 className="fw-bold" style={{ fontSize: "60px" }}>
