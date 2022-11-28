@@ -1,6 +1,6 @@
 import Room, { States } from "../pages/api/model/room";
 import { Role } from "../pages/api/model/user";
-import {useEffect, useState} from "react";
+import { useEffect, useState } from "react";
 
 interface ScrumMasteVotingToolbalProps {
   room: Room;
@@ -19,12 +19,11 @@ const ScrumMasterVotingToolbar = ({
   reveal,
   validate,
 }: ScrumMasteVotingToolbalProps) => {
-
   const [hasVotes, setHasVotes] = useState(false);
 
   useEffect(() => {
-    setHasVotes(room.currentVotes.length > 0)
-  },  [room]);
+    setHasVotes(room.currentVotes.length > 0);
+  }, [room]);
 
   if (![Role.VOTING_SCRUM_MASTER, Role.SCRUM_MASTER].includes(role)) {
     return <></>;
@@ -37,17 +36,17 @@ const ScrumMasterVotingToolbar = ({
           room.users.filter(
             (u) => u?.role === Role.DEV || u?.role === Role.VOTING_SCRUM_MASTER
           ).length > 1 && (
-            <div className="col-6 col-sm-4 text-center">
+            <div className="col-8 col-sm-4 text-center">
               <button
                 type="button"
-                className="btn btn-primary  btn-lg fw-bold"
+                className="btn btn-primary btn-lg fw-bold"
                 onClick={startVoting}
               >
                 START VOTING
               </button>
             </div>
           )}
-        {room.state === States.VOTING && hasVotes &&(
+        {room.state === States.VOTING && hasVotes && (
           <div className="col-6 col-sm-4 text-center">
             <button
               type="button"
@@ -72,7 +71,7 @@ const ScrumMasterVotingToolbar = ({
         )}
 
         {room.state === States.WONDROUS ||
-          (room.state === States.VOTING && hasVotes &&(
+          (room.state === States.VOTING && hasVotes && (
             <div className="col-6 col-sm-4 text-center">
               <button
                 type="button"

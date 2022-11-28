@@ -49,14 +49,29 @@ const CoffeeBreak = ({ user, socket, room }: CoffeBreakProps) => {
       {user.role !== Role.SPECTATOR && user?.role !== Role.SCRUM_MASTER && (
         <button id="coffeeButton" onClick={() => vote()} className="btn">
           {coffeeVoted && (
-            <div className={`rounded-circle p-2 ${styles.coffeeButton}`}>
-              <MdCoffee color="green" size={80} />
-            </div>
+            <>
+              {/* Version PC */}
+              <MdCoffee
+                size={80}
+                color="green"
+                className={`block pb-2 d-none d-sm-block rounded-circle p-2 ${styles.coffeeButton}`}
+              />
+
+              {/* Version Mobile */}
+              <MdCoffee size={40} color="green" className="d-sm-none" />
+            </>
           )}
           {!coffeeVoted && (
-            <div className={`rounded-circle p-2 ${styles.coffeeButton}`}>
-              <MdOutlineCoffee size={80} />
-            </div>
+            <>
+              {/* Version PC */}
+              <MdOutlineCoffee
+                size={80}
+                className={`block pb-2 d-none d-sm-block rounded-circle p-2 ${styles.coffeeButton}`}
+              />
+
+              {/* Version Mobile */}
+              <MdOutlineCoffee size={40} color="white" className="d-sm-none" />
+            </>
           )}
         </button>
       )}

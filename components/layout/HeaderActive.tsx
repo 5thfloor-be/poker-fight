@@ -41,7 +41,7 @@ const HeaderActive = () => {
               />
             </div>
 
-            <div className="col-12 col-sm-4 mx-0 px-0 pt-sm-2">
+            <div className="col-12 col-sm-4 mx-0 px-0 pt-sm-2 d-none d-sm-block">
               {isRoomActive && (
                 <div className="input-group w100">
                   <input

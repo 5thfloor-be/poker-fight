@@ -304,7 +304,7 @@ const Home = () => {
                   teams. Discover the full story{" "}
                   <a
                     className="text-decoration-none text-reset"
-                    href="https://5thfloor.be/poker-fight"
+                    href="https://5thfloor.be/fr/poker-fight/"
                     target="_blank"
                     rel="noreferrer"
                   >

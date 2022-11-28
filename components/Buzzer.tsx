@@ -54,16 +54,33 @@ const Buzzer = ({ user, socket, room }: BuzzerProps) => {
       {user.role !== Role.SPECTATOR && user?.role !== Role.SCRUM_MASTER && (
         <button id="buzzerButton" onClick={() => vote()} className={`btn `}>
           {buzzerVoted && (
-            <div className={`rounded-circle p-2 ${styles.buzzerButton}`}>
-              <BsSpeedometer2 size={80} color="green" className="pb-2" />
-            </div>
+            <>
+              {/* Version PC */}
+              <BsSpeedometer2
+                size={80}
+                color="green"
+                className={`block pb-2 d-none d-sm-block rounded-circle p-2 ${styles.buzzerButton}`}
+              />
+
+              {/* Version Mobile */}
+              <BsSpeedometer2 size={40} color="green" className="d-sm-none" />
+            </>
           )}
           {!buzzerVoted && (
-            <div
-              className={`rounded-circle p-2 ${styles.flipX} ${styles.buzzerButton}`}
-            >
-              <BsSpeedometer2 size={80} className="pb-2" />
-            </div>
+            <>
+              {/* Version PC */}
+              <BsSpeedometer2
+                size={80}
+                className={`block pb-2 d-none d-sm-block rounded-circle p-2 ${styles.flipX} ${styles.buzzerButton}`}
+              />
+
+              {/* Version Mobile */}
+              <BsSpeedometer2
+                size={40}
+                color="white"
+                className={`d-sm-none ${styles.flipX}`}
+              />
+            </>
           )}
         </button>
       )}

@@ -1,23 +1,22 @@
-import {useRouter} from "next/router";
-import {useContext, useEffect, useState} from "react";
+import { useRouter } from "next/router";
+import { useContext, useEffect, useState } from "react";
 import Card from "../../components/Card";
-import User, {Role} from "../api/model/user";
-import RoomModel, {States} from "../api/model/room";
-import {GiCardRandom} from "react-icons/gi";
-import {Deck} from "../../components/Deck";
+import User, { Role } from "../api/model/user";
+import RoomModel, { States } from "../api/model/room";
+import { Deck } from "../../components/Deck";
 import Modal from "react-bootstrap/Modal";
-import {Button} from "react-bootstrap";
-import {UserContext} from "../../context/UserContext";
-import {io} from "socket.io-client";
+import { Button } from "react-bootstrap";
+import { UserContext } from "../../context/UserContext";
+import { io } from "socket.io-client";
 import CoffeBreak from "../../components/CoffeBreak";
 import Spectators from "../../components/Spectators";
-import {BsEyeglasses} from "react-icons/bs";
+import { BsEyeglasses } from "react-icons/bs";
 import ModalSpectators from "../../components/ModalSpectators";
 import Buzzer from "../../components/Buzzer";
 import FooterActiveMobile from "../../components/layout/FooterActiveMobile";
 import Versus from "../../components/Versus";
 import ScrumMasterVotingToolbar from "../../components/ScrumMasterVotingToolbar";
-import {JoinRoomReturn} from "../api/socket";
+import { JoinRoomReturn } from "../api/socket";
 import Image from "next/image";
 
 type RoomProps = {
@@ -90,13 +89,13 @@ const Room = (props: RoomProps) => {
     }
 
     if (socket) {
-      socket.on('connect', () => {
-        console.log('connected');
+      socket.on("connect", () => {
+        console.log("connected");
       });
 
-      socket.on('disconnect', (err: string) => {
-        console.log('server disconnected: ', err);
-        if (err === 'io server disconnect' || 'transport error') {
+      socket.on("disconnect", (err: string) => {
+        console.log("server disconnected: ", err);
+        if (err === "io server disconnect" || "transport error") {
           // Reconnect manually if the disconnection was initiated by the server
           socket.connect();
         }
@@ -216,7 +215,11 @@ const Room = (props: RoomProps) => {
           <Card selected={false} canClose={false} value={selectedVote} />
         )}
         {room.state === States.VOTING && (
-          <Deck deck={cardValues} updateSelection={updateSelection} currentVote={getVoteByUserId(user.id)}/>
+          <Deck
+            deck={cardValues}
+            updateSelection={updateSelection}
+            currentVote={getVoteByUserId(user.id)}
+          />
         )}
       </>
     );
@@ -281,8 +284,14 @@ const Room = (props: RoomProps) => {
 
         {/* Partie Perfect */}
         <div className="row">
-          <div className="col text-center text-xl-center m-3 p-1 roomStatus"
-               style={room.state === States.VOTING || room.state === States.STARTING ? { backgroundColor: '#d3d2d2', color: 'black' } : { backgroundColor: '#1b622c', color: 'white'} }>
+          <div
+            className="col text-center text-xl-center m-3 p-1 roomStatus"
+            style={
+              room.state === States.VOTING || room.state === States.STARTING
+                ? { backgroundColor: "#d3d2d2", color: "black" }
+                : { backgroundColor: "#1b622c", color: "white" }
+            }
+          >
             <h3>{roomStateText.get(room.state)}</h3>
             {room.state == States.WONDROUS && (
               <h1 className="fw-bold" style={{ fontSize: "60px" }}>
@@ -327,6 +336,19 @@ const Room = (props: RoomProps) => {
                   room.state !== States.WONDROUS &&
                   showBottomDeck()}
               </div>
+
+              <div className="col-12 d-sm-none mx-auto text-center">
+                {getVoteByUserId(user.id) && (
+                  <button
+                    className="btn fw-bold bg-white py-0 ms-3"
+                    onClick={handleShow}
+                    style={{ fontSize: "50px" }}
+                  >
+                    {getVoteByUserId(user.id)}
+                  </button>
+                )}
+              </div>
+
               {/* Version PC des Spectateurs */}
               <div className="col-2 d-none d-sm-block justify-content-center">
                 <Spectators
@@ -334,43 +356,6 @@ const Room = (props: RoomProps) => {
                     (u) => u?.role === Role.SPECTATOR
                   )}
                 />
-              </div>
-            </div>
-
-            {/* Version mobile du Deck */}
-            <div className="row mt-2 mt-sm-0 text-center w-100">
-              <div className="d-sm-none col-4">
-                {room.roomOptions.coffeeBreakAllowed && (
-                  <CoffeBreak user={user} socket={socket} room={room} />
-                )}
-              </div>
-              <div className="d-sm-none col-4">
-                {user?.role !== Role.SCRUM_MASTER &&
-                  user?.role !== Role.SPECTATOR &&
-                  room.state === States.VOTING && (
-                    <div>
-                      {!getVoteByUserId(user.id) && (
-                        <button className="btn text-white" onClick={handleShow}>
-                          <div className="bg-white rounded-circle p-2">
-                            <GiCardRandom color="black" size={80} />
-                          </div>
-                        </button>
-                      )}
-                      {getVoteByUserId(user.id) && (
-                        <button className="btn fw-bold" onClick={handleShow}>
-                          <div>
-                            <Card value={getVoteByUserId(user.id)} />
-                          </div>
-                        </button>
-                      )}
-                    </div>
-                  )}
-              </div>
-              <div className="d-sm-none col-4">
-                {room.roomOptions.buzzerAllowed &&
-                  room.state === States.VOTING && (
-                    <Buzzer user={user} socket={socket} room={room} />
-                  )}
               </div>
             </div>
 
