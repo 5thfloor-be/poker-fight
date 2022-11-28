@@ -83,7 +83,7 @@ const FooterActiveMobile: NextPage = () => {
       {isRoomActive && (
         <footer className={styles.containeractivefooter}>
           <div className="container d-sm-none mx-0 mw-100 pb-3 text-center">
-            <div className="row">
+            <div className="row my-auto">
               {/* Affichage du Score */}
               <div className="col-2 px-0" style={{ marginTop: "30px" }}>
                 {room && room.roomOptions.targetPoints && (
@@ -122,14 +122,13 @@ const FooterActiveMobile: NextPage = () => {
               </div>
 
               {/* Dropup menu */}
-              <div className="col-2 px-0 fw-bold" style={{ marginTop: "20px" }}>
+              <div className="col-2 px-0 fw-bold">
                 <DropdownButton
-                  style={{ color: "white", padding: "0px" }}
                   id="dropup-button"
                   drop="up"
                   variant="dark"
                   title="[+]"
-                  className="p-0 text-white"
+                  className={`p-0 my-auto ${styles.dropUpButton}`}
                   menuVariant="dark"
                   color="white"
                   size="lg"
