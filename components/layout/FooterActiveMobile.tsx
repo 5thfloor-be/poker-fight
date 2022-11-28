@@ -94,7 +94,7 @@ const FooterActiveMobile: NextPage = () => {
                 )}
               </div>
               {/* Bouton Pause Café */}
-              <div className="col-2 pt-3 px-0">
+              <div className="col-2 pt-3 px-0 ">
                 {room.roomOptions.coffeeBreakAllowed && (
                   <CoffeBreak user={user} socket={socket} room={room} />
                 )}
@@ -114,7 +114,7 @@ const FooterActiveMobile: NextPage = () => {
                   )}
               </div>
               {/* Bouton Buzzer */}
-              <div className="col-2 pt-3 px-0">
+              <div className="col-2 pt-3 px-0 ">
                 {room.roomOptions.buzzerAllowed &&
                   room.state === States.VOTING && (
                     <Buzzer user={user} socket={socket} room={room} />
@@ -122,7 +122,7 @@ const FooterActiveMobile: NextPage = () => {
               </div>
 
               {/* Dropup menu */}
-              <div className="col-2 px-0 fw-bold">
+              <div className="col-2 px-0 fw-bold ">
                 <DropdownButton
                   id="dropup-button"
                   drop="up"

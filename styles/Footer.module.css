@@ -27,10 +27,12 @@
   border: 0px;
   height: 100%;
   border-radius: 0px;
+  font-size: larger;
+  font-weight: bold;
 }
 
 
-.dropUpButton .dropdown-menu-dark{
+.dropUpButton .dropdown-menu-dark,.dropdown-menu{
   background-color: rgba(0, 0, 0, 0.0);
 }
 
