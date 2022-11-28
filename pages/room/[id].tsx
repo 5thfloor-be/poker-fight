@@ -3,7 +3,6 @@ import { useContext, useEffect, useState } from "react";
 import Card from "../../components/Card";
 import User, { Role } from "../api/model/user";
 import RoomModel, { States } from "../api/model/room";
-import { GiCardRandom } from "react-icons/gi";
 import { Deck } from "../../components/Deck";
 import Modal from "react-bootstrap/Modal";
 import { Button } from "react-bootstrap";
@@ -331,17 +330,21 @@ const Room = (props: RoomProps) => {
                   showBottomDeck()}
               </div>
 
-              <div className="col-12 d-sm-none mx-auto text-center">
-                {getVoteByUserId(user.id) && (
-                  <button
-                    className="btn fw-bold bg-white py-0 ms-3"
-                    onClick={handleShow}
-                    style={{ fontSize: "50px" }}
-                  >
-                    {getVoteByUserId(user.id)}
-                  </button>
+              {user?.role !== Role.SCRUM_MASTER &&
+                user?.role !== Role.SPECTATOR &&
+                room.state !== States.WONDROUS && (
+                  <div className="col-12 d-sm-none mx-auto text-center">
+                    {getVoteByUserId(user.id) && (
+                      <button
+                        className="btn fw-bold bg-white py-0 ms-3"
+                        onClick={handleShow}
+                        style={{ fontSize: "50px" }}
+                      >
+                        {getVoteByUserId(user.id)}
+                      </button>
+                    )}
+                  </div>
                 )}
-              </div>
 
               {/* Version PC des Spectateurs */}
               <div className="col-2 d-none d-sm-block justify-content-center">

@@ -46,7 +46,8 @@ const Home = () => {
           content="Discover a new voting system for your Poker Planning, with fun
                   and innovative features."
         />
-        <link rel="icon" href="/images/favicon.png" />
+        <link rel="icon" href="/favicon.ico" />
+        <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico" />
       </Head>
 
       {showLoading && isRoomActive && (
@@ -147,7 +148,7 @@ const Home = () => {
                   }}
                 >
                   Discover a new voting system for your Poker Planning, with fun
-                  and innovative features.
+                  and innovative features. And it&apos;s mobile first !
                 </p>
               </div>
               <div className="col-sm-5 py-3">
