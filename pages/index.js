@@ -387,7 +387,7 @@ export function matomo() {
   _paq.push(["trackPageView"]);
   _paq.push(["enableLinkTracking"]);
   (function () {
-    var u = "//35.189.207.201/";
+    var u = "//stats.5thfloor.be/";
     _paq.push(["setTrackerUrl", u + "matomo.php"]);
     _paq.push(["setSiteId", "2"]);
     var d = document,
