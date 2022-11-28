@@ -82,7 +82,7 @@ const FooterActiveMobile: NextPage = () => {
     <>
       {isRoomActive && (
         <footer className={styles.containeractivefooter}>
-          <div className="container d-sm-none mx-0 mw-100 pb-3 text-center">
+          <div className="container d-sm-none mx-0 mw-100 py-2 text-center">
             <div className="row my-auto">
               {/* Affichage du Score */}
               <div className="col-2 px-0" style={{ marginTop: "30px" }}>
