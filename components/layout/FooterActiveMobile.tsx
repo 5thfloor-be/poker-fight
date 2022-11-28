@@ -10,7 +10,6 @@ import { Button } from "react-bootstrap";
 import { Role } from "../../pages/api/model/user";
 import { States } from "../../pages/api/model/room";
 import { GiCardRandom } from "react-icons/gi";
-import Card from "../Card";
 import CoffeBreak from "../CoffeBreak";
 import Buzzer from "../Buzzer";
 import Dropdown from "react-bootstrap/Dropdown";
@@ -20,11 +19,6 @@ import { IoExitOutline } from "react-icons/io5";
 const FooterActiveMobile: NextPage = () => {
   const { isRoomActive, setIsRoomActive, user, setUser, room } =
     useContext(UserContext);
-
-  /* Si la room est undefined */
-  if (!room) {
-    return <></>;
-  }
 
   const cardValues = room ? room.roomOptions.cardValues : [];
 
@@ -78,6 +72,11 @@ const FooterActiveMobile: NextPage = () => {
         )
       : undefined;
   };
+
+  /* Si la room est undefined */
+  if (!room) {
+    return <></>;
+  }
 
   return (
     <>
