@@ -87,7 +87,13 @@ const FooterActiveMobile: NextPage = () => {
               {/* Affichage du Score */}
               <div className="col-2 px-0" style={{ marginTop: "30px" }}>
                 {room && room.roomOptions.targetPoints && (
-                  <div className="text-white">
+                  <div
+                    className={
+                      room.currentPoints >= room.roomOptions.targetPoints
+                        ? "text-success"
+                        : "text-white"
+                    }
+                  >
                     {room.currentPoints ? room.currentPoints : 0} /
                     {room.roomOptions.targetPoints}
                   </div>
