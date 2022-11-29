@@ -372,8 +372,6 @@ export default Home;
 
 export async function getServerSideProps() {
   const url = process.env.HOST;
-
-  console.log("URL", url);
   await fetch(url);
   return {
     props: {
@@ -383,13 +381,15 @@ export async function getServerSideProps() {
 }
 
 export function matomo() {
+  const matomoUrl = process.env.MATOMO_URL;
+  const matomoSiteId = process.env.MATOMO_SITE_ID;
   var _paq = (window._paq = window._paq || []);
   _paq.push(["trackPageView"]);
   _paq.push(["enableLinkTracking"]);
   (function () {
-    var u = "//stats.5thfloor.be/";
+    var u = "//" + matomoUrl + "/";
     _paq.push(["setTrackerUrl", u + "matomo.php"]);
-    _paq.push(["setSiteId", "2"]);
+    _paq.push(["setSiteId", matomoSiteId]);
     var d = document,
       g = d.createElement("script"),
       s = d.getElementsByTagName("script")[0];
