@@ -3,11 +3,27 @@
   }
 
 .coffeeButton{
-    box-shadow: #222222 .5em .5em .5em;
-    color: grey;
-    background-color: #FFFFFF;
+    color: lightgray;
+    background-color: rgba(0, 0, 0, 0.4);
+    padding: 0px;
+    margin: 0px;
+    border:none;
+    border-radius: 1em;
 }
 
 .coffeeButton:hover{
-    color: green;
+    color: lightgreen;
+    box-shadow: lightgreen 0em 0em 0.5em;
+}
+
+
+.coffeeButtonMobile{
+    color: lightgray;
+}
+
+.coffeeButtonMobile:hover{
+    color: lightgreen;
+}
+.active{
+    color:lightgreen;
 }

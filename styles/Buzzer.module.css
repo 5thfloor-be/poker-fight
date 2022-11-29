@@ -2,12 +2,16 @@
   transform: scaleX(-1);
 }
 
-.buzzerButton {
-  box-shadow: #222222 0.5em 0.5em 0.5em;
-  color: grey;
-  background-color: #ffffff;
+.buzzerButton{
+  color: lightgray;
+  background-color: rgba(0, 0, 0, 0.4);
+  padding: 0px;
+  margin: 0px;
+  border:none;
+  border-radius: 1em;
 }
 
-.buzzerButton:hover {
-  color: green;
+.buzzerButton:hover{
+  color: lightgreen;
+  box-shadow: lightgreen 0em 0em 0.7em;
 }

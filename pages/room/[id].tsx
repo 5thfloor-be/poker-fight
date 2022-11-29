@@ -303,16 +303,16 @@ const Room = (props: RoomProps) => {
           validate={validate}
         />
 
-        <div className="row my-3">
+        <div className="row my-3 mx-1 actionsArea">
           <>
             {/* Version PC du Deck */}
             <div
-              className="row"
+              className="row justify-content-center"
               style={
                 widthScreen < 576 ? { paddingBottom: 0 } : { paddingBottom: 40 }
               }
             >
-              <div className="col-2 d-none d-sm-block">
+              <div className="col-1 d-none d-sm-block px-0 my-auto">
                 {room.roomOptions.coffeeBreakAllowed && (
                   <CoffeBreak user={user} socket={socket} room={room} />
                 )}
@@ -323,7 +323,7 @@ const Room = (props: RoomProps) => {
                   )}
               </div>
 
-              <div className="col-8 d-none d-sm-block justify-content-center mt-3">
+              <div className="col-10 d-none d-sm-block justify-content-center mt-3">
                 {user?.role !== Role.SCRUM_MASTER &&
                   user?.role !== Role.SPECTATOR &&
                   room.state !== States.WONDROUS &&

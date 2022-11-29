@@ -63,12 +63,12 @@ const Buzzer = ({ user, socket, room }: BuzzerProps) => {
               {/* Version PC */}
               <BsSpeedometer2
                 size={80}
-                color="green"
-                className={`block pb-3 d-none d-sm-block rounded-circle p-2 ${styles.buzzerButton}`}
+                color="lightgreen"
+                className={`block pb-3 d-none d-sm-block p-2 ${styles.buzzerButton}`}
               />
 
               {/* Version Mobile */}
-              <BsSpeedometer2 size={40} color="green" className="d-sm-none" />
+              <BsSpeedometer2 size={40} color="lightgreen" className="d-sm-none" />
             </>
           )}
           {!buzzerVoted && (
@@ -76,7 +76,7 @@ const Buzzer = ({ user, socket, room }: BuzzerProps) => {
               {/* Version PC */}
               <BsSpeedometer2
                 size={80}
-                className={`block pb-3 d-none d-sm-block rounded-circle p-2 ${styles.flipX} ${styles.buzzerButton}`}
+                className={`block pb-3 d-none d-sm-block  p-2 ${styles.flipX} ${styles.buzzerButton}`}
               />
 
               {/* Version Mobile */}
