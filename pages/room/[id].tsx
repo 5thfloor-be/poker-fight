@@ -1,22 +1,22 @@
-import { useRouter } from "next/router";
-import { useContext, useEffect, useState } from "react";
+import {useRouter} from "next/router";
+import {useContext, useEffect, useState} from "react";
 import Card from "../../components/Card";
-import User, { Role } from "../api/model/user";
-import RoomModel, { States } from "../api/model/room";
-import { Deck } from "../../components/Deck";
+import User, {Role} from "../api/model/user";
+import RoomModel, {States} from "../api/model/room";
+import {Deck} from "../../components/Deck";
 import Modal from "react-bootstrap/Modal";
-import { Button } from "react-bootstrap";
-import { UserContext } from "../../context/UserContext";
-import { io } from "socket.io-client";
+import {Button} from "react-bootstrap";
+import {UserContext} from "../../context/UserContext";
+import {io} from "socket.io-client";
 import CoffeBreak from "../../components/CoffeBreak";
 import Spectators from "../../components/Spectators";
-import { BsEyeglasses } from "react-icons/bs";
+import {BsEyeglasses} from "react-icons/bs";
 import ModalSpectators from "../../components/ModalSpectators";
 import Buzzer from "../../components/Buzzer";
 import FooterActiveMobile from "../../components/layout/FooterActiveMobile";
 import Versus from "../../components/Versus";
 import ScrumMasterVotingToolbar from "../../components/ScrumMasterVotingToolbar";
-import { JoinRoomReturn } from "../api/socket";
+import {JoinRoomReturn} from "../api/socket";
 import Image from "next/image";
 
 type RoomProps = {
@@ -229,6 +229,18 @@ const Room = (props: RoomProps) => {
     socket.emit("remove_user", { roomId: room.id, userId: userToRemove.id });
   };
 
+  const getStatusText = () =>{
+    let voters = getVoters().length;
+    if(voters < 2){
+      return `Waiting for at least ${2-voters} voter(s)`
+    }
+    return roomStateText.get(room.state);
+  }
+
+  const getVoters = () => {
+    return room.users.filter(u => u.role === Role.VOTING_SCRUM_MASTER || u.role === Role.DEV);
+  }
+
   return (
     /* Rajouter un espace pour centrer le bloc si le User en cours est Spectateur ou Scrum Master non votant */
     <div
@@ -285,7 +297,7 @@ const Room = (props: RoomProps) => {
         {/* Partie Perfect */}
         <div className="row">
           <div className="col text-center text-xl-center m-3 p-1 roomStatus">
-            <h3>{roomStateText.get(room.state)}</h3>
+            <h3>{getStatusText()}</h3>
             {room.state == States.WONDROUS && (
               <h1 className="fw-bold" style={{ fontSize: "60px" }}>
                 {room.wondrousVote}
