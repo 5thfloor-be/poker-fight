@@ -46,14 +46,15 @@ const HeaderActive = () => {
                 <div className="input-group w100">
                   <input
                     disabled
-                    className="rounded-5 form-control mx-1 mx-sm-3"
+                    className="text-center rounded-2 form-control mx-1 mx-sm-3"
+                    style={{ backgroundColor: "rgba(255, 255, 255, 0.5)" }}
                     type="text"
                     value={urlValue.substring(12)}
                   />
 
                   {!showAlert ? (
                     <button
-                      className=" btn btn-primary rounded-5 px-sm-3 fw-bold"
+                      className=" btn btn-primary rounded-2 px-sm-3 fw-bold"
                       onClick={() => {
                         navigator.clipboard.writeText(urlValue);
                         setShowAlert(!showAlert);
@@ -64,7 +65,7 @@ const HeaderActive = () => {
                   ) : (
                     <button
                       disabled
-                      className=" btn btn-success rounded-5 px-sm-3 opacity-100 fw-bold"
+                      className=" btn btn-success rounded-2 px-sm-3 opacity-100 fw-bold"
                     >
                       <MdOutlineCheck color="white" className="me-1" />
                       COPIED
@@ -77,7 +78,11 @@ const HeaderActive = () => {
               {isRoomActive && room && room.roomOptions.targetPoints && (
                 <div className="text-center">
                   <button
-                    className=" btn btn-success rounded-5 form-control fw-bold opacity-100"
+                    className={
+                      room.currentPoints >= room.roomOptions.targetPoints
+                        ? "btn btn-success rounded-2 form-control fw-bold opacity-100"
+                        : "btn btn-outline-success text-white rounded-2 form-control fw-bold opacity-100"
+                    }
                     disabled
                   >
                     SCORE : {room.currentPoints ? room.currentPoints : 0} /
