@@ -53,12 +53,12 @@ const CoffeeBreak = ({ user, socket, room }: CoffeBreakProps) => {
               {/* Version PC */}
               <MdCoffee
                 size={80}
-                color="green"
-                className={`block pb-2 d-none d-sm-block rounded-circle p-2 ${styles.coffeeButton}`}
+                color="lightgreen"
+                className={`block pb-2 d-none d-sm-block p-2 ${styles.coffeeButton}`}
               />
 
               {/* Version Mobile */}
-              <MdCoffee size={40} color="green" className="d-sm-none" />
+              <MdCoffee size={40} color="lightgreen" className="d-sm-none" />
             </>
           )}
           {!coffeeVoted && (
@@ -66,7 +66,7 @@ const CoffeeBreak = ({ user, socket, room }: CoffeBreakProps) => {
               {/* Version PC */}
               <MdOutlineCoffee
                 size={80}
-                className={`block pb-2 d-none d-sm-block rounded-circle p-2 ${styles.coffeeButton}`}
+                className={`block pb-2 d-none d-sm-block p-2 ${styles.coffeeButton}`}
               />
 
               {/* Version Mobile */}

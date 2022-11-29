@@ -62,5 +62,6 @@ a {
 
 .roomStatus{
   border-radius: 1em;
-  background-color:  #FFFFFF44;
+  background-color:  #FFFFFF22;
+  color: white;
 }
