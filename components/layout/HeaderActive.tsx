@@ -85,7 +85,7 @@ const HeaderActive = () => {
                     }
                     disabled
                   >
-                    SCORE : {room.currentPoints ? room.currentPoints : 0} /
+                    SCORE : {room.currentPoints ? room.currentPoints : 0} /{" "}
                     {room.roomOptions.targetPoints}
                   </button>
                 </div>

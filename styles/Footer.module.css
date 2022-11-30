@@ -13,17 +13,18 @@
   right: 0px;
   margin-bottom: 0px;
   background-color: rgba(0, 0, 0, 0.4);
+  height: 106px;
 }
 
 .dropUpButton {
   background-color: #22222288;
   color: white;
   padding: 0px;
-  height: 100%
+  height: 100%;
 }
 
-.dropUpButton button{
-  background-color: rgba(0, 0, 0, 0.0);
+.dropUpButton button {
+  background-color: rgba(0, 0, 0, 0);
   border: 0px;
   height: 100%;
   border-radius: 0px;
@@ -31,11 +32,12 @@
   font-weight: bold;
 }
 
-
-.dropUpButton .dropdown-menu-dark,.dropdown-menu{
-  background-color: rgba(0, 0, 0, 0.0);
+.dropUpButton .dropdown-menu-dark,
+.dropdown-menu {
+  background-color: rgba(0, 0, 0, 0);
 }
 
-.dropUpButton, .dropdown-item {
-  background-color: rgba(0, 0, 0, 0.0);
+.dropUpButton,
+.dropdown-item {
+  background-color: rgba(0, 0, 0, 0);
 }

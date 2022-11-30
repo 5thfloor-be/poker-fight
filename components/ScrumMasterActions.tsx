@@ -71,7 +71,7 @@ const ScrumMasterActions = ({
                 otherScore();
               }}
             >
-              OTHER SCORE
+              OTHER
             </button>
           </div>
           <div>

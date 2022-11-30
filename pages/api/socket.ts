@@ -4,8 +4,8 @@ import { Server } from "socket.io";
 import Room from "./model/room";
 import User, { Role } from "./model/user";
 import { ErrorCode } from "./model/ErrorCode";
-import { createClient } from 'redis';
-import { createAdapter } from '@socket.io/redis-adapter';
+import { createClient } from "redis";
+import { createAdapter } from "@socket.io/redis-adapter";
 
 const rooms: Map<string, Room> = new Map();
 
@@ -15,14 +15,13 @@ export interface JoinRoomReturn {
 }
 
 const SocketHandler = (req: IncomingMessage, res: any) => {
-
   if (res?.socket?.server.io) {
     console.log("Socket is already running");
   } else {
     console.log("Socket is initializing");
     const io = new Server(res.socket?.server, { pingTimeout: 600000 });
 
-    const pubClient = createClient({ url: `redis://10.96.221.35:6379`});
+    const pubClient = createClient({ url: `redis://10.96.221.35:6379` });
     const subClient = pubClient.duplicate();
 
     Promise.all([pubClient.connect(), subClient.connect()]).then(() => {
@@ -163,6 +162,11 @@ function configIO(io: Server) {
     socket.on("coffee_break_over", (data) => {
       console.log(`coffee_break_over ${JSON.stringify(data)}`);
       rooms.get(data.roomId)?.coffeeBreakOver();
+    });
+
+    socket.on("score_goal_over", (data) => {
+      console.log(`score_goal_over ${JSON.stringify(data)}`);
+      rooms.get(data.roomId)?.scoreGoalOver();
     });
 
     socket.on("buzzer_vote", (data) => {

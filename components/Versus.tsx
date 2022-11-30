@@ -217,7 +217,7 @@ const Versus: NextPage = () => {
                 className="btn btn-lg btn-secondary fw-bold w-100"
                 onClick={() => setShowOtherScoreModal(true)}
               >
-                OTHER SCORE
+                OTHER
               </button>
             </div>
             <div className="d-none d-sm-block col-sm-2">
