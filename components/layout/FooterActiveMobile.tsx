@@ -94,7 +94,7 @@ const FooterActiveMobile: NextPage = () => {
                         : "text-white"
                     }
                   >
-                    {room.currentPoints ? room.currentPoints : 0} /
+                    {room.currentPoints ? room.currentPoints : 0}/
                     {room.roomOptions.targetPoints}
                   </div>
                 )}

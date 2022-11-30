@@ -1,12 +1,12 @@
-import User, {Role} from './user';
-import UserVote from './userVote';
+import User, { Role } from "./user";
+import UserVote from "./userVote";
 
 const MAX_VOTERS = 10;
 
 export default class Room {
   users: User[] = [];
   modified: Date = new Date();
-  coffeeBreak: string[]= [];
+  coffeeBreak: string[] = [];
   buzzer: string[] = [];
   // currentVotes: Map<string, string> = new Map();
   currentVotes: UserVote[] = [];
@@ -17,6 +17,7 @@ export default class Room {
   onChangeCallbacks: OnChangeCallback[] = [];
   coffeeBreakActive = false;
   buzzerActive = false;
+  scoreGoalActive = true;
 
   constructor(public id: string, roomOptions: RoomOptions) {
     this.roomOptions = roomOptions;
@@ -29,16 +30,16 @@ export default class Room {
 
   removeUser(userId: string) {
     this.users = this.users.filter((u) => {
-      console.log(`u.id !== userId  `, u.id !== userId)
+      console.log(`u.id !== userId  `, u.id !== userId);
       return u.id !== userId;
     });
-    console.log("users :", this.users)
+    console.log("users :", this.users);
     //TODO : close room when users is empty or no more scrum master
     this.stateUpdated();
   }
 
   registerVote(userId: string, vote: number) {
-    if(!this.isUserInRoom(userId)){
+    if (!this.isUserInRoom(userId)) {
       return;
     }
     console.log("registerVote - user id : ", userId);
@@ -58,14 +59,18 @@ export default class Room {
     this.stateUpdated();
   }
 
-  isUserInRoom(userId: string): boolean{
-    return this.users.filter(u => u.id === userId).length !== 0
+  isUserInRoom(userId: string): boolean {
+    return this.users.filter((u) => u.id === userId).length !== 0;
   }
 
-  allUsersVoted(){
-    console.log('votes' , this.currentVotes);
-    console.log('users' , this.users);
-    return this.users.filter(user => user.role != Role.SCRUM_MASTER && user.role != Role.SPECTATOR  ).length === this.currentVotes.length;
+  allUsersVoted() {
+    console.log("votes", this.currentVotes);
+    console.log("users", this.users);
+    return (
+      this.users.filter(
+        (user) => user.role != Role.SCRUM_MASTER && user.role != Role.SPECTATOR
+      ).length === this.currentVotes.length
+    );
   }
 
   getActiveParticipants(): User[] {
@@ -73,18 +78,19 @@ export default class Room {
   }
 
   coffeeBreakVote(userId: string) {
-    if(!this.isUserInRoom(userId)){
+    if (!this.isUserInRoom(userId)) {
       return;
     }
-    const currentVote = !!this.coffeeBreak.find(u => u=== userId);
-    if(currentVote) {
-      this.coffeeBreak = this.coffeeBreak.filter(u => u!== userId)
-    }else {
+    const currentVote = !!this.coffeeBreak.find((u) => u === userId);
+    if (currentVote) {
+      this.coffeeBreak = this.coffeeBreak.filter((u) => u !== userId);
+    } else {
       this.coffeeBreak.push(userId);
     }
 
     this.coffeeBreakActive =
-        this.coffeeBreak.length > Math.trunc(this.getActiveParticipants().length / 2);
+      this.coffeeBreak.length >
+      Math.trunc(this.getActiveParticipants().length / 2);
     this.stateUpdated();
   }
 
@@ -94,19 +100,24 @@ export default class Room {
     this.stateUpdated();
   }
 
+  scoreGoalOver() {
+    this.scoreGoalActive = false;
+    this.stateUpdated();
+  }
+
   buzzerVote(userId: string) {
-    if(!this.isUserInRoom(userId)){
+    if (!this.isUserInRoom(userId)) {
       return;
     }
-    const currentVote = !!this.buzzer.find(u => u=== userId);
-    if(currentVote) {
-      this.buzzer = this.buzzer.filter(u => u!== userId)
-    }else {
+    const currentVote = !!this.buzzer.find((u) => u === userId);
+    if (currentVote) {
+      this.buzzer = this.buzzer.filter((u) => u !== userId);
+    } else {
       this.buzzer.push(userId);
     }
 
     this.buzzerActive =
-        this.buzzer.length > Math.trunc(this.getActiveParticipants().length / 2);
+      this.buzzer.length > Math.trunc(this.getActiveParticipants().length / 2);
     this.stateUpdated();
   }
 
@@ -137,7 +148,7 @@ export default class Room {
         this.state = States.FIGHTING;
       }
     }
-    this.buzzer= [];
+    this.buzzer = [];
     this.buzzerActive = false;
     this.stateUpdated();
   }
@@ -164,7 +175,6 @@ export default class Room {
       console.log("callback invoked");
       callback(this);
     });
-
   }
 
   registerOnChangeCallback(callback: OnChangeCallback) {
@@ -187,9 +197,12 @@ export default class Room {
     this.stateUpdated();
   }
 
-  isFull(){
-    return this.users.filter(u => u.role === Role.DEV || u.role === Role.VOTING_SCRUM_MASTER)
-        .length >= MAX_VOTERS;
+  isFull() {
+    return (
+      this.users.filter(
+        (u) => u.role === Role.DEV || u.role === Role.VOTING_SCRUM_MASTER
+      ).length >= MAX_VOTERS
+    );
   }
 }
 

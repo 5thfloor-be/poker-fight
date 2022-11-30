@@ -270,7 +270,7 @@ const CreateRoom = (props: CreateRoomProps) => {
             </div>
             {/* Début du block de settings de la Room */}
             <div className="row pt-3">
-              <div className="col-4 col-sm-2 offset-sm-3 text-end">
+              <div className="col-4 col-sm-3 offset-sm-2 text-end">
                 <input
                   id="pointsachieved"
                   className="rounded p-2 text-center"
@@ -280,7 +280,7 @@ const CreateRoom = (props: CreateRoomProps) => {
                   pattern="[0-9]{1,3}"
                   title="Numbers only"
                   maxLength={3}
-                  size={3}
+                  size={4}
                   onChange={(e) => {
                     setRoomSettings({
                       ...roomSettings,
