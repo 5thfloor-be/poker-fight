@@ -29,7 +29,7 @@ const ModalGoalScore = ({
       >
         <Modal.Header style={{ border: "none" }}>
           <Modal.Title className="w-100">
-            <h1 className="text-white text-center">GOAAAAAL !!!</h1>
+            <h1 className="text-white text-center">GOOOOOOOAL !!!</h1>
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
@@ -37,7 +37,7 @@ const ModalGoalScore = ({
             <div className="row">
               <div className="col text-center">
                 <p className="text-white">
-                  Congratulation, you have reached the score goal you fixed.
+                  Congratulations, you have reached the score goal you fixed.
                 </p>
                 <GiPartyPopper color="white" size={100} className="mt-3" />
               </div>
