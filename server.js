@@ -5,6 +5,9 @@ const next = require('next')
 const dev = process.env.NODE_ENV !== 'production'
 const hostname = process.env.HOST
 const port = 3000
+console.log('server.js dev', dev);
+console.log('server.js hostname', hostname);
+
 // when using middleware `hostname` and `port` must be provided below
 const app = next({ dev, hostname, port })
 const handle = app.getRequestHandler()
