@@ -30,7 +30,7 @@ const roomStateText = new Map([
   [States.FIGHTING, "Looks like we don't agree... "],
 ]);
 
-const Room = ({roomId}: RoomProps) => {
+const Room = ({ roomId }: RoomProps) => {
   const router = useRouter();
   const { user, setUser, setRoom, room } = useContext(UserContext);
   const [cardValues, setCardValues] = useState<any>([]);
@@ -103,7 +103,11 @@ const Room = ({roomId}: RoomProps) => {
 
       socket.on("disconnect", (err: string) => {
         console.log("server disconnected: ", err);
-        if (err === "io server disconnect" || "transport error" || "transport close") {
+        if (
+          err === "io server disconnect" ||
+          "transport error" ||
+          "transport close"
+        ) {
           // Reconnect manually if the disconnection was initiated by the server
           socket.connect();
         }
@@ -259,7 +263,13 @@ const Room = ({roomId}: RoomProps) => {
     >
       <div className="container">
         {room.users?.length > 1 && (
-          <div className="row p-3 m-2 mt-5 playingMat justify-content-center">
+          <div
+            className={
+              room.users.length > 3
+                ? "row p-3 m-2 mt-2 mt-sm-5 playingMat justify-content-center"
+                : "row p-3 m-2 mt-5 playingMat justify-content-center"
+            }
+          >
             {room.state !== States.WONDROUS ? (
               room.users
                 .filter((u) => u?.id !== user?.id)
