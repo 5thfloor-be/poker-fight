@@ -21,7 +21,7 @@ import Image from "next/image";
 import ModalGoalScore from "../../components/ModalGoalScore";
 
 type RoomProps = {
-  roomy: any;
+  roomId: any;
 };
 
 const roomStateText = new Map([
@@ -30,9 +30,8 @@ const roomStateText = new Map([
   [States.FIGHTING, "Looks like we don't agree... "],
 ]);
 
-const Room = (props: RoomProps) => {
+const Room = ({roomId}: RoomProps) => {
   const router = useRouter();
-  const roomId = router.query.id;
   const { user, setUser, setRoom, room } = useContext(UserContext);
   const [cardValues, setCardValues] = useState<any>([]);
   const [stateSocket, setStateSocket] = useState();
@@ -60,14 +59,14 @@ const Room = (props: RoomProps) => {
   /* Dans le cas si pas d'utilisateur redirect vers la Join Room */
   useEffect(() => {
     if (!user.name) {
-      router.push(`/join/${props.roomy}`);
+      router.push(`/join/${roomId}`);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
     if (!socket && user.name.length > 0) {
-      socket = io({ reconnectionDelayMax: 3600000 });
+      socket = io();
 
       setStateSocket(socket);
 
@@ -453,6 +452,6 @@ export default Room;
 
 export async function getServerSideProps(context: any) {
   const { id } = context.query;
-  console.log("ROOMYYYYY", id);
-  return { props: { roomy: id } };
+  console.log("RoomId server side props ", id);
+  return { props: { roomId: id } };
 }

@@ -29,7 +29,7 @@ const Versus: NextPage = () => {
   if (stateSocket) {
     socket = stateSocket;
   } else {
-    socket = io({ reconnectionDelayMax: 3600000 });
+    socket = io();
     setStateSocket(socket);
   }
 

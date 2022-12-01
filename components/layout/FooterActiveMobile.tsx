@@ -37,7 +37,7 @@ const FooterActiveMobile: NextPage = () => {
   if (stateSocket) {
     socket = stateSocket;
   } else {
-    socket = io({ reconnectionDelayMax: 3600000 });
+    socket = io();
     setStateSocket(socket);
   }
 
@@ -81,7 +81,7 @@ const FooterActiveMobile: NextPage = () => {
   return (
     <>
       {isRoomActive && (
-        <footer className={styles.containeractivefooter}>
+        <footer className={'d-sm-none ' + styles.containeractivefooter}>
           <div className="container d-sm-none mx-0 mw-100 py-2 text-center">
             <div className="row my-auto">
               {/* Affichage du Score */}
