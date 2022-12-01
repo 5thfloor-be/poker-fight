@@ -1,6 +1,9 @@
 const { createServer } = require('http')
 const { parse } = require('url')
 const next = require('next')
+const { loadEnvConfig } = require('@next/env');
+
+loadEnvConfig('./', process.env.NODE_ENV !== 'production')
 
 const dev = process.env.NODE_ENV !== 'production'
 const hostname = process.env.HOST_SERVER ? process.env.HOST_SERVER : "localhost";
