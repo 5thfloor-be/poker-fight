@@ -54,29 +54,29 @@ const Versus: NextPage = () => {
   };
 
   const forceHigh = () => {
-    console.log("Force highest : ", highest());
+    console.debug("Force highest : ", highest());
     socket.emit("validate", { roomId: roomId, finalVote: highest() });
     setReload(true);
-    console.log("Validate: Add points and change status room to voting");
+    console.debug("Validate: Add points and change status room to voting");
   };
 
   const forceLow = () => {
-    console.log("Force lowest : ", lowest());
+    console.debug("Force lowest : ", lowest());
     socket.emit("validate", { roomId: roomId, finalVote: lowest() });
     setReload(true);
-    console.log("Validate: Add points and change status room to voting");
+    console.debug("Validate: Add points and change status room to voting");
   };
 
   const forceOther = (other: number) => {
     setShowOtherScoreModal(false);
-    console.log("Force Other : ", other);
+    console.debug("Force Other : ", other);
     socket.emit("validate", { roomId: roomId, finalVote: other });
     setReload(true);
-    console.log("Validate: Add points and change status room to voting");
+    console.debug("Validate: Add points and change status room to voting");
   };
 
   const redoVote = () => {
-    console.log("Redo vote : ");
+    console.debug("Redo vote : ");
     socket.emit("redo_vote", { roomId });
   };
 

@@ -76,7 +76,7 @@ const Room = ({ roomId }: RoomProps) => {
         "join_room",
         { roomId, userInfo: user },
         (data: JoinRoomReturn) => {
-          console.log("emit : join room user : ", user);
+          console.debug("emit : join room user : ", user);
           if (data.error !== null) {
             router.push(`/error-page/${data.error}`);
           }
@@ -85,7 +85,7 @@ const Room = ({ roomId }: RoomProps) => {
       );
 
       socket.emit("get_room", { roomId: roomId }, (room: RoomModel) => {
-        console.log("emit : get room user : ", user);
+        console.debug("emit : get room user : ", user);
         setRoom(room);
         setCardValues(room?.roomOptions.cardValues);
       });
@@ -97,30 +97,30 @@ const Room = ({ roomId }: RoomProps) => {
       });
 
       socket.on("connect", () => {
-        console.log("connected - start");
+        console.debug("connected - start");
         socket.emit("join_socket", { roomId });
-        console.log("connected - end");
+        console.debug("connected - end");
       });
 
       socket.on("disconnect", (err: string) => {
-        console.log("server disconnected: ", err);
+        console.debug("server disconnected: ", err);
         if (
           err === "io server disconnect" ||
           "transport error" ||
           "transport close"
         ) {
-          console.log("server disconnected: trying to connect");
+          console.debug("server disconnected: trying to connect");
           // Reconnect manually if the disconnection was initiated by the server
           socket.connect();
         }
       });
       socket.on("reconnect", () => {
-        console.log("reconnect - start");
+        console.debug("reconnect - start");
         socket.emit("join_socket", { roomId });
-        console.log("reconnect - end");
+        console.debug("reconnect - end");
       });
       socket.on("reveal", (data: any) => {
-        console.log("received : reveal", data);
+        console.debug("received : reveal", data);
         setRoom(data);
         setShow(false);
         if (data?.state === States.FIGHTING) {
@@ -128,19 +128,19 @@ const Room = ({ roomId }: RoomProps) => {
         }
       });
       socket.on("start_voting", (data: any) => {
-        console.log("received : start voting", data);
+        console.debug("received : start voting", data);
         setSelectedVote(-1);
         setRoom(data);
       });
       socket.on("room_state_update", (r: RoomModel) => {
-        console.log("received : room state update received ", r);
+        console.debug("received : room state update received ", r);
         setRoom(r);
         if (r?.state === States.STARTING || r?.state === States.VOTING) {
           router.push("/room/" + roomId);
         }
       });
       socket.on("user_removed", (data: any) => {
-        console.log("received : user removed", data);
+        console.debug("received : user removed", data);
         if (data.userId === user.id) {
           socket.emit("emit : leave front", { roomId: roomId });
         }
@@ -155,25 +155,25 @@ const Room = ({ roomId }: RoomProps) => {
       "vote",
       { roomId: roomId, userId: user?.id, vote: chosenVote },
       (room: any) => {
-        console.log("room in listener : ", room);
+        console.debug("room in listener : ", room);
       }
     );
   };
   // get room from server
   const startVoting = () => {
-    console.log("emit : start voting: Change status room to voting", socket);
+    console.debug("emit : start voting: Change status room to voting", socket);
     socket.emit("start_voting", { roomId }, (r: any) => setRoom(r));
   };
 
   const reveal = () => {
-    console.log("emit : reveal: Change status room to voted");
+    console.debug("emit : reveal: Change status room to voted");
     socket.emit("reveal", { roomId }, (r: any) => {
       setRoom(r);
     });
   };
 
   const redoVote = () => {
-    console.log("emit : redo vote: Change status vote to voting");
+    console.debug("emit : redo vote: Change status vote to voting");
     socket.emit("redo_vote", { roomId }, (r: any) => {
       setRoom(r);
     });
@@ -462,6 +462,6 @@ export default Room;
 
 export async function getServerSideProps(context: any) {
   const { id } = context.query;
-  console.log("RoomId server side props ", id);
+  console.debug("RoomId server side props ", id);
   return { props: { roomId: id } };
 }

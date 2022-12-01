@@ -61,7 +61,7 @@ const CreateRoom = (props: CreateRoomProps) => {
 
   const createRoom = () => {
     socket.emit("create_room", roomSettings, (data: any) => {
-      console.log("data", data);
+      console.debug("data", data);
 
       /* Fermeture de la Modal */
       props.setShowCreateRoom(false);

@@ -40,7 +40,7 @@ const UserContextProvider = (props: any) => {
   }, []);
 
   useEffect(() => {
-    console.log('Setting user to local storage ', user)
+    console.debug('Setting user to local storage ', user)
     localStorage.setItem("USER", JSON.stringify(user));
   }, [user]);
 
