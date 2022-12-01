@@ -4,9 +4,11 @@ const next = require('next')
 
 const dev = process.env.NODE_ENV !== 'production'
 const hostname = process.env.HOST_SERVER
-const port = 3000
-console.log('server.js dev', dev);
+const port = process.env.PORT
+console.log('server.js NODE_ENV', process.env.NODE_ENV);
 console.log('server.js hostname', hostname);
+
+console.log('server.js environment vars : ', process.env);
 
 // when using middleware `hostname` and `port` must be provided below
 const app = next({ dev, hostname, port })
