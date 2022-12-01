@@ -22,6 +22,8 @@ const SocketHandler = (req: IncomingMessage, res: any) => {
     console.log("Socket is already running");
   } else {
     console.log("Socket is initializing");
+
+    console.log('res.socket?.server : ', res.socket?.server);
     const io = new Server(res.socket?.server, { pingTimeout: 600000 });
 
     console.log(`Connecting redis adapter to : redis://${process.env.REDIS_HOST}:${process.env.REDIS_PORT}`)
