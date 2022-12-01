@@ -3,12 +3,8 @@ const { parse } = require('url')
 const next = require('next')
 
 const dev = process.env.NODE_ENV !== 'production'
-const hostname = process.env.HOST_SERVER
-const port = process.env.PORT
-console.log('server.js NODE_ENV', process.env.NODE_ENV);
-console.log('server.js hostname', hostname);
-
-console.log('server.js environment vars : ', process.env);
+const hostname = process.env.HOST_SERVER ? process.env.HOST_SERVER : "localhost";
+const port = process.env.PORT ? process.env.PORT : "3000";
 
 // when using middleware `hostname` and `port` must be provided below
 const app = next({ dev, hostname, port })
