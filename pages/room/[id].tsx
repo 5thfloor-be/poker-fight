@@ -68,6 +68,8 @@ const Room = ({roomId}: RoomProps) => {
     if (!socket && user.name.length > 0) {
       socket = io();
 
+      console.debug("debug");
+
       setStateSocket(socket);
 
       socket.emit(
@@ -95,7 +97,6 @@ const Room = ({roomId}: RoomProps) => {
       });
 
       socket.on("connect", () => {
-        console.log("connected - top");
         socket.emit("join_socket", { roomId });
         console.log("connected - end");
       });
@@ -108,7 +109,6 @@ const Room = ({roomId}: RoomProps) => {
         }
       });
       socket.on("reconnect", () => {
-        console.log("reconnect - top");
         socket.emit("join_socket", { roomId });
         console.log("reconnect - end");
       });
