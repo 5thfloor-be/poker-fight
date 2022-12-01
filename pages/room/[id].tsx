@@ -70,17 +70,17 @@ const Room = ({roomId}: RoomProps) => {
 
       setStateSocket(socket);
 
-      socket.emit(
-        "join_room",
-        { roomId, userInfo: user },
-        (data: JoinRoomReturn) => {
-          console.log("emit : join room user : ", user);
-          if (data.error !== null) {
-            router.push(`/error-page/${data.error}`);
-          }
-          setUser({ ...user, id: data.id });
-        }
-      );
+      // socket.emit(
+      //   "join_room",
+      //   { roomId, userInfo: user },
+      //   (data: JoinRoomReturn) => {
+      //     console.log("emit : join room user : ", user);
+      //     if (data.error !== null) {
+      //       router.push(`/error-page/${data.error}`);
+      //     }
+      //     setUser({ ...user, id: data.id });
+      //   }
+      // );
 
       socket.emit("get_room", { roomId: roomId }, (room: RoomModel) => {
         console.log("emit : get room user : ", user);
