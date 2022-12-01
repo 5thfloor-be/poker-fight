@@ -24,7 +24,12 @@ const SocketHandler = (req: IncomingMessage, res: any) => {
     console.log("Socket is initializing");
 
     console.log('res.socket?.server : ', res.socket?.server);
-    const io = new Server(res.socket?.server, { pingTimeout: 600000 });
+
+    const io = new Server(res.socket?.server, {
+      pingTimeout: 600000,
+      pingInterval: 600000,
+      upgradeTimeout: 300000
+    });
 
     console.log(`Connecting redis adapter to : redis://${process.env.REDIS_HOST}:${process.env.REDIS_PORT}`)
     const pubClient = createClient({ url: `redis://${process.env.REDIS_HOST}:${process.env.REDIS_PORT}` });
@@ -44,8 +49,18 @@ const SocketHandler = (req: IncomingMessage, res: any) => {
   res.end();
 };
 
+const sendHeartbeat = (socket: Server) => {
+  setTimeout(() => sendHeartbeat(socket), 10000);
+  console.log("emit ping on server side");
+  socket.emit("ping", {beat: 1});
+};
+
 function configIO(io: Server) {
   io.on("connection", (socket) => {
+
+    setTimeout(() => sendHeartbeat(io), 10000);
+    socket.on("pong", () => {console.log('listen pong on server side')});
+
     /* Supprimer une Room après un certain temps */
     setInterval(checkValidityRooms, 30 * 60 * 30);
     function checkValidityRooms() {
