@@ -11,7 +11,7 @@ const handle = app.getRequestHandler()
 
 app.prepare().then(() => {
     console.log("preparing server.js")
-    createServer(async (req, res) => {
+    const server = createServer(async (req, res) => {
         console.log("creating server.js")
         try {
             // Be sure to pass `true` as the second argument to `url.parse`.
@@ -36,5 +36,8 @@ app.prepare().then(() => {
     }).listen(port, (err) => {
         if (err) throw err
         console.log(`> Ready on http://${hostname}:${port}`)
-    })
+    });
+
+    server.keepAliveTimeout = 61000;
+    server.headersTimeout = 65000;
 })
