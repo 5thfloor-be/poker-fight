@@ -8,7 +8,6 @@ import { useRouter } from "next/router";
 import Image from "next/image";
 import { MdAccountCircle } from "react-icons/md";
 import EditProfile from "../components/EditProfile";
-import Script from "next/script";
 
 const Home = () => {
   const { user, isRoomActive } = useContext(UserContext);
