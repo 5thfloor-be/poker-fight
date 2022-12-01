@@ -15,6 +15,9 @@ export interface JoinRoomReturn {
 }
 
 const SocketHandler = (req: IncomingMessage, res: any) => {
+  
+  console.log('Starting server with environment variables : ', process.env);
+
   if (res?.socket?.server.io) {
     console.log("Socket is already running");
   } else {
