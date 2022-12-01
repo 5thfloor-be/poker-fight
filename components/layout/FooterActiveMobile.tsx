@@ -37,7 +37,7 @@ const FooterActiveMobile: NextPage = () => {
   if (stateSocket) {
     socket = stateSocket;
   } else {
-    socket = io();
+    socket = io({transports: ["websocket"]});
     setStateSocket(socket);
   }
 
