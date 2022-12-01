@@ -81,11 +81,11 @@ const FooterActiveMobile: NextPage = () => {
   return (
     <>
       {isRoomActive && (
-        <footer className={'d-sm-none ' + styles.containeractivefooter}>
+        <footer className={"d-sm-none " + styles.containeractivefooter}>
           <div className="container d-sm-none mx-0 mw-100 py-2 text-center">
             <div className="row my-auto">
               {/* Affichage du Score */}
-              <div className="col-2 px-0" style={{ marginTop: "30px" }}>
+              <div className="col-2 px-0" style={{ marginTop: "20px" }}>
                 {room && room.roomOptions.targetPoints && (
                   <div
                     className={
@@ -100,7 +100,7 @@ const FooterActiveMobile: NextPage = () => {
                 )}
               </div>
               {/* Bouton Pause Café */}
-              <div className="col-2 pt-3 px-0 ">
+              <div className="col-2 pt-1 px-0 ">
                 {room.roomOptions.coffeeBreakAllowed && (
                   <CoffeBreak user={user} socket={socket} room={room} />
                 )}
@@ -111,16 +111,19 @@ const FooterActiveMobile: NextPage = () => {
                   user?.role !== Role.SPECTATOR &&
                   room?.state === States.VOTING && (
                     <div>
-                      <button className="btn text-white" onClick={handleShow}>
+                      <button
+                        className="btn text-white py-0"
+                        onClick={handleShow}
+                      >
                         <div className="bg-white rounded-circle p-2">
-                          <GiCardRandom color="black" size={60} />
+                          <GiCardRandom color="black" size={40} />
                         </div>
                       </button>
                     </div>
                   )}
               </div>
               {/* Bouton Buzzer */}
-              <div className="col-2 pt-3 px-0 ">
+              <div className="col-2 pt-1 px-0 ">
                 {room.roomOptions.buzzerAllowed &&
                   room.state === States.VOTING && (
                     <Buzzer user={user} socket={socket} room={room} />
