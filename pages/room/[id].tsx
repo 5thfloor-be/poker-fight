@@ -96,7 +96,7 @@ const Room = ({roomId}: RoomProps) => {
 
       socket.on("disconnect", (err: string) => {
         console.log("server disconnected: ", err);
-        if (err === "io server disconnect" || "transport error") {
+        if (err === "io server disconnect" || "transport error" || "transport close") {
           // Reconnect manually if the disconnection was initiated by the server
           socket.connect();
         }
