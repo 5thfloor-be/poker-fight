@@ -91,12 +91,23 @@ const Room = ({roomId}: RoomProps) => {
 
     if (socket) {
       socket.on("ping", () => {
-        console.log('listen ping on client side');
         socket.emit("pong", {});
       });
 
       socket.on("connect", () => {
-        console.log("connected");
+        console.log("connected - top");
+        socket.emit(
+            "join_room",
+            { roomId, userInfo: user },
+            (data: JoinRoomReturn) => {
+              console.log("emit : reconnection user : ", user);
+              if (data.error !== null) {
+                router.push(`/error-page/${data.error}`);
+              }
+              setUser({ ...user, id: data.id });
+            }
+        );
+        console.log("connected - end");
       });
 
       socket.on("disconnect", (err: string) => {
