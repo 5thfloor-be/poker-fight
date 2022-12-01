@@ -5,7 +5,7 @@ import { useContext } from "react";
 import { UserContext } from "../../context/UserContext";
 
 const errorMessages = new Map<ErrorCode, String>([
-  [ErrorCode.TOO_MANY_VOTERS, "Sorry, the room is full (already 10 voters)."],
+  [ErrorCode.TOO_MANY_VOTERS, "Sorry, the room is full (already 9 voters)."],
   [ErrorCode.ROOM_NOT_EXISTS, "Sorry, the room number doesn't exist."],
 ]);
 
