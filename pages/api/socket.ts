@@ -90,7 +90,7 @@ function configIO(io: Server) {
         return;
       }
       if (
-        room?.users.filter((user) => user.id === data.userInfo.id).length === 0
+          room?.users.filter((user) => user.id === data.userInfo.id).length === 0
       ) {
         const user = { ...data.userInfo, id: uuid() };
         userIdTemp = user.id;
@@ -102,6 +102,10 @@ function configIO(io: Server) {
         room?.addUser(user);
       }
       listener({ id: userIdTemp, error: null });
+    });
+
+    socket.on("join_socket", (data) => {
+      socket.join(data.roomId);
     });
 
     socket.on("disconnect", function () {
