@@ -46,7 +46,6 @@ const Home = () => {
                   and innovative features."
         />
         <link rel="icon" href="/favicon.ico" />
-        <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico" />
       </Head>
 
       {showLoading && isRoomActive && (
@@ -371,7 +370,7 @@ export default Home;
 
 export async function getServerSideProps() {
   const url = process.env.HOST;
-  console.log('index.js url', url);
+  console.log("index.js url", url);
   await fetch(url);
   return {
     props: {
