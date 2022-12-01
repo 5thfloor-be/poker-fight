@@ -3,7 +3,7 @@ const { parse } = require('url')
 const next = require('next')
 
 const dev = process.env.NODE_ENV !== 'production'
-const hostname = process.env.HOST
+const hostname = process.env.HOST_SERVER
 const port = 3000
 console.log('server.js dev', dev);
 console.log('server.js hostname', hostname);
