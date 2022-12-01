@@ -68,6 +68,8 @@ const Room = ({roomId}: RoomProps) => {
     if (!socket && user.name.length > 0) {
       socket = io();
 
+      console.debug("debug");
+
       setStateSocket(socket);
 
       socket.emit(
@@ -91,12 +93,12 @@ const Room = ({roomId}: RoomProps) => {
 
     if (socket) {
       socket.on("ping", () => {
-        console.log('listen ping on client side');
         socket.emit("pong", {});
       });
 
       socket.on("connect", () => {
-        console.log("connected");
+        socket.emit("join_socket", { roomId });
+        console.log("connected - end");
       });
 
       socket.on("disconnect", (err: string) => {
@@ -107,18 +109,8 @@ const Room = ({roomId}: RoomProps) => {
         }
       });
       socket.on("reconnect", () => {
-        socket.emit(
-          "join_room",
-          { roomId, userInfo: user },
-          (data: JoinRoomReturn) => {
-            console.log("emit : reconnection user : ", user);
-            if (data.error !== null) {
-              router.push(`/error-page/${data.error}`);
-            }
-            setUser({ ...user, id: data.id });
-          }
-        );
-        // ...
+        socket.emit("join_socket", { roomId });
+        console.log("reconnect - end");
       });
       socket.on("reveal", (data: any) => {
         console.log("received : reveal", data);

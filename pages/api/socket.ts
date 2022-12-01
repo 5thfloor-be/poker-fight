@@ -50,16 +50,15 @@ const SocketHandler = (req: IncomingMessage, res: any) => {
 };
 
 const sendHeartbeat = (socket: Server) => {
-  setTimeout(() => sendHeartbeat(socket), 10000);
-  console.log("emit ping on server side");
+  setTimeout(() => sendHeartbeat(socket), 20 * 1000);
   socket.emit("ping", {beat: 1});
 };
 
 function configIO(io: Server) {
   io.on("connection", (socket) => {
 
-    setTimeout(() => sendHeartbeat(io), 10000);
-    socket.on("pong", () => {console.log('listen pong on server side')});
+    setTimeout(() => sendHeartbeat(io), 20 * 1000);
+    socket.on("pong", () => {});
 
     /* Supprimer une Room après un certain temps */
     setInterval(checkValidityRooms, 30 * 60 * 30);
@@ -91,7 +90,7 @@ function configIO(io: Server) {
         return;
       }
       if (
-        room?.users.filter((user) => user.id === data.userInfo.id).length === 0
+          room?.users.filter((user) => user.id === data.userInfo.id).length === 0
       ) {
         const user = { ...data.userInfo, id: uuid() };
         userIdTemp = user.id;
@@ -103,6 +102,11 @@ function configIO(io: Server) {
         room?.addUser(user);
       }
       listener({ id: userIdTemp, error: null });
+    });
+
+    socket.on("join_socket", (data) => {
+      console.log("join_socket");
+      socket.join(data.roomId);
     });
 
     socket.on("disconnect", function () {
