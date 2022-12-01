@@ -21,7 +21,8 @@ const SocketHandler = (req: IncomingMessage, res: any) => {
     console.log("Socket is initializing");
     const io = new Server(res.socket?.server, { pingTimeout: 600000 });
 
-    const pubClient = createClient({ url: `redis://10.96.221.35:6379` });
+    console.log(`Connecting redis adapter to : redis://${process.env.REDIS_HOST}:${process.env.REDIS_PORT}`)
+    const pubClient = createClient({ url: `redis://${process.env.REDIS_HOST}:${process.env.REDIS_PORT}` });
     const subClient = pubClient.duplicate();
 
     Promise.all([pubClient.connect(), subClient.connect()]).then(() => {
