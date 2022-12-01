@@ -66,7 +66,7 @@ const Room = ({ roomId }: RoomProps) => {
 
   useEffect(() => {
     if (!socket && user.name.length > 0) {
-      socket = io({ transports: ["websocket"] });
+      socket = io();
 
       console.debug("debug");
 
