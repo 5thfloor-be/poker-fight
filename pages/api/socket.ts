@@ -105,6 +105,7 @@ function configIO(io: Server) {
     });
 
     socket.on("join_socket", (data) => {
+      console.log("join_socket");
       socket.join(data.roomId);
     });
 
