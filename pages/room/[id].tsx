@@ -97,6 +97,7 @@ const Room = ({roomId}: RoomProps) => {
       });
 
       socket.on("connect", () => {
+        console.log("connected - start");
         socket.emit("join_socket", { roomId });
         console.log("connected - end");
       });
@@ -104,11 +105,13 @@ const Room = ({roomId}: RoomProps) => {
       socket.on("disconnect", (err: string) => {
         console.log("server disconnected: ", err);
         if (err === "io server disconnect" || "transport error" || "transport close") {
+          console.log("server disconnected: trying to connect");
           // Reconnect manually if the disconnection was initiated by the server
           socket.connect();
         }
       });
       socket.on("reconnect", () => {
+        console.log("reconnect - start");
         socket.emit("join_socket", { roomId });
         console.log("reconnect - end");
       });
