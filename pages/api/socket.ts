@@ -51,7 +51,6 @@ const SocketHandler = (req: IncomingMessage, res: any) => {
 
 const sendHeartbeat = (socket: Server) => {
   setTimeout(() => sendHeartbeat(socket), 10000);
-  console.log("emit ping on server side");
   socket.emit("ping", {beat: 1});
 };
 
@@ -59,7 +58,7 @@ function configIO(io: Server) {
   io.on("connection", (socket) => {
 
     setTimeout(() => sendHeartbeat(io), 10000);
-    socket.on("pong", () => {console.log('listen pong on server side')});
+    socket.on("pong", () => {});
 
     /* Supprimer une Room après un certain temps */
     setInterval(checkValidityRooms, 30 * 60 * 30);
