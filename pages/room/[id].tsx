@@ -66,7 +66,7 @@ const Room = ({ roomId }: RoomProps) => {
 
   useEffect(() => {
     if (!socket && user.name.length > 0) {
-      socket = io();
+      socket = io({ transports: ["websocket"] });
 
       console.debug("debug");
 
@@ -97,6 +97,7 @@ const Room = ({ roomId }: RoomProps) => {
       });
 
       socket.on("connect", () => {
+        console.log("connected - start");
         socket.emit("join_socket", { roomId });
         console.log("connected - end");
       });
@@ -108,11 +109,13 @@ const Room = ({ roomId }: RoomProps) => {
           "transport error" ||
           "transport close"
         ) {
+          console.log("server disconnected: trying to connect");
           // Reconnect manually if the disconnection was initiated by the server
           socket.connect();
         }
       });
       socket.on("reconnect", () => {
+        console.log("reconnect - start");
         socket.emit("join_socket", { roomId });
         console.log("reconnect - end");
       });
