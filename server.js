@@ -1,10 +1,13 @@
 const { createServer } = require('http')
 const { parse } = require('url')
 const next = require('next')
+const { loadEnvConfig } = require('@next/env');
+
+loadEnvConfig('./', process.env.NODE_ENV !== 'production')
 
 const dev = process.env.NODE_ENV !== 'production'
-const hostname = process.env.HOST_SERVER ? process.env.HOST_SERVER : "localhost";
-const port = process.env.PORT ? process.env.PORT : "3000";
+const hostname = process.env.HOST_SERVER ;
+const port = process.env.PORT ;
 
 // when using middleware `hostname` and `port` must be provided below
 const app = next({ dev, hostname, port })
