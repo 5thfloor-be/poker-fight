@@ -370,7 +370,7 @@ export default Home;
 
 export async function getServerSideProps() {
   const url = process.env.HOST;
-  console.log("index.js url", url);
+  console.debug("index.js url", url);
   await fetch(url);
   return {
     props: {

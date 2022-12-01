@@ -30,10 +30,10 @@ export default class Room {
 
   removeUser(userId: string) {
     this.users = this.users.filter((u) => {
-      console.log(`u.id !== userId  `, u.id !== userId);
+      console.debug(`u.id !== userId  `, u.id !== userId);
       return u.id !== userId;
     });
-    console.log("users :", this.users);
+    console.debug("users :", this.users);
     //TODO : close room when users is empty or no more scrum master
     this.stateUpdated();
   }
@@ -42,8 +42,8 @@ export default class Room {
     if (!this.isUserInRoom(userId)) {
       return;
     }
-    console.log("registerVote - user id : ", userId);
-    console.log("registerVote - vote : ", vote);
+    console.debug("registerVote - user id : ", userId);
+    console.debug("registerVote - vote : ", vote);
     if (
       this.currentVotes.filter((userVote) => userVote.userId === userId)
         .length === 0
@@ -64,8 +64,8 @@ export default class Room {
   }
 
   allUsersVoted() {
-    console.log("votes", this.currentVotes);
-    console.log("users", this.users);
+    console.debug("votes", this.currentVotes);
+    console.debug("users", this.users);
     return (
       this.users.filter(
         (user) => user.role != Role.SCRUM_MASTER && user.role != Role.SPECTATOR
@@ -138,8 +138,8 @@ export default class Room {
         (v) => v.vote
       )
     );
-    console.log(this.currentVotes);
-    console.log(set);
+    console.debug(this.currentVotes);
+    console.debug(set);
     if (set.size > 0) {
       if (set.size == 1) {
         this.state = States.WONDROUS;
@@ -172,7 +172,7 @@ export default class Room {
   private stateUpdated() {
     this.modified = new Date();
     this.onChangeCallbacks.forEach((callback) => {
-      console.log("callback invoked");
+      console.debug("callback invoked");
       callback(this);
     });
   }

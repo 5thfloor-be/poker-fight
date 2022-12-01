@@ -56,7 +56,7 @@ const FooterActiveMobile: NextPage = () => {
       "vote",
       { roomId: roomId, userId: user?.id, vote: chosenVote },
       (room: any) => {
-        console.log("room in listener : ", room);
+        console.debug("room in listener : ", room);
       }
     );
   };

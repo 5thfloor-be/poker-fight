@@ -19,7 +19,7 @@ export const Deck = ({
 
   useEffect(() => {
     if (currentVote) {
-      console.log(
+      console.debug(
         `selectedIndex ${selectedIndex}, current vote ${currentVote}, deck`,
         deck
       );
@@ -30,7 +30,7 @@ export const Deck = ({
   }, [currentVote, deck]);
 
   const selectIndex = (index: number) => {
-    console.log("deck " + index);
+    console.debug("deck " + index);
     if (!isLocked) {
       setSelectedIndex(index);
       updateSelection(deck[index]);

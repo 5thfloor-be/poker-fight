@@ -44,7 +44,7 @@ const JoinRoom = (props: JoinRoomProps) => {
     ["#808080", "grey"],
   ]);
 
-  console.log(user);
+  console.debug(user);
 
   const join = () => {
     setShowLoading(true);
