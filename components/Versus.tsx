@@ -29,7 +29,7 @@ const Versus: NextPage = () => {
   if (stateSocket) {
     socket = stateSocket;
   } else {
-    socket = io({transports: ["websocket"]});
+    socket = io({ transports: ["websocket"] });
     setStateSocket(socket);
   }
 
@@ -136,16 +136,16 @@ const Versus: NextPage = () => {
 
   return (
     <>
-      <div className="text-center text-white pt-3">
-        <h1
-          style={{ fontSize: "50px", fontWeight: "bold" }}
-          className="mx-0 pt-3 pb-1"
-        >
-          LET&apos;S FIGHT !
-        </h1>
-      </div>
-      <div className="container px-0 px-sm-3">
-        <div className="row playingMat py-3 px-0 p-sm-3 m-2 mt-sm-5 mt-3">
+      <div className="container px-sm-3">
+        <div className="row text-center text-white pt-0 pt-sm-3">
+          <h1
+            style={{ fontSize: "50px", fontWeight: "bold" }}
+            className="mx-0 pt-sm-3 pb-1"
+          >
+            LET&apos;S FIGHT !
+          </h1>
+        </div>
+        <div className="row playingMat py-sm-3 px-0 p-sm-3 m-2 mt-sm-5 mt-3">
           <div className="col-4 px-0 px-sm-3">
             <div>{getCards("left")}</div>
           </div>
@@ -181,7 +181,7 @@ const Versus: NextPage = () => {
 
         {(user?.role == Role.SCRUM_MASTER ||
           user?.role == Role.VOTING_SCRUM_MASTER) && (
-          <div className="row mt-3">
+          <div className="row mt-sm-3">
             <div className="d-sm-none d-block offset-4 col-4">
               <ScrumMasterActions
                 minValue={lowest()}
