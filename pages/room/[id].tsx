@@ -32,7 +32,8 @@ const roomStateText = new Map([
 
 const Room = ({ roomId }: RoomProps) => {
   const router = useRouter();
-  const { user, setUser, setRoom, room, setIsRoomActive } = useContext(UserContext);
+  const { user, setUser, setRoom, room, setIsRoomActive } =
+    useContext(UserContext);
   const [cardValues, setCardValues] = useState<any>([]);
   const [stateSocket, setStateSocket] = useState();
   const [selectedVote, setSelectedVote] = useState(-1);
@@ -66,31 +67,31 @@ const Room = ({ roomId }: RoomProps) => {
 
   useEffect(() => {
     if (!socket && user.name.length > 0) {
-      socket = io({transports: ["websocket"]});
+      socket = io({ transports: ["websocket"] });
 
       console.debug("debug");
 
       setStateSocket(socket);
 
       socket.emit(
-          "join_room",
-          {roomId, userInfo: user},
-          (data: JoinRoomReturn) => {
-            console.debug("[id] : emit : join room user : ", data);
-            if (data.error !== null) {
-              router.push(`/error-page/${data.error}`);
-            }
-            setUser({...user, id: data.id});
+        "join_room",
+        { roomId, userInfo: user },
+        (data: JoinRoomReturn) => {
+          console.debug("[id] : emit : join room user : ", data);
+          if (data.error !== null) {
+            router.push(`/error-page/${data.error}`);
           }
+          setUser({ ...user, id: data.id });
+        }
       );
 
-      socket.emit("get_room", {roomId: roomId}, (room: RoomModel) => {
+      socket.emit("get_room", { roomId: roomId }, (room: RoomModel) => {
         console.debug("emit : get room user : ", user);
         setRoom(room);
         setCardValues(room?.roomOptions.cardValues);
       });
     }
-  },[socket]);
+  }, [socket]);
 
   useEffect(() => {
     if (socket) {
@@ -142,7 +143,11 @@ const Room = ({ roomId }: RoomProps) => {
         }
       });
       socket.on("user_removed", (data: any) => {
-        console.debug(`received : user removed ${JSON.stringify(data)}, current user = ${JSON.stringify(user)}`);
+        console.debug(
+          `received : user removed ${JSON.stringify(
+            data
+          )}, current user = ${JSON.stringify(user)}`
+        );
         if (data.userId === user.id) {
           console.log("emit : leave front", { roomId: roomId });
           socket.emit("leave_room", { roomId: roomId });
@@ -379,22 +384,6 @@ const Room = ({ roomId }: RoomProps) => {
                   room.state !== States.WONDROUS &&
                   showBottomDeck()}
               </div>
-
-              {user?.role !== Role.SCRUM_MASTER &&
-                user?.role !== Role.SPECTATOR &&
-                room.state !== States.WONDROUS && (
-                  <div className="col-12 d-sm-none mx-auto text-center">
-                    {getVoteByUserId(user.id) && (
-                      <button
-                        className="btn fw-bold bg-white py-0 ms-3"
-                        onClick={handleShow}
-                        style={{ fontSize: "50px" }}
-                      >
-                        {getVoteByUserId(user.id)}
-                      </button>
-                    )}
-                  </div>
-                )}
 
               {/* Version PC des Spectateurs */}
               <div className="col-2 d-none d-sm-block justify-content-center">
