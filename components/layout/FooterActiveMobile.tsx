@@ -37,7 +37,7 @@ const FooterActiveMobile: NextPage = () => {
   if (stateSocket) {
     socket = stateSocket;
   } else {
-    socket = io({transports: ["websocket"]});
+    socket = io({ transports: ["websocket"] });
     setStateSocket(socket);
   }
 
@@ -111,14 +111,26 @@ const FooterActiveMobile: NextPage = () => {
                   user?.role !== Role.SPECTATOR &&
                   room?.state === States.VOTING && (
                     <div>
-                      <button
-                        className="btn text-white py-0"
-                        onClick={handleShow}
-                      >
-                        <div className="bg-white rounded-circle p-2">
-                          <GiCardRandom color="black" size={40} />
-                        </div>
-                      </button>
+                      {getVoteByUserId(user.id) ? (
+                        <button
+                          className="btn text-white py-0 "
+                          onClick={handleShow}
+                          style={{ fontSize: "30px" }}
+                        >
+                          <div className=" border border-white rounded px-3 mt-2">
+                            {getVoteByUserId(user.id)}
+                          </div>
+                        </button>
+                      ) : (
+                        <button
+                          className="btn text-white py-0"
+                          onClick={handleShow}
+                        >
+                          <div className="bg-white rounded-circle p-2">
+                            <GiCardRandom color="black" size={40} />
+                          </div>
+                        </button>
+                      )}
                     </div>
                   )}
               </div>
