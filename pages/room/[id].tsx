@@ -32,7 +32,7 @@ const roomStateText = new Map([
 
 const Room = ({ roomId }: RoomProps) => {
   const router = useRouter();
-  const { user, setUser, setRoom, room } = useContext(UserContext);
+  const { user, setUser, setRoom, room, setIsRoomActive } = useContext(UserContext);
   const [cardValues, setCardValues] = useState<any>([]);
   const [stateSocket, setStateSocket] = useState();
   const [selectedVote, setSelectedVote] = useState(-1);
@@ -66,31 +66,33 @@ const Room = ({ roomId }: RoomProps) => {
 
   useEffect(() => {
     if (!socket && user.name.length > 0) {
-      socket = io({ transports: ["websocket"] });
+      socket = io({transports: ["websocket"]});
 
       console.debug("debug");
 
       setStateSocket(socket);
 
       socket.emit(
-        "join_room",
-        { roomId, userInfo: user },
-        (data: JoinRoomReturn) => {
-          console.debug("emit : join room user : ", user);
-          if (data.error !== null) {
-            router.push(`/error-page/${data.error}`);
+          "join_room",
+          {roomId, userInfo: user},
+          (data: JoinRoomReturn) => {
+            console.debug("[id] : emit : join room user : ", data);
+            if (data.error !== null) {
+              router.push(`/error-page/${data.error}`);
+            }
+            setUser({...user, id: data.id});
           }
-          setUser({ ...user, id: data.id });
-        }
       );
 
-      socket.emit("get_room", { roomId: roomId }, (room: RoomModel) => {
+      socket.emit("get_room", {roomId: roomId}, (room: RoomModel) => {
         console.debug("emit : get room user : ", user);
         setRoom(room);
         setCardValues(room?.roomOptions.cardValues);
       });
     }
+  },[socket]);
 
+  useEffect(() => {
     if (socket) {
       socket.on("ping", () => {
         socket.emit("pong", {});
@@ -140,13 +142,17 @@ const Room = ({ roomId }: RoomProps) => {
         }
       });
       socket.on("user_removed", (data: any) => {
-        console.debug("received : user removed", data);
+        console.debug(`received : user removed ${JSON.stringify(data)}, current user = ${JSON.stringify(user)}`);
         if (data.userId === user.id) {
-          socket.emit("emit : leave front", { roomId: roomId });
+          console.log("emit : leave front", { roomId: roomId });
+          socket.emit("leave_room", { roomId: roomId });
+          setIsRoomActive(false);
+          setUser({ ...user, role: "", id: "" });
+          router.push("/");
         }
       });
     } // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [socket]);
+  }, [socket, user]);
 
   const updateSelection = (chosenVote: number) => {
     setSelectedVote(chosenVote);
