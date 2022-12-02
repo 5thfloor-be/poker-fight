@@ -120,6 +120,7 @@ function configIO(io: Server) {
     });
 
     socket.on("leave_room", (data) => {
+      console.log('user leaving room')
       socket.leave(data.roomId);
     });
 
