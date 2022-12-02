@@ -91,26 +91,23 @@ const Room = ({ roomId }: RoomProps) => {
         setCardValues(room?.roomOptions.cardValues);
       });
     }
-  }, [socket]);
-
-  useEffect(() => {
-    if (socket) {
+    if(socket) {
       socket.on("ping", () => {
         socket.emit("pong", {});
       });
 
       socket.on("connect", () => {
         console.debug("connected - start");
-        socket.emit("join_socket", { roomId });
+        socket.emit("join_socket", {roomId});
         console.debug("connected - end");
       });
 
       socket.on("disconnect", (err: string) => {
         console.debug("server disconnected: ", err);
         if (
-          err === "io server disconnect" ||
-          "transport error" ||
-          "transport close"
+            err === "io server disconnect" ||
+            "transport error" ||
+            "transport close"
         ) {
           console.debug("server disconnected: trying to connect");
           // Reconnect manually if the disconnection was initiated by the server
@@ -119,9 +116,14 @@ const Room = ({ roomId }: RoomProps) => {
       });
       socket.on("reconnect", () => {
         console.debug("reconnect - start");
-        socket.emit("join_socket", { roomId });
+        socket.emit("join_socket", {roomId});
         console.debug("reconnect - end");
       });
+    }
+  },[socket]);
+
+  useEffect(() => {
+    if (socket) {
       socket.on("reveal", (data: any) => {
         console.debug("received : reveal", data);
         setRoom(data);
@@ -287,31 +289,27 @@ const Room = ({ roomId }: RoomProps) => {
             {room.state !== States.WONDROUS ? (
               room.users
                 .filter((u) => u?.id !== user?.id)
+                .filter((u)=> u.role !== Role.SCRUM_MASTER && u.role !== Role.SPECTATOR)
                 .map((userMap, key) => (
-                  <>
-                    {userMap.role !== Role.SCRUM_MASTER &&
-                      userMap.role !== Role.SPECTATOR && (
-                        <div key={key} className="col-4 col-sm-2">
-                          <Card
-                            value={
-                              room?.state === States.WONDROUS && !!userMap.id
-                                ? getVoteByUserId(userMap.id)
-                                : undefined
-                            }
-                            canClose={
-                              user.role === Role.SCRUM_MASTER ||
-                              user.role === Role.VOTING_SCRUM_MASTER
-                            }
-                            color={userMap.color}
-                            name={userMap.name}
-                            selected={
-                              !!userMap.id && !!getVoteByUserId(userMap.id)
-                            }
-                            onRemoveUser={() => removeUser(userMap)}
-                          />
-                        </div>
-                      )}
-                  </>
+                  <div key={key} className="col-4 col-sm-2">
+                    <Card
+                      value={
+                        room?.state === States.WONDROUS && !!userMap.id
+                          ? getVoteByUserId(userMap.id)
+                          : undefined
+                      }
+                      canClose={
+                        user.role === Role.SCRUM_MASTER ||
+                        user.role === Role.VOTING_SCRUM_MASTER
+                      }
+                      color={userMap.color}
+                      name={userMap.name}
+                      selected={
+                        !!userMap.id && !!getVoteByUserId(userMap.id)
+                      }
+                      onRemoveUser={() => removeUser(userMap)}
+                    />
+                  </div>
                 ))
             ) : (
               <Image
