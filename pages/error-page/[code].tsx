@@ -14,7 +14,7 @@ const ErrorPage = () => {
   const errorCode = router.query.code as string;
   const { setIsRoomActive, user, setUser } = useContext(UserContext);
   setIsRoomActive(false);
-  setUser({ ...user, role: "" });
+  setUser({ ...user, role: "", id: "" });
 
   const goHome = () => {
     router.push("/");

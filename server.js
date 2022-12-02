@@ -3,7 +3,7 @@ const { parse } = require('url')
 const next = require('next')
 const { loadEnvConfig } = require('@next/env');
 
-loadEnvConfig('./', process.env.NODE_ENV !== 'production')
+loadEnvConfig('./', !process.env.NODE_ENV || process.env.NODE_ENV !== 'production')
 
 const dev = process.env.NODE_ENV !== 'production'
 const hostname = process.env.HOST_SERVER ;
