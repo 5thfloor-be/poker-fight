@@ -24,6 +24,7 @@ import { matomo } from '../_app';
 type RoomProps = {
   roomId: any;
 };
+let MINUTES_MS = 180000;
 
 const roomStateText = new Map([
   [States.STARTING, "Waiting for the next round..."],
@@ -71,14 +72,24 @@ const Room = ({ roomId }: RoomProps) => {
   }, []);
 
   useEffect(() => {
-    if (!socket && user.name.length > 0) {
-      socket = io({ transports: ["websocket"] });
+    joinRoomFunction();
+  }, [])
 
-      console.debug("debug");
+  useEffect(() => {
 
-      setStateSocket(socket);
+    const interval = setInterval(() => {
+      socket?.disconnect();
+      // joinRoomFunction();
+    }, MINUTES_MS);
 
-      socket.emit(
+    return () => clearInterval(interval); // This represents the unmount function, in which you need to clear your interval to prevent memory leaks.
+  }, [stateSocket])
+
+  const joinRoomFunction = () => {
+    socket = io({ transports: ["websocket"] });
+    console.debug("debug");
+    setStateSocket(socket);
+    socket.emit(
         "join_room",
         { roomId, userInfo: user },
         (data: JoinRoomReturn) => {
@@ -88,16 +99,13 @@ const Room = ({ roomId }: RoomProps) => {
           }
           setUser({ ...user, id: data.id });
         }
-      );
-
-      socket.emit("get_room", { roomId: roomId }, (room: RoomModel) => {
-        console.debug("emit : get room user : ", user);
-        setRoom(room);
-        setCardValues(room?.roomOptions.cardValues);
-      });
-    }
-  }, [socket]);
-
+    );
+    socket.emit("get_room", { roomId: roomId }, (room: RoomModel) => {
+      console.debug("emit : get room user : ", user);
+      setRoom(room);
+      setCardValues(room?.roomOptions.cardValues);
+    });
+  }
   useEffect(() => {
     if (socket) {
       socket.on("ping", () => {
@@ -115,7 +123,8 @@ const Room = ({ roomId }: RoomProps) => {
         if (
           err === "io server disconnect" ||
           "transport error" ||
-          "transport close"
+          "transport close" ||
+          "io client disconnect"
         ) {
           console.debug("server disconnected: trying to connect");
           // Reconnect manually if the disconnection was initiated by the server
@@ -162,7 +171,7 @@ const Room = ({ roomId }: RoomProps) => {
         }
       });
     } // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [socket, user]);
+  }, [stateSocket, user]);
 
   const updateSelection = (chosenVote: number) => {
     setSelectedVote(chosenVote);
