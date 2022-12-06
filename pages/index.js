@@ -380,8 +380,8 @@ export async function getServerSideProps() {
 }
 
 export function matomo() {
-  const matomoUrl = process.env.MATOMO_URL;
-  const matomoSiteId = process.env.MATOMO_SITE_ID;
+  const matomoUrl = process.env.NEXT_PUBLIC_MATOMO_URL;
+  const matomoSiteId = process.env.NEXT_PUBLIC_MATOMO_SITE_ID;
   var _paq = (window._paq = window._paq || []);
   _paq.push(["trackPageView"]);
   _paq.push(["enableLinkTracking"]);
