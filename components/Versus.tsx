@@ -105,9 +105,9 @@ const Versus: NextPage = () => {
               <Card value={highVal} name={""} canClose={false} />
               <div className="container text-center">
                 {rightCards?.map((item, index) => (
-                  <h4 key={index} className="text-white fw-bold">
+                  <span key={index} className="text-white fw-bold">
                     {getUserName(item.userId)}
-                  </h4>
+                  </span>
                 ))}
               </div>
             </div>
@@ -122,9 +122,9 @@ const Versus: NextPage = () => {
               <Card value={lowVal} name={""} canClose={false} />
               <div className="container text-center">
                 {leftCards?.map((item, index) => (
-                  <h4 key={index} className="text-white fw-bold">
+                  <span key={index} className="text-white fw-bold">
                     {getUserName(item.userId)}
-                  </h4>
+                  </span>
                 ))}
               </div>
             </div>

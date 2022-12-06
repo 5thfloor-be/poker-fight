@@ -347,6 +347,7 @@ const Room = ({ roomId }: RoomProps) => {
 
         {/* Affichage de la popup du Goal Score */}
         {room &&
+          room.roomOptions.targetPoints > 0 &&
           room.scoreGoalActive &&
           room.currentPoints > 0 &&
           room.currentPoints >= room.roomOptions.targetPoints &&

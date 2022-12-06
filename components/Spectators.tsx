@@ -18,7 +18,7 @@ const Spectators = (props: SpectatorsProps) => {
           <div className="row mb-3">
             {props?.roomSpectators.map((spectator, index) => (
               <>
-                <div key={index} className="fw-bold fs-4 text-white">
+                <div key={index} className="fw-bold fs-6 text-white">
                   {spectator.name}
                 </div>
               </>
