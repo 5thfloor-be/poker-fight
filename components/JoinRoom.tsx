@@ -104,7 +104,7 @@ const JoinRoom = (props: JoinRoomProps) => {
                         user.name ? "" : "border border-danger border-2"
                       }
                       placeholder="Username"
-                      maxLength={15}
+                      maxLength={10}
                       required={true}
                       onChange={(e) =>
                         setUser({ ...user, name: e.target.value })
@@ -117,7 +117,7 @@ const JoinRoom = (props: JoinRoomProps) => {
                       }}
                     />
                     <br />
-                    <label className="text-white">(15 characters max)</label>
+                    <label className="text-white">(10 characters max)</label>
                   </div>
                 </div>
                 <div className="col-sm-6 text-center mt-3">
