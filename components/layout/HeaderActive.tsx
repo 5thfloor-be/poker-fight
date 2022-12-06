@@ -49,7 +49,7 @@ const HeaderActive = () => {
                     className="text-center rounded-2 form-control mx-1 mx-sm-3"
                     style={{ backgroundColor: "rgba(255, 255, 255, 0.5)" }}
                     type="text"
-                    value={urlValue.substring(urlValue.indexOf('://')+3)}
+                    value={urlValue.substring(urlValue.indexOf("://") + 3)}
                   />
 
                   {!showAlert ? (
@@ -58,6 +58,10 @@ const HeaderActive = () => {
                       onClick={() => {
                         navigator.clipboard.writeText(urlValue);
                         setShowAlert(!showAlert);
+
+                        setTimeout(() => {
+                          setShowAlert(showAlert);
+                        }, 1500);
                       }}
                     >
                       COPY URL
