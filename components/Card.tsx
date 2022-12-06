@@ -59,7 +59,7 @@ const Card = ({
               />
             </div>
             {canClose && (
-              <div className="col-12 col-sm-6 text-end">
+              <div className="col-12 col-sm-6 text-end pe-0">
                 <MdCancel color="red" size={"26"} onClick={onRemoveUser} />
               </div>
             )}

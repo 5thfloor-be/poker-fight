@@ -247,6 +247,50 @@ const Credits = (props: CreditsProps) => {
                           </span>
                         </p>
                       </a>
+                      <a
+                        className="text-decoration-none text-reset"
+                        href="https://www.linkedin.com/in/noemiemertens/"
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        <Image
+                          loading="eager"
+                          alt="Noémie"
+                          src="/images/team/noemie.png"
+                          width={80}
+                          height={80}
+                        />
+                        <p>
+                          <span className="ms-3">
+                            Noémie Mertens - Communications
+                          </span>
+                          <span className="ms-2">
+                            <FaLinkedinIn className="bg-primary" size={28} />
+                          </span>
+                        </p>
+                      </a>
+                      <a
+                        className="text-decoration-none text-reset"
+                        href="https://www.linkedin.com/in/luc-vansteenkiste-1456797/"
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        <Image
+                          loading="eager"
+                          alt="Luc"
+                          src="/images/team/luc.png"
+                          width={80}
+                          height={80}
+                        />
+                        <p>
+                          <span className="ms-3">
+                            Luc Vansteenkiste - Senior Java Architect
+                          </span>
+                          <span className="ms-2">
+                            <FaLinkedinIn className="bg-primary" size={28} />
+                          </span>
+                        </p>
+                      </a>
                     </div>
                     <p className="mt-3 pt-3">
                       <span>A project made out of Pizzas...</span>
