@@ -9,7 +9,7 @@
 .credits {
   display: inline-block;
   padding-top: 100%;
-  animation: marquee 80s linear infinite;
+  animation: marquee 70s linear infinite;
   word-wrap: break-word;
 }
 
