@@ -19,6 +19,7 @@ import ScrumMasterVotingToolbar from "../../components/ScrumMasterVotingToolbar"
 import { JoinRoomReturn } from "../api/socket";
 import Image from "next/image";
 import ModalGoalScore from "../../components/ModalGoalScore";
+import { matomo } from '../_app';
 
 type RoomProps = {
   roomId: any;
@@ -31,6 +32,10 @@ const roomStateText = new Map([
 ]);
 
 const Room = ({ roomId }: RoomProps) => {
+  if (typeof window !== "undefined") {
+    matomo();
+  }
+
   const router = useRouter();
   const { user, setUser, setRoom, room, setIsRoomActive } =
     useContext(UserContext);

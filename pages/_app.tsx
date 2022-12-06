@@ -4,15 +4,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import Layout from "../components/layout/Layout";
 import UserContextProvider from "../context/UserContext";
 
-declare global {
-    interface Window { _paq: any; }
-}
-
 function MyApp({ Component, pageProps }: AppProps) {
-    if (typeof window !== "undefined") {
-        matomo();
-    }
-
   return (
     <UserContextProvider>
       <Layout>
@@ -23,6 +15,10 @@ function MyApp({ Component, pageProps }: AppProps) {
 }
 
 export default MyApp;
+
+declare global {
+    interface Window { _paq: any; }
+}
 
 export function matomo() {
     if (document.getElementById("analytics") === null) {

@@ -8,8 +8,13 @@ import { useRouter } from "next/router";
 import Image from "next/image";
 import { MdAccountCircle } from "react-icons/md";
 import EditProfile from "../components/EditProfile";
+import { matomo } from './_app';
 
 const Home = () => {
+  if (typeof window !== "undefined") {
+    matomo();
+  }
+
   const { user, isRoomActive } = useContext(UserContext);
   const [showCreateRoom, setShowCreateRoom] = useState(false);
   const [showLoading, setShowLoading] = useState(false);
