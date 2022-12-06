@@ -21,7 +21,7 @@ const CreateRoom = (props: CreateRoomProps) => {
   const [errorLetters, setErrorLetters] = useState("");
   const router = useRouter();
 
-  const socket = io({transports: ["websocket"]});
+  const socket = io({ transports: ["websocket"] });
 
   /* All params of the future Room */
   const [roomSettings, setRoomSettings] = useState({
@@ -132,7 +132,7 @@ const CreateRoom = (props: CreateRoomProps) => {
                     defaultValue={user ? user.name : ""}
                     type="text"
                     placeholder="Username"
-                    maxLength={15}
+                    maxLength={10}
                     onChange={(e) => {
                       setUser({ ...user, name: e.target.value });
                     }}
@@ -143,7 +143,7 @@ const CreateRoom = (props: CreateRoomProps) => {
                       }
                     }}
                   />
-                  <label>(15 characters max)</label>
+                  <label>(10 characters max)</label>
                 </div>
                 <div className="col mt-3">
                   <div className="form-switch">
