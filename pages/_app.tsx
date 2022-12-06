@@ -4,6 +4,10 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import Layout from "../components/layout/Layout";
 import UserContextProvider from "../context/UserContext";
 
+declare global {
+    interface Window { _paq: any; }
+}
+
 function MyApp({ Component, pageProps }: AppProps) {
     if (typeof window !== "undefined") {
         matomo();
@@ -26,7 +30,7 @@ export function matomo() {
         const matomoSiteId = process.env.NEXT_PUBLIC_MATOMO_SITE_ID;
         console.debug('matomoUrl :', matomoUrl);
         console.debug('matomoSiteId :', matomoSiteId);
-        var _paq = (window._paq = window?._paq || []);
+        var _paq = (window._paq = window._paq || []);
         _paq.push(["trackPageView"]);
         _paq.push(["enableLinkTracking"]);
         (function () {
