@@ -40,8 +40,8 @@ const Card = ({
     </Popover>
   );
   return (
-    <div className='container'>
-      <div className='row justify-content-center'>
+    <div className="container">
+      <div className="row justify-content-center">
         <div
           className={
             !selected
@@ -67,24 +67,32 @@ const Card = ({
 
           <div className="row text-center h-50">
             {value && (
-              <span className={`fw-bold ${styles.valueCard}`}>
-                {value}
-              </span>
+              <span className={`fw-bold ${styles.valueCard}`}>{value}</span>
             )}
             {color && !value && <MdAccountCircle color={color} size={60} />}
           </div>
           <div className="row justify-content-end h-25">
-            <div className={`d-none d-sm-block col-6 px-2 ${styles.logoBottom}`}>
-              <Image alt="card" src="/images/favicon.png" width={50} height={50} />
+            <div
+              className={`d-none d-sm-block col-6 px-2 ${styles.logoBottom}`}
+            >
+              <Image
+                alt="card"
+                src="/images/favicon.png"
+                width={50}
+                height={50}
+              />
             </div>
           </div>
         </div>
       </div>
       {name && (
-        <div>
-          <h4 className="text-light w-100 text-center fw-bold">{name}</h4>
+        <div className="row justify-content-center">
+          <span className="text-light w-100 text-center fw-bold px-0">
+            {name}
+          </span>
         </div>
       )}
+
       {badgeConfig && (
         <OverlayTrigger
           trigger="click"
