@@ -14,7 +14,6 @@ const ErrorPage = () => {
   if (typeof window !== "undefined") {
     matomo("analyticsError");
   }
-
   const router = useRouter();
   const errorCode = router.query.code as string;
   const { setIsRoomActive, user, setUser } = useContext(UserContext);
