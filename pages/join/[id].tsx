@@ -5,7 +5,7 @@ import { matomo } from '../_app';
 
 const JoinWithId = () => {
   if (typeof window !== "undefined") {
-    matomo();
+    matomo("analyticsJoin");
   }
 
   const router = useRouter();

@@ -12,7 +12,7 @@ const errorMessages = new Map<ErrorCode, String>([
 
 const ErrorPage = () => {
   if (typeof window !== "undefined") {
-    matomo();
+    matomo("analyticsError");
   }
 
   const router = useRouter();

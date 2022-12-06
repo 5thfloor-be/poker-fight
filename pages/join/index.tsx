@@ -4,7 +4,7 @@ import { matomo } from '../_app';
 
 const Join = () => {
   if (typeof window !== "undefined") {
-    matomo();
+    matomo("analyticsJoin");
   }
 
   return <JoinRoom />;

@@ -12,7 +12,7 @@ import { matomo } from './_app';
 
 const Home = () => {
   if (typeof window !== "undefined") {
-    matomo();
+    matomo("analytics");
   }
 
   const { user, isRoomActive } = useContext(UserContext);

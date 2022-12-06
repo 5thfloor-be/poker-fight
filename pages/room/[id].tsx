@@ -34,7 +34,7 @@ const roomStateText = new Map([
 
 const Room = ({ roomId }: RoomProps) => {
   if (typeof window !== "undefined") {
-    matomo();
+    matomo("analyticsRoom");
   }
 
   const router = useRouter();
