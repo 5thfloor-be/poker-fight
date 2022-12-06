@@ -1,0 +1,1 @@
+export type Analytics = "analyticsError" | "analyticsJoin" | "analyticsRoom" | "analytics";

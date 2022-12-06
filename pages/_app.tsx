@@ -3,6 +3,7 @@ import type { AppProps } from "next/app";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Layout from "../components/layout/Layout";
 import UserContextProvider from "../context/UserContext";
+import { Analytics } from './api/model/Analytics';
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
@@ -20,8 +21,16 @@ declare global {
     interface Window { _paq: any; }
 }
 
-export function matomo() {
-    if (document.getElementById("analytics") === null) {
+export function matomo(analytics: Analytics) {
+    const analyticsToDelete: Analytics[] = ["analyticsError", "analyticsJoin", "analyticsRoom", "analytics"];
+    analyticsToDelete.filter(value => value !== analytics).forEach(value => {
+        console.debug('analytics to delete :', value);
+        const elt = document.getElementById(value);
+        elt?.remove();
+    });
+
+    if (document.getElementById(analytics) === null) {
+        console.debug('analytics not present, add it : ', analytics)
         const matomoUrl = process.env.NEXT_PUBLIC_MATOMO_URL;
         const matomoSiteId = process.env.NEXT_PUBLIC_MATOMO_SITE_ID;
         console.debug('matomoUrl :', matomoUrl);
@@ -38,8 +47,10 @@ export function matomo() {
                 s = d.getElementsByTagName("script")[0];
             g.async = true;
             g.src = u + "matomo.js";
-            g.id = "analytics";
+            g.id = analytics;
             s?.parentNode?.insertBefore(g, s);
         })();
+    } else {
+        console.debug('analytics already present :', analytics);
     }
 }
