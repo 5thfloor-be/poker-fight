@@ -24,13 +24,11 @@ declare global {
 export function matomo(analytics: Analytics) {
     const analyticsToDelete: Analytics[] = ["analyticsError", "analyticsJoin", "analyticsRoom", "analytics"];
     analyticsToDelete.filter(value => value !== analytics).forEach(value => {
-        console.debug('analytics to delete :', value);
         const elt = document.getElementById(value);
         elt?.remove();
     });
 
     if (document.getElementById(analytics) === null) {
-        console.debug('analytics not present, add it : ', analytics)
         const matomoUrl = process.env.NEXT_PUBLIC_MATOMO_URL;
         const matomoSiteId = process.env.NEXT_PUBLIC_MATOMO_SITE_ID;
         console.debug('matomoUrl :', matomoUrl);
@@ -50,7 +48,5 @@ export function matomo(analytics: Analytics) {
             g.id = analytics;
             s?.parentNode?.insertBefore(g, s);
         })();
-    } else {
-        console.debug('analytics already present :', analytics);
     }
 }

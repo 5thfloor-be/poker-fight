@@ -6,7 +6,6 @@ const Join = () => {
   if (typeof window !== "undefined") {
     matomo("analyticsJoin");
   }
-
   return <JoinRoom />;
 };
 

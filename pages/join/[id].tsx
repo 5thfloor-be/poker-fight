@@ -7,7 +7,6 @@ const JoinWithId = () => {
   if (typeof window !== "undefined") {
     matomo("analyticsJoin");
   }
-
   const router = useRouter();
   const roomId: string = router.query.id as string;
 
