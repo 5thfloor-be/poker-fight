@@ -19,7 +19,7 @@ import ScrumMasterVotingToolbar from "../../components/ScrumMasterVotingToolbar"
 import { JoinRoomReturn } from "../api/socket";
 import Image from "next/image";
 import ModalGoalScore from "../../components/ModalGoalScore";
-import { matomo } from '../_app';
+import { matomo } from "../_app";
 
 type RoomProps = {
   roomId: any;
@@ -73,39 +73,38 @@ const Room = ({ roomId }: RoomProps) => {
     if (!stateSocket && user.name.length > 0) {
       joinRoomFunction();
     }
-  }, [])
+  }, []);
 
   useEffect(() => {
-
     const interval = setInterval(() => {
       socket?.disconnect();
       // joinRoomFunction();
     }, MINUTES_MS);
 
     return () => clearInterval(interval); // This represents the unmount function, in which you need to clear your interval to prevent memory leaks.
-  }, [stateSocket])
+  }, [stateSocket]);
 
   const joinRoomFunction = () => {
     socket = io({ transports: ["websocket"] });
     console.debug("debug");
     setStateSocket(socket);
     socket.emit(
-        "join_room",
-        { roomId, userInfo: user },
-        (data: JoinRoomReturn) => {
-          console.debug("[id] : emit : join room user : ", data);
-          if (data.error !== null) {
-            router.push(`/error-page/${data.error}`);
-          }
-          setUser({ ...user, id: data.id });
+      "join_room",
+      { roomId, userInfo: user },
+      (data: JoinRoomReturn) => {
+        console.debug("[id] : emit : join room user : ", data);
+        if (data.error !== null) {
+          router.push(`/error-page/${data.error}`);
         }
+        setUser({ ...user, id: data.id });
+      }
     );
     socket.emit("get_room", { roomId: roomId }, (room: RoomModel) => {
       console.debug("emit : get room user : ", user);
       setRoom(room);
       setCardValues(room?.roomOptions.cardValues);
     });
-  }
+  };
   useEffect(() => {
     if (socket) {
       socket.on("ping", () => {
@@ -289,7 +288,10 @@ const Room = ({ roomId }: RoomProps) => {
           : { paddingTop: 0 }
       }
     >
-      <div className="container">
+      <div
+        className="container"
+        style={widthScreen < 576 ? { paddingBottom: 80 } : { paddingBottom: 0 }}
+      >
         {room.users?.length > 1 && (
           <div
             className={
@@ -376,12 +378,7 @@ const Room = ({ roomId }: RoomProps) => {
         <div className="row my-3 mx-1 actionsArea">
           <>
             {/* Version PC du Deck */}
-            <div
-              className="row justify-content-center"
-              style={
-                widthScreen < 576 ? { paddingBottom: 0 } : { paddingBottom: 40 }
-              }
-            >
+            <div className="row justify-content-center">
               <div className="col-1 d-none d-sm-block px-0 my-auto">
                 {room.roomOptions.coffeeBreakAllowed && (
                   <CoffeBreak user={user} socket={socket} room={room} />
