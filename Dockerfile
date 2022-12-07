@@ -6,7 +6,6 @@ WORKDIR /app
 
 # add `/app/node_modules/.bin` to $PATH
 ENV PATH /app/node_modules/.bin:$PATH
-ENV NEXT_PUBLIC_TEST_PARAM=${NEXT_PUBLIC_TEST_PARAM}
 
 # install app dependencies
 COPY package.json ./
