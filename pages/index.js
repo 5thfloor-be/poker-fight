@@ -15,6 +15,9 @@ const Home = () => {
     matomo("analytics");
   }
 
+  const test = process.env.NEXT_PUBLIC_TEST_PARAM;
+  console.debug('test env vars :', test)
+
   const { user, isRoomActive } = useContext(UserContext);
   const [showCreateRoom, setShowCreateRoom] = useState(false);
   const [showLoading, setShowLoading] = useState(false);
