@@ -10,7 +10,6 @@ import { Button, Modal } from "react-bootstrap";
 import { Deck } from "./Deck";
 import { UserContext } from "../context/UserContext";
 import FooterActiveMobile from "./layout/FooterActiveMobile";
-import styles from "../styles/Versus.module.css";
 
 const Versus: NextPage = () => {
   const [widthScreen, setWidthScreen] = useState(0);
@@ -22,17 +21,6 @@ const Versus: NextPage = () => {
   const [showOtherScoreModal, setShowOtherScoreModal] = useState(false);
   const [othercard, setOthercard] = useState(0);
   const [reload, setReload] = useState(false);
-
-  const fighters: string[] = [
-    "/images/versus/1.png",
-    "/images/versus/2.png",
-    "/images/versus/3.png",
-    "/images/versus/4.png",
-    "/images/versus/5.png",
-    "/images/versus/6.png",
-    "/images/versus/7.png",
-    "/images/versus/8.png",
-  ];
 
   useEffect(() => {
     setWidthScreen(window.innerWidth);
@@ -100,7 +88,7 @@ const Versus: NextPage = () => {
 
   const cancel = () => setShowOtherScoreModal(false);
 
-  function getFighters(side: String) {
+  function getCards(side: String, mobile: boolean = false) {
     let cards = room?.currentVotes.filter((vote) => vote.vote !== -1);
 
     let highVal = highest();
@@ -113,79 +101,49 @@ const Versus: NextPage = () => {
       (it) => it.vote != lowVal && it.vote != highVal
     );
 
-    /* On récupère l'image du fighter */
-    let fighter: string = fighters[Math.floor(Math.random() * 8)];
-
     if (side == "right") {
       return (
         <>
-          <div className={`${styles.blocfighter}`}>
-            <Image
-              className={`${styles.flipX}`}
-              src={fighter}
-              layout="responsive"
-              objectFit="contain"
-              alt="Fighter"
-              height={widthScreen > 576 ? "100px" : "200px"}
-              width={widthScreen > 576 ? "100px" : "100px"}
-            />
-            <div className={`${styles.centered}`}>{highVal}</div>
-          </div>
-          <div className="container text-center">
-            {rightCards?.map((item, index) => (
-              <p key={index} className="text-white fw-bold my-0">
-                {getUserName(item.userId)}
-              </p>
-            ))}
+          <div>
+            <div className="d-flex flex-wrap justify-content-center">
+              <Card value={highVal} name={""} canClose={false} />
+              <div className="container text-center">
+                {rightCards?.map((item, index) => (
+                  <p key={index} className="text-white fw-bold my-0">
+                    {getUserName(item.userId)}
+                  </p>
+                ))}
+              </div>
+            </div>
           </div>
         </>
       );
     } else if (side == "left") {
       return (
         <>
-          <div className={`${styles.blocfighter}`}>
-            <Image
-              src={fighter}
-              layout="responsive"
-              objectFit="contain"
-              alt="Fighter"
-              height={widthScreen > 576 ? "100px" : "200px"}
-              width={widthScreen > 576 ? "100px" : "100px"}
-            />
-            <div className={`${styles.centered}`}>{lowVal}</div>
-          </div>
-          <div className="container text-center">
-            {leftCards?.map((item, index) => (
-              <p key={index} className="text-white fw-bold my-0">
-                {getUserName(item.userId)}
-              </p>
-            ))}
+          <div>
+            <div className="d-flex flex-wrap justify-content-center">
+              <Card value={lowVal} name={""} canClose={false} />
+              <div className="container text-center">
+                {leftCards?.map((item, index) => (
+                  <p key={index} className="text-white fw-bold my-0">
+                    {getUserName(item.userId)}
+                  </p>
+                ))}
+              </div>
+            </div>
           </div>
         </>
       );
     } else {
       return (
         <>
-          {/* On applique le scroll auto si Mobile ou plus de 4 éléments */}
-          <div className={`${styles.scrollcontainer}`}>
-            <div
-              className={
-                widthScreen < 576 || (otherVoters && otherVoters.length > 4)
-                  ? `${styles.scrolltext}`
-                  : ""
-              }
-            >
-              <div className="container text-center">
-                {otherVoters?.map((item, index) => (
-                  <span key={index} className="text-white fw-bold my-0 mx-3">
-                    <span className="border border-white rounded px-2 py-1 me-2">
-                      {item.vote}
-                    </span>
-                    {getUserName(item.userId)}
-                  </span>
-                ))}
-              </div>
-            </div>
+          <div className="container text-center">
+            {otherVoters?.map((item, index) => (
+              <span key={index} className="text-white fw-bold my-0">
+                {getUserName(item.userId)} : {item.vote}
+              </span>
+            ))}
           </div>
         </>
       );
@@ -194,10 +152,7 @@ const Versus: NextPage = () => {
 
   return (
     <>
-      <div
-        className="container px-sm-3"
-        style={widthScreen < 576 ? { paddingBottom: 80 } : { paddingBottom: 0 }}
-      >
+      <div className="container px-sm-3">
         <div className="row text-center text-white pt-0 pt-sm-3">
           <h1
             style={{ fontSize: "50px", fontWeight: "bold" }}
@@ -206,9 +161,9 @@ const Versus: NextPage = () => {
             LET&apos;S FIGHT !
           </h1>
         </div>
-        <div className="row playingMat py-2 px-0 p-sm-3 m-2 mt-3">
+        <div className="row playingMat py-sm-3 px-0 p-sm-3 m-2 mt-sm-5 mt-3">
           <div className="col-4 px-0 px-sm-3">
-            <div>{getFighters("left")}</div>
+            <div>{getCards("left")}</div>
           </div>
           <div className="col-4 px-0 my-auto">
             <Image
@@ -222,10 +177,10 @@ const Versus: NextPage = () => {
             />
           </div>
           <div className="col-4 px-0 px-sm-3">
-            <div>{getFighters("right")}</div>
+            <div>{getCards("right")}</div>
           </div>
-          <div className="col-12 pt-sm-3 px-2 text-white text-center">
-            {getFighters("othervoters")}
+          <div className="col-12 px-0 px-sm-3 text-white text-center">
+            <div>{getCards("othervoters")}</div>
           </div>
         </div>
 
