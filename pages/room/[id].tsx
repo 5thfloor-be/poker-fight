@@ -72,7 +72,9 @@ const Room = ({ roomId }: RoomProps) => {
   }, []);
 
   useEffect(() => {
-    joinRoomFunction();
+    if (!stateSocket && user.name.length > 0) {
+      joinRoomFunction();
+    }
   }, [])
 
   useEffect(() => {
