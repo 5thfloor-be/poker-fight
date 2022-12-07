@@ -87,9 +87,9 @@ const Card = ({
       </div>
       {name && (
         <div className="row justify-content-center">
-          <span className="text-light w-100 text-center fw-bold px-0">
+          <p className="text-light w-100 text-center fw-bold px-0 my-0">
             {name}
-          </span>
+          </p>
         </div>
       )}
 
