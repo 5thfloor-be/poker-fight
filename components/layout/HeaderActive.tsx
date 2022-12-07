@@ -4,11 +4,11 @@ import { useContext, useEffect, useState } from "react";
 import { MdOutlineCheck } from "react-icons/md";
 import { UserContext } from "../../context/UserContext";
 import { IoExitOutline } from "react-icons/io5";
+import QuitButton from "../QuitButton";
 
 const HeaderActive = () => {
   const { isRoomActive, setIsRoomActive, user, setUser, room } =
     useContext(UserContext);
-  const path = useRouter();
   const router = useRouter();
   const [widthScreen, setWidthScreen] = useState(0);
   const urlValue = `${process.env.NEXT_PUBLIC_LINK_URL}/room/${router.query.id}`;
@@ -18,11 +18,7 @@ const HeaderActive = () => {
     setWidthScreen(window.innerWidth);
   }, []);
 
-  const quitHandler = () => {
-    setIsRoomActive(false);
-    setUser({ ...user, role: "" });
-    path.push("/");
-  };
+
 
   return (
     <>
@@ -97,9 +93,7 @@ const HeaderActive = () => {
             </div>
             <div className="d-none d-sm-block px-3 col-sm-1">
               {isRoomActive && (
-                <button onClick={quitHandler} className="btn btn-danger mt-1">
-                  <IoExitOutline color="white" size={30} />
-                </button>
+                <QuitButton />
               )}
             </div>
           </div>

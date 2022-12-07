@@ -15,6 +15,7 @@ import Buzzer from "../Buzzer";
 import Dropdown from "react-bootstrap/Dropdown";
 import DropdownButton from "react-bootstrap/DropdownButton";
 import { IoExitOutline } from "react-icons/io5";
+import QuitButton from "../QuitButton";
 
 const FooterActiveMobile: NextPage = () => {
   const { isRoomActive, setIsRoomActive, user, setUser, room } =
@@ -168,8 +169,8 @@ const FooterActiveMobile: NextPage = () => {
                   >
                     5th Floor Open Source Project
                   </Dropdown.Item>
-                  <Dropdown.Item className="text-center" onClick={quitHandler}>
-                    QUIT ROOM <IoExitOutline size={30} />
+                  <Dropdown.Item className="text-center" >
+                    <QuitButton />
                   </Dropdown.Item>
                 </DropdownButton>
               </div>
