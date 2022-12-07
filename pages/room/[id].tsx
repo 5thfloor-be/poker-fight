@@ -44,7 +44,6 @@ const Room = ({ roomId }: RoomProps) => {
   const [stateSocket, setStateSocket] = useState();
   const [selectedVote, setSelectedVote] = useState(-1);
   const [showSpectators, setShowSpectators] = useState(false);
-  const [showModalGoalScore, setShowModalGoalScore] = useState(true);
   const [widthScreen, setWidthScreen] = useState(0);
 
   useEffect(() => {
@@ -54,7 +53,6 @@ const Room = ({ roomId }: RoomProps) => {
   //modal
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
 
   let socket: any;
 
@@ -234,8 +232,8 @@ const Room = ({ roomId }: RoomProps) => {
 
   if (!room) {
     return (
-      <div className="bg-warning text-center">
-        <h1>Wait please, the room is charging</h1>
+      <div className="loader-container">
+        <div className="spinner"></div>
       </div>
     );
   }

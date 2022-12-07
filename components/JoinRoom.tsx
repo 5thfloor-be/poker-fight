@@ -1,20 +1,10 @@
-import React, { useContext, useState, useEffect } from "react";
-import {
-  Button,
-  Modal,
-  ToggleButton,
-  ToggleButtonGroup,
-} from "react-bootstrap";
-import {
-  MdAccountCircle,
-  MdCode,
-  MdOutlineKeyboard,
-  MdOutlineTagFaces,
-} from "react-icons/md";
-import { CirclePicker } from "react-color";
-import { useRouter } from "next/router";
-import { Role } from "../pages/api/model/user";
-import { UserContext } from "../context/UserContext";
+import React, {useContext, useEffect, useState} from "react";
+import {Button, ToggleButton, ToggleButtonGroup,} from "react-bootstrap";
+import {MdAccountCircle, MdCode, MdOutlineKeyboard, MdOutlineTagFaces,} from "react-icons/md";
+import {CirclePicker} from "react-color";
+import {useRouter} from "next/router";
+import {Role} from "../pages/api/model/user";
+import {UserContext} from "../context/UserContext";
 
 type JoinRoomProps = {
   roomId?: string;
@@ -30,6 +20,7 @@ const JoinRoom = (props: JoinRoomProps) => {
 
   useEffect(() => {
     if (user === null) setUser({ name: "", color: "#ffffff", role: Role.DEV });
+    setRoomId(props.roomId || '');
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -109,7 +100,7 @@ const JoinRoom = (props: JoinRoomProps) => {
                       onChange={(e) =>
                         setUser({ ...user, name: e.target.value })
                       }
-                      onKeyPress={(event) => {
+                      onKeyDown={(event) => {
                         if (event.key === "Enter" && roomId && user?.name) {
                           // Validation au clavier
                           join();
@@ -149,7 +140,7 @@ const JoinRoom = (props: JoinRoomProps) => {
                     placeholder="Room id"
                     required={true}
                     onChange={(e) => setRoomId(e.target.value)}
-                    onKeyPress={(event) => {
+                    onKeyDown={(event) => {
                       if (event.key === "Enter" && roomId && user?.name) {
                         // Validation au clavier
                         join();
