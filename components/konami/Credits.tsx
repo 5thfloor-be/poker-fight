@@ -42,13 +42,13 @@ const Credits = (props: CreditsProps) => {
                     </p>
 
                     <Image
-                      loading="eager"
                       alt="Team"
-                      src="/images/team.png"
+                      src="/images/team.webp"
                       width={800}
-                      height={800}
+                      height={779}
+                      priority
                     />
-                    <div className="w-100 text-center">
+                    <div className="w-100 text-center mt-3">
                       <a
                         className="text-decoration-none text-reset"
                         href="https://www.linkedin.com/in/michaeldupuy"
@@ -56,11 +56,11 @@ const Credits = (props: CreditsProps) => {
                         rel="noreferrer"
                       >
                         <Image
-                          loading="eager"
                           alt="Michael"
                           src="/images/team/michael.png"
                           width={80}
                           height={80}
+                          priority
                         />
                         <p>
                           <span className="ms-3">
@@ -78,11 +78,11 @@ const Credits = (props: CreditsProps) => {
                         rel="noreferrer"
                       >
                         <Image
-                          loading="eager"
                           alt="Rachel"
                           src="/images/team/rachel.png"
                           width={80}
                           height={80}
+                          priority
                         />
                         <p>
                           <span className="ms-3">
@@ -100,11 +100,11 @@ const Credits = (props: CreditsProps) => {
                         rel="noreferrer"
                       >
                         <Image
-                          loading="eager"
                           alt="Jerry"
                           src="/images/team/jerry.png"
                           width={80}
                           height={80}
+                          priority
                         />
                         <p>
                           <span className="ms-3">
@@ -122,11 +122,11 @@ const Credits = (props: CreditsProps) => {
                         rel="noreferrer"
                       >
                         <Image
-                          loading="eager"
                           alt="Thibault"
                           src="/images/team/thibault.png"
                           width={80}
                           height={80}
+                          priority
                         />
                         <p>
                           <span className="ms-3">
@@ -144,11 +144,11 @@ const Credits = (props: CreditsProps) => {
                         rel="noreferrer"
                       >
                         <Image
-                          loading="eager"
                           alt="Gabriel"
                           src="/images/team/gabriel.png"
                           width={80}
                           height={80}
+                          priority
                         />
                         <p>
                           <span className="ms-3">
@@ -166,11 +166,11 @@ const Credits = (props: CreditsProps) => {
                         rel="noreferrer"
                       >
                         <Image
-                          loading="eager"
                           alt="Esthefany"
                           src="/images/team/esthefany.png"
                           width={80}
                           height={80}
+                          priority
                         />
                         <p>
                           <span className="ms-3">
@@ -188,11 +188,11 @@ const Credits = (props: CreditsProps) => {
                         rel="noreferrer"
                       >
                         <Image
-                          loading="eager"
                           alt="Mathieu"
                           src="/images/team/mathieu.png"
                           width={80}
                           height={80}
+                          priority
                         />
                         <p>
                           <span className="ms-3">
@@ -210,11 +210,11 @@ const Credits = (props: CreditsProps) => {
                         rel="noreferrer"
                       >
                         <Image
-                          loading="eager"
                           alt="Alexandre"
                           src="/images/team/alexandre.png"
                           width={80}
                           height={80}
+                          priority
                         />
                         <p>
                           <span className="ms-3">
@@ -232,11 +232,11 @@ const Credits = (props: CreditsProps) => {
                         rel="noreferrer"
                       >
                         <Image
-                          loading="eager"
                           alt="Renaud"
                           src="/images/team/renaud.png"
                           width={80}
                           height={80}
+                          priority
                         />
                         <p>
                           <span className="ms-3">
@@ -254,11 +254,11 @@ const Credits = (props: CreditsProps) => {
                         rel="noreferrer"
                       >
                         <Image
-                          loading="eager"
                           alt="Noémie"
                           src="/images/team/noemie.png"
                           width={80}
                           height={80}
+                          priority
                         />
                         <p>
                           <span className="ms-3">
@@ -276,11 +276,11 @@ const Credits = (props: CreditsProps) => {
                         rel="noreferrer"
                       >
                         <Image
-                          loading="eager"
                           alt="Luc"
                           src="/images/team/luc.png"
                           width={80}
                           height={80}
+                          priority
                         />
                         <p>
                           <span className="ms-3">
@@ -296,21 +296,21 @@ const Credits = (props: CreditsProps) => {
                       <span>A project made out of Pizzas...</span>
                     </p>
                     <Image
-                      loading="eager"
                       alt="Pizza"
-                      src="/images/pizza.jpg"
+                      src="/images/pizza.webp"
                       width={800}
                       height={440}
+                      priority
                     />
                     <p className="mt-3 pt-3">
                       <span>...and Retro!</span>
                     </p>
                     <Image
-                      loading="eager"
                       alt="Retro"
-                      src="/images/retro.jpg"
+                      src="/images/retro.webp"
                       width={800}
-                      height={612}
+                      height={512}
+                      priority
                     />
                     <p className="mt-3 pt-3">
                       <span>

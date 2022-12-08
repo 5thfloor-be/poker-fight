@@ -24,14 +24,14 @@ const Versus: NextPage = () => {
   const [reload, setReload] = useState(false);
 
   const fighters: string[] = [
-    "/images/versus/1.png",
-    "/images/versus/2.png",
-    "/images/versus/3.png",
-    "/images/versus/4.png",
-    "/images/versus/5.png",
-    "/images/versus/6.png",
-    "/images/versus/7.png",
-    "/images/versus/8.png",
+    "/images/versus/1.webp",
+    "/images/versus/2.webp",
+    "/images/versus/3.webp",
+    "/images/versus/4.webp",
+    "/images/versus/5.webp",
+    "/images/versus/6.webp",
+    "/images/versus/7.webp",
+    "/images/versus/8.webp",
   ];
 
   useEffect(() => {
@@ -128,7 +128,7 @@ const Versus: NextPage = () => {
               alt="Fighter"
               height={widthScreen > 576 ? "100px" : "200px"}
               width={widthScreen > 576 ? "100px" : "100px"}
-              loading="eager"
+              priority
             />
             <div className={`${styles.centered}`}>{highVal}</div>
           </div>
@@ -152,7 +152,7 @@ const Versus: NextPage = () => {
               alt="Fighter"
               height={widthScreen > 576 ? "100px" : "200px"}
               width={widthScreen > 576 ? "100px" : "100px"}
-              loading="eager"
+              priority
             />
             <div className={`${styles.centered}`}>{lowVal}</div>
           </div>
@@ -215,13 +215,13 @@ const Versus: NextPage = () => {
           <div className="col-4 px-0 my-auto">
             <Image
               className="text-white"
-              src="/images/versus.png"
+              src="/images/versus.webp"
               layout="responsive"
               objectFit="contain"
               alt="logo"
               height={widthScreen > 576 ? "200px" : "272px"}
               width={widthScreen > 576 ? "400px" : "381px"}
-              loading="eager"
+              priority
             />
           </div>
           <div className="col-4 px-0 px-sm-3">
