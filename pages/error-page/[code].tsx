@@ -1,9 +1,9 @@
-import { ErrorCode } from "../api/model/ErrorCode";
+import {ErrorCode} from "../api/model/ErrorCode";
 import Image from "next/image";
-import { useRouter } from "next/router";
-import { useContext } from "react";
-import { UserContext } from "../../context/UserContext";
-import { matomo } from '../_app';
+import {useRouter} from "next/router";
+import {useContext} from "react";
+import {UserContext} from "../../context/UserContext";
+import {matomo} from '../_app';
 
 const errorMessages = new Map<ErrorCode, String>([
   [ErrorCode.TOO_MANY_VOTERS, "Sorry, the room is full (already 9 voters)."],
@@ -19,7 +19,7 @@ const ErrorPage = () => {
   const errorCode = router.query.code as string;
   const { setIsRoomActive, user, setUser } = useContext(UserContext);
   setIsRoomActive(false);
-  // setUser({ ...user, role: "", id: "" });
+  setUser({ ...user, role: "", id: "" });
 
   const goHome = () => {
     router.push("/");

@@ -1,13 +1,12 @@
-
-import { useRouter } from "next/router";
-import { useContext, useEffect, useState } from "react";
+import {useRouter} from "next/router";
+import {useContext, useState} from "react";
 import {UserContext} from "../context/UserContext";
 import {IoExitOutline} from "react-icons/io5";
 import {io} from "socket.io-client";
 import {Modal} from "react-bootstrap";
-import {CgCoffee} from "react-icons/cg";
 import {Role} from "../pages/api/model/user";
 import {AiOutlineAlert} from "react-icons/ai";
+
 const QuitButton = () => {
 
     const { setIsRoomActive, user, setUser, room } =
