@@ -32,7 +32,13 @@ export const Deck = ({
   const selectIndex = (index: number) => {
     console.debug("deck " + index);
     if (!isLocked) {
-      setSelectedIndex(index);
+      if (selectedIndex !== index) {
+        setSelectedIndex(index);
+      } else {
+        // Unpin card
+        setSelectedIndex(-1);
+        index = -1;
+      }
       updateSelection(deck[index]);
     }
   };

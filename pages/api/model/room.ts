@@ -59,9 +59,14 @@ export default class Room {
     ) {
       this.currentVotes.push(new UserVote(userId, vote));
     } else {
-      this.currentVotes
-        .filter((userVote) => userVote.userId === userId)
-        .map((userVote) => userVote.setVote(vote));
+      if (!!vote) {
+        this.currentVotes
+            .filter((userVote) => userVote.userId === userId)
+            .map((userVote) => userVote.setVote(vote));
+      } else {
+        // undo vote
+        this.currentVotes.splice(this.currentVotes.findIndex((userVote) => userVote.userId === userId), 1);
+      }
     }
     // this.currentVotes.set(userId, vote);
     //TODO : if everyone has voted, send event ?
