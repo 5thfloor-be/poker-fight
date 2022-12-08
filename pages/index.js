@@ -8,7 +8,7 @@ import { useRouter } from "next/router";
 import Image from "next/image";
 import { MdAccountCircle } from "react-icons/md";
 import EditProfile from "../components/EditProfile";
-import { matomo } from './_app';
+import { matomo } from "./_app";
 
 const Home = () => {
   if (typeof window !== "undefined") {
@@ -16,8 +16,7 @@ const Home = () => {
   }
 
   const test = process.env.TEST_ENV;
-  console.debug('test env vars :', test)
-
+  console.debug("test env vars :", test);
 
   const { user, isRoomActive } = useContext(UserContext);
   const [showCreateRoom, setShowCreateRoom] = useState(false);
@@ -74,6 +73,7 @@ const Home = () => {
                   width={208}
                   height={40}
                   alt="logo"
+                  loading="eager"
                 />
               </div>
 
@@ -160,6 +160,7 @@ const Home = () => {
                   alt="Poker Planning"
                   width={500}
                   height={257}
+                  loading="eager"
                 />
               </div>
               <div
@@ -177,6 +178,7 @@ const Home = () => {
                   alt="VS Room"
                   width={381}
                   height={272}
+                  loading="eager"
                 />
               </div>
               <div className="col-sm-5 py-3">
@@ -218,6 +220,7 @@ const Home = () => {
                   alt="Poker Planning"
                   width={500}
                   height={331}
+                  loading="eager"
                 />
               </div>
               <div
@@ -235,6 +238,7 @@ const Home = () => {
                   alt="VS Room"
                   width={500}
                   height={330}
+                  loading="eager"
                 />
               </div>
               <div className="col-sm-5 py-3">
@@ -277,6 +281,7 @@ const Home = () => {
                   alt="Poker Planning"
                   width={500}
                   height={321}
+                  loading="eager"
                 />
               </div>
               <div
@@ -294,6 +299,7 @@ const Home = () => {
                   alt="VS Room"
                   width={500}
                   height={284}
+                  loading="eager"
                 />
               </div>
               <div className="col-sm-5 py-3">
@@ -349,6 +355,7 @@ const Home = () => {
                   alt="Poker Planning"
                   width={500}
                   height={329}
+                  loading="eager"
                 />
               </div>
             </div>
