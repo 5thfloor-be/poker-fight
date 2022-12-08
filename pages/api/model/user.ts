@@ -1,6 +1,5 @@
 export default interface User extends UserInfo {
     id?: string;
-    canVote?: boolean;
 }
 
 export interface UserInfo {
@@ -15,3 +14,7 @@ export enum Role {
     DEV,
     SPECTATOR
 }
+
+export const isScrumMaster = (user: User)=> [Role.SCRUM_MASTER, Role.VOTING_SCRUM_MASTER].includes(user.role);
+
+export const isVoter = (user: User)=> [Role.DEV, Role.VOTING_SCRUM_MASTER].includes(user.role);
