@@ -4,10 +4,15 @@ import { useRouter } from "next/router";
 import { useContext } from "react";
 import { UserContext } from "../../context/UserContext";
 import { matomo } from "../_app";
+import { useRouter } from "next/router";
+import { useContext } from "react";
+import { UserContext } from "../../context/UserContext";
+import { matomo } from "../_app";
 
 const errorMessages = new Map<ErrorCode, String>([
   [ErrorCode.TOO_MANY_VOTERS, "Sorry, the room is full (already 9 voters)."],
   [ErrorCode.ROOM_NOT_EXISTS, "Sorry, the room number doesn't exist."],
+  [ErrorCode.ROOM_CLOSED, "The room has been closed."],
 ]);
 
 const ErrorPage = () => {
