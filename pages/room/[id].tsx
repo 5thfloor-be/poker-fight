@@ -7,7 +7,7 @@ import {Deck} from "../../components/Deck";
 import Modal from "react-bootstrap/Modal";
 import {Button} from "react-bootstrap";
 import {UserContext} from "../../context/UserContext";
-import {io} from "socket.io-client";
+import {io, Socket} from "socket.io-client";
 import CoffeBreak from "../../components/CoffeBreak";
 import Spectators from "../../components/Spectators";
 import {BsEyeglasses} from "react-icons/bs";
@@ -41,7 +41,7 @@ const Room = ({ roomId }: RoomProps) => {
   const { user, setUser, setRoom, room, setIsRoomActive } =
     useContext(UserContext);
   const [cardValues, setCardValues] = useState<any>([]);
-  const [stateSocket, setStateSocket] = useState();
+  const [stateSocket, setStateSocket] = useState<Socket>();
   const [selectedVote, setSelectedVote] = useState(-1);
   const [showSpectators, setShowSpectators] = useState(false);
   const [widthScreen, setWidthScreen] = useState(0);
@@ -54,12 +54,6 @@ const Room = ({ roomId }: RoomProps) => {
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
 
-  let socket: any;
-
-  // Le reload asynchrone de la page remet à any la Socket
-  if (stateSocket) {
-    socket = stateSocket;
-  }
 
   /* Dans le cas si pas d'utilisateur redirect vers la Join Room */
   useEffect(() => {
@@ -78,18 +72,17 @@ const Room = ({ roomId }: RoomProps) => {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      socket?.disconnect();
-      // joinRoomFunction();
+      stateSocket?.disconnect();
     }, MINUTES_MS);
 
     return () => clearInterval(interval); // This represents the unmount function, in which you need to clear your interval to prevent memory leaks.
   }, [stateSocket]);
 
   const joinRoomFunction = () => {
-    socket = io({ transports: ["websocket"] });
+    const socket = io({ transports: ["websocket"] });
     console.debug("debug");
     setStateSocket(socket);
-    socket.emit(
+    socket?.emit(
       "join_room",
       { roomId, userInfo: user },
       (data: JoinRoomReturn) => {
@@ -100,25 +93,25 @@ const Room = ({ roomId }: RoomProps) => {
         setUser({ ...user, id: data.id });
       }
     );
-    socket.emit("get_room", { roomId: roomId }, (room: RoomModel) => {
+    socket?.emit("get_room", { roomId: roomId }, (room: RoomModel) => {
       console.debug("emit : get room user : ", user);
       setRoom(room);
       setCardValues(room?.roomOptions.cardValues);
     });
   };
   useEffect(() => {
-    if (socket) {
-      socket.on("ping", () => {
-        socket.emit("pong", {});
+    if (stateSocket) {
+      stateSocket.on("ping", () => {
+        stateSocket?.emit("pong", {});
       });
 
-      socket.on("connect", () => {
+      stateSocket.on("connect", () => {
         console.debug("connected - start");
-        socket.emit("join_socket", { roomId });
+        stateSocket.emit("join_socket", { roomId });
         console.debug("connected - end");
       });
 
-      socket.on("disconnect", (err: string) => {
+      stateSocket.on("disconnect", (err: string) => {
         console.debug("server disconnected: ", err);
         if (
           err === "io server disconnect" ||
@@ -128,20 +121,20 @@ const Room = ({ roomId }: RoomProps) => {
         ) {
           console.debug("server disconnected: trying to connect");
           // Reconnect manually if the disconnection was initiated by the server
-          socket.connect();
+          stateSocket.connect();
         }
       });
-      socket.on("reconnect", () => {
+      stateSocket.on("reconnect", () => {
         console.debug("reconnect - start");
-        socket.emit("join_socket", { roomId });
+        stateSocket.emit("join_socket", { roomId });
         console.debug("reconnect - end");
       });
     }
-  }, [socket]);
+  }, [stateSocket]);
 
   useEffect(() => {
-    if (socket) {
-      socket.on("reveal", (data: any) => {
+    if (stateSocket) {
+      stateSocket.on("reveal", (data: any) => {
         console.debug("received : reveal", data);
         setRoom(data);
         setShow(false);
@@ -149,19 +142,19 @@ const Room = ({ roomId }: RoomProps) => {
           <Versus />;
         }
       });
-      socket.on("start_voting", (data: any) => {
+      stateSocket.on("start_voting", (data: any) => {
         console.debug("received : start voting", data);
         setSelectedVote(-1);
         setRoom(data);
       });
-      socket.on("room_state_update", (r: RoomModel) => {
+      stateSocket.on("room_state_update", (r: RoomModel) => {
         console.debug("received : room state update received ", r);
         setRoom(r);
         if (r?.state === States.STARTING || r?.state === States.VOTING) {
           router.push("/room/" + roomId);
         }
       });
-      socket.on("user_removed", (data: any) => {
+      stateSocket.on("user_removed", (data: any) => {
         console.debug(
           `received : user removed ${JSON.stringify(
             data
@@ -169,7 +162,7 @@ const Room = ({ roomId }: RoomProps) => {
         );
         if (data.userId === user.id) {
           console.log("emit : leave front", { roomId: roomId });
-          socket.emit("leave_room", { roomId: roomId });
+          stateSocket.emit("leave_room", { roomId: roomId });
           setIsRoomActive(false);
           setUser({ ...user, role: "", id: "" });
           router.push("/");
@@ -182,7 +175,7 @@ const Room = ({ roomId }: RoomProps) => {
   const updateSelection = (chosenVote: number) => {
     setSelectedVote(chosenVote);
     setShow(false);
-    socket.emit(
+    stateSocket?.emit(
       "vote",
       { roomId: roomId, userId: user?.id, vote: chosenVote },
       (room: any) => {
@@ -192,26 +185,26 @@ const Room = ({ roomId }: RoomProps) => {
   };
   // get room from server
   const startVoting = () => {
-    console.debug("emit : start voting: Change status room to voting", socket);
-    socket.emit("start_voting", { roomId }, (r: any) => setRoom(r));
+    console.debug("emit : start voting: Change status room to voting", stateSocket);
+    stateSocket?.emit("start_voting", { roomId }, (r: any) => setRoom(r));
   };
 
   const reveal = () => {
     console.debug("emit : reveal: Change status room to voted");
-    socket.emit("reveal", { roomId }, (r: any) => {
+    stateSocket?.emit("reveal", { roomId }, (r: any) => {
       setRoom(r);
     });
   };
 
   const redoVote = () => {
     console.debug("emit : redo vote: Change status vote to voting");
-    socket.emit("redo_vote", { roomId }, (r: any) => {
+    stateSocket?.emit("redo_vote", { roomId }, (r: any) => {
       setRoom(r);
     });
   };
 
   const validate = () => {
-    socket.emit(
+    stateSocket?.emit(
       "validate",
       { roomId: roomId, finalVote: room?.wondrousVote },
       (r: any) => {
@@ -262,7 +255,7 @@ const Room = ({ roomId }: RoomProps) => {
   };
 
   const removeUser = (userToRemove: User) => {
-    socket.emit("remove_user", { roomId: room.id, userId: userToRemove.id });
+    stateSocket?.emit("remove_user", { roomId: room.id, userId: userToRemove.id });
   };
 
   const getStatusText = () => {
@@ -280,7 +273,7 @@ const Room = ({ roomId }: RoomProps) => {
   };
 
   const finishScoreGoal = () => {
-    socket.emit("score_goal_over", {
+    stateSocket?.emit("score_goal_over", {
       roomId: room.id,
     });
   };
@@ -386,12 +379,12 @@ const Room = ({ roomId }: RoomProps) => {
             <div className="row justify-content-center">
               <div className="col-1 d-none d-sm-block px-0 my-auto">
                 {room.roomOptions.coffeeBreakAllowed && (
-                  <CoffeBreak user={user} socket={socket} room={room} />
+                  <CoffeBreak user={user} socket={stateSocket} room={room} />
                 )}
 
                 {room.roomOptions.buzzerAllowed &&
                   room.state === States.VOTING && (
-                    <Buzzer user={user} socket={socket} room={room} />
+                    <Buzzer user={user} socket={stateSocket} room={room} />
                   )}
               </div>
 

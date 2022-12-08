@@ -20,10 +20,6 @@ const QuitButton = () => {
             userId: user.id,
             roomId: room?.id
         });
-
-        setIsRoomActive(false);
-        setUser({ ...user, role: "" });
-        router.push("/");
     };
 
     const quitButton = () =>{
