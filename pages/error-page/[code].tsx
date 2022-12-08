@@ -8,6 +8,7 @@ import { matomo } from '../_app';
 const errorMessages = new Map<ErrorCode, String>([
   [ErrorCode.TOO_MANY_VOTERS, "Sorry, the room is full (already 9 voters)."],
   [ErrorCode.ROOM_NOT_EXISTS, "Sorry, the room number doesn't exist."],
+  [ErrorCode.ROOM_CLOSED, "The room has been closed."],
 ]);
 
 const ErrorPage = () => {
@@ -18,7 +19,7 @@ const ErrorPage = () => {
   const errorCode = router.query.code as string;
   const { setIsRoomActive, user, setUser } = useContext(UserContext);
   setIsRoomActive(false);
-  setUser({ ...user, role: "", id: "" });
+  // setUser({ ...user, role: "", id: "" });
 
   const goHome = () => {
     router.push("/");

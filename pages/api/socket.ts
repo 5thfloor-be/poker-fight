@@ -2,7 +2,7 @@ import { IncomingMessage } from "http";
 import { v4 as uuid } from "uuid";
 import { Server } from "socket.io";
 import Room from "./model/room";
-import User, { Role } from "./model/user";
+import User, {isScrumMaster, Role} from "./model/user";
 import { ErrorCode } from "./model/ErrorCode";
 import { createClient } from "redis";
 import { createAdapter } from "@socket.io/redis-adapter";
@@ -115,8 +115,15 @@ function configIO(io: Server) {
     });
     socket.on("remove_user", (data) => {
       console.log(`${data.userId} is removed `, data);
-      rooms.get(data.roomId)?.removeUser(data.userId);
+      const userRemoved= rooms.get(data.roomId)?.removeUser(data.userId);
       io.to(data.roomId).emit("user_removed", { userId: data.userId });
+      if(userRemoved && isScrumMaster(userRemoved)){
+        rooms.get(data.roomId)?.users.forEach( u =>{
+            if(u.id !== data.userId){
+              io.to(data.roomId).emit("user_removed", { userId: u.id });
+            }
+        })
+      }
     });
 
     socket.on("leave_room", (data) => {
