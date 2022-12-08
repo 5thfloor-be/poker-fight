@@ -20,7 +20,6 @@ import {JoinRoomReturn} from "../api/socket";
 import Image from "next/image";
 import ModalGoalScore from "../../components/ModalGoalScore";
 import {matomo} from "../_app";
-import {ErrorCode} from "../api/model/ErrorCode";
 
 type RoomProps = {
   roomId: any;
