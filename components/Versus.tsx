@@ -1,6 +1,5 @@
 import type { NextPage } from "next";
 import React, { useContext, useEffect, useState } from "react";
-import Card from "./Card";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { io } from "socket.io-client";
@@ -11,6 +10,7 @@ import { Deck } from "./Deck";
 import { UserContext } from "../context/UserContext";
 import FooterActiveMobile from "./layout/FooterActiveMobile";
 import styles from "../styles/Versus.module.css";
+import versus from "../public/images/versus.webp";
 
 const Versus: NextPage = () => {
   const [widthScreen, setWidthScreen] = useState(0);
@@ -114,7 +114,13 @@ const Versus: NextPage = () => {
     );
 
     /* On récupère l'image du fighter */
-    let fighter: string = fighters[Math.floor(Math.random() * 8)];
+    let i1 = Math.floor(Math.random() * 8);
+    let i2 = Math.floor(Math.random() * 8);
+    if (i1 === i2) {
+      i2 = i1 === fighters.length - 1 ? 0 : i1 + 1;
+    }
+    let fighter1: string = fighters[i1];
+    let fighter2: string = fighters[i2];
 
     if (side == "right") {
       return (
@@ -122,7 +128,7 @@ const Versus: NextPage = () => {
           <div className={`${styles.blocfighter}`}>
             <Image
               className={`${styles.flipX}`}
-              src={fighter}
+              src={fighter1}
               layout="responsive"
               objectFit="contain"
               alt="Fighter"
@@ -146,7 +152,7 @@ const Versus: NextPage = () => {
         <>
           <div className={`${styles.blocfighter}`}>
             <Image
-              src={fighter}
+              src={fighter2}
               layout="responsive"
               objectFit="contain"
               alt="Fighter"
@@ -215,7 +221,7 @@ const Versus: NextPage = () => {
           <div className="col-4 px-0 my-auto">
             <Image
               className="text-white"
-              src="/images/versus.webp"
+              src={versus}
               layout="responsive"
               objectFit="contain"
               alt="logo"
