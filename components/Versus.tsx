@@ -128,6 +128,7 @@ const Versus: NextPage = () => {
               alt="Fighter"
               height={widthScreen > 576 ? "100px" : "200px"}
               width={widthScreen > 576 ? "100px" : "100px"}
+              loading="eager"
             />
             <div className={`${styles.centered}`}>{highVal}</div>
           </div>
@@ -151,6 +152,7 @@ const Versus: NextPage = () => {
               alt="Fighter"
               height={widthScreen > 576 ? "100px" : "200px"}
               width={widthScreen > 576 ? "100px" : "100px"}
+              loading="eager"
             />
             <div className={`${styles.centered}`}>{lowVal}</div>
           </div>
@@ -219,6 +221,7 @@ const Versus: NextPage = () => {
               alt="logo"
               height={widthScreen > 576 ? "200px" : "272px"}
               width={widthScreen > 576 ? "400px" : "381px"}
+              loading="eager"
             />
           </div>
           <div className="col-4 px-0 px-sm-3">

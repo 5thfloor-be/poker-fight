@@ -113,16 +113,16 @@ const Room = ({ roomId }: RoomProps) => {
 
       socket.on("connect", () => {
         console.debug("connected - start");
-        socket.emit("join_socket", {roomId});
+        socket.emit("join_socket", { roomId });
         console.debug("connected - end");
       });
 
       socket.on("disconnect", (err: string) => {
         console.debug("server disconnected: ", err);
         if (
-            err === "io server disconnect" ||
-            "transport error" ||
-            "transport close" ||
+          err === "io server disconnect" ||
+          "transport error" ||
+          "transport close" ||
           "io client disconnect"
         ) {
           console.debug("server disconnected: trying to connect");
@@ -132,11 +132,11 @@ const Room = ({ roomId }: RoomProps) => {
       });
       socket.on("reconnect", () => {
         console.debug("reconnect - start");
-        socket.emit("join_socket", {roomId});
+        socket.emit("join_socket", { roomId });
         console.debug("reconnect - end");
       });
     }
-  },[socket]);
+  }, [socket]);
 
   useEffect(() => {
     if (socket) {
@@ -308,7 +308,10 @@ const Room = ({ roomId }: RoomProps) => {
             {room.state !== States.WONDROUS ? (
               room.users
                 .filter((u) => u?.id !== user?.id)
-                .filter((u)=> u?.role !== Role.SCRUM_MASTER && u?.role !== Role.SPECTATOR)
+                .filter(
+                  (u) =>
+                    u?.role !== Role.SCRUM_MASTER && u?.role !== Role.SPECTATOR
+                )
                 .map((userMap, key) => (
                   <div key={key} className="col-4 col-sm-2">
                     <Card
@@ -323,9 +326,7 @@ const Room = ({ roomId }: RoomProps) => {
                       }
                       color={userMap.color}
                       name={userMap.name}
-                      selected={
-                        !!userMap.id && !!getVoteByUserId(userMap.id)
-                      }
+                      selected={!!userMap.id && !!getVoteByUserId(userMap.id)}
                       onRemoveUser={() => removeUser(userMap)}
                     />
                   </div>
@@ -336,6 +337,7 @@ const Room = ({ roomId }: RoomProps) => {
                 alt="Poker Planning"
                 width={333}
                 height={85}
+                loading="eager"
               />
             )}
           </div>
