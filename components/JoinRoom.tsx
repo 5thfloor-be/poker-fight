@@ -20,9 +20,12 @@ const JoinRoom = (props: JoinRoomProps) => {
 
   useEffect(() => {
     if (user === null) setUser({ name: "", color: "#ffffff", role: Role.DEV });
-    setRoomId(props.roomId || '');
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    setRoomId(props.roomId || '');
+  }, [props.roomId]);
 
   const colors = new Map<string, string>([
     ["#0000ff", "blue"],
