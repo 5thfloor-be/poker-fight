@@ -35,7 +35,7 @@ const QuitButton = () => {
         <button onClick={quitButton} className="btn btn-danger mt-1 d-none d-sm-block">
             <IoExitOutline color="white" size={30} />
         </button>
-        <div onClick={quitButton} className="w-100 h-100 d-md-none">
+        <div onClick={quitButton} className="w-100 h-100 d-md-none d-lg-none d-sm-block">
             QUIT ROOM <IoExitOutline color="white" size={30} />
         </div>
 
@@ -56,14 +56,20 @@ const QuitButton = () => {
                 </Modal.Body>
                 <Modal.Footer style={{ border: "none" }}>
                     <div className="container mx-auto">
+                        <div className="row">
+                            <div className="col-12 col-sm-6" >
                             <button
-                                onClick={quit}
-                                className="btn btn-primary fw-bold mb-3 w-25"
-                            >VALIDATE</button>
-                        <button
-                            onClick={() => setShow(false)}
-                            className="btn btn-danger fw-bold mb-3 w-25"
-                        >CANCEL</button>
+                                    onClick={quit}
+                                    className="btn btn-primary fw-bold mb-3 w-100"
+                                >VALIDATE</button>
+                            </div>
+                            <div className="col-12 col-sm-6" >
+                            <button
+                                onClick={() => setShow(false)}
+                                className="btn btn-danger fw-bold mb-3 w-100"
+                            >CANCEL</button>
+                            </div>
+                        </div>
                     </div>
                 </Modal.Footer>
             </Modal>
