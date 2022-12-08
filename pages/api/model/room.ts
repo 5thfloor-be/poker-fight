@@ -1,4 +1,4 @@
-import User, { Role } from "./user";
+import User, {isScrumMaster, Role} from "./user";
 import UserVote from "./userVote";
 
 const MAX_VOTERS = 9;
@@ -28,14 +28,23 @@ export default class Room {
     this.stateUpdated();
   }
 
-  removeUser(userId: string) {
+  removeUser(userId: string): User | undefined {
+    const user = this.users.filter(u => u.id === userId)[0];
+    if(!user){
+      return;
+    }
+    if(isScrumMaster(user)){
+      this.state = States.CLOSED;
+    }
+
     this.users = this.users.filter((u) => {
       console.debug(`u.id !== userId  `, u.id !== userId);
       return u.id !== userId;
     });
     console.debug("users :", this.users);
-    //TODO : close room when users is empty or no more scrum master
+
     this.stateUpdated();
+    return user;
   }
 
   registerVote(userId: string, vote: number) {
@@ -211,8 +220,7 @@ export enum States {
   VOTING,
   WONDROUS,
   FIGHTING,
-  BREAK,
-  BUZZ,
+  CLOSED
 }
 
 export interface RoomOptions {
