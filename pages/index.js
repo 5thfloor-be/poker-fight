@@ -9,6 +9,14 @@ import Image from "next/image";
 import { MdAccountCircle } from "react-icons/md";
 import EditProfile from "../components/EditProfile";
 import { matomo } from "./_app";
+import logoProject from "../public/images/logo-project.webp";
+import inProgress from "../public/images/in-progress.webp";
+import versus from "../public/images/versus.webp";
+import pointsAchieved from "../public/images/points-achieved.webp";
+import coffeeTime from "../public/images/coffee-time.webp";
+import speedUp from "../public/images/speed-up.webp";
+import gitHub from "../public/images/github.webp";
+import cookies from "../public/images/cookies.webp";
 
 const Home = () => {
   if (typeof window !== "undefined") {
@@ -69,7 +77,7 @@ const Home = () => {
             <div className="container-fluid px-0 mx-0 w-100">
               <div className="col-3 ps-2 mt-2 d-none d-sm-block">
                 <Image
-                  src="/images/logo-project.webp"
+                  src={logoProject}
                   width={208}
                   height={40}
                   alt="logo"
@@ -156,7 +164,7 @@ const Home = () => {
               </div>
               <div className="col-sm-5 py-3">
                 <Image
-                  src="/images/in-progress.webp"
+                  src={inProgress}
                   alt="Poker Planning"
                   width={500}
                   height={257}
@@ -174,7 +182,7 @@ const Home = () => {
             >
               <div className="col-sm-5 offset-sm-1 py-3">
                 <Image
-                  src="/images/versus.webp"
+                  src={versus}
                   alt="VS Room"
                   width={381}
                   height={272}
@@ -216,8 +224,8 @@ const Home = () => {
               </div>
               <div className="col-sm-5 py-3">
                 <Image
-                  src="/images/points-achieved.webp"
-                  alt="Poker Planning"
+                  src={pointsAchieved}
+                  alt="Points Achieved"
                   width={500}
                   height={331}
                   priority
@@ -234,8 +242,8 @@ const Home = () => {
             >
               <div className="col-sm-5 offset-sm-1 py-3">
                 <Image
-                  src="/images/coffee-time.webp"
-                  alt="VS Room"
+                  src={coffeeTime}
+                  alt="Coffee Time"
                   width={500}
                   height={330}
                   priority
@@ -277,8 +285,8 @@ const Home = () => {
               </div>
               <div className="col-sm-5 py-3">
                 <Image
-                  src="/images/speed-up.webp"
-                  alt="Poker Planning"
+                  src={speedUp}
+                  alt="Speed Up"
                   width={500}
                   height={321}
                   priority
@@ -295,8 +303,8 @@ const Home = () => {
             >
               <div className="col-sm-5 offset-sm-1 py-3">
                 <Image
-                  src="/images/github.webp"
-                  alt="VS Room"
+                  src={gitHub}
+                  alt="GitHub"
                   width={500}
                   height={284}
                   priority
@@ -351,8 +359,8 @@ const Home = () => {
               </div>
               <div className="col-sm-5 py-3">
                 <Image
-                  src="/images/cookies.webp"
-                  alt="Poker Planning"
+                  src={cookies}
+                  alt="Cookies"
                   width={500}
                   height={329}
                   priority
