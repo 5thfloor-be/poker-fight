@@ -15,13 +15,14 @@ const QuitButton = () => {
     const [show, setShow] = useState(false);
 
     const quit = () => {
-        setIsRoomActive(false);
-        setUser({ ...user, role: "" });
         let socket = io({transports: ["websocket"]});
         socket.emit("remove_user", {
             userId: user.id,
             roomId: room?.id
         });
+
+        setIsRoomActive(false);
+        setUser({ ...user, role: "" });
         router.push("/");
     };
 
@@ -38,7 +39,7 @@ const QuitButton = () => {
         <button onClick={quitButton} className="btn btn-danger mt-1 d-none d-sm-block">
             <IoExitOutline color="white" size={30} />
         </button>
-        <div onClick={quitButton} className="w-100 h-100 d-lg-none">
+        <div onClick={quitButton} className="w-100 h-100 d-md-none">
             QUIT ROOM <IoExitOutline color="white" size={30} />
         </div>
 
