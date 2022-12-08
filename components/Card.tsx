@@ -53,9 +53,10 @@ const Card = ({
             <div className="d-none d-sm-block col-sm-6 px-2">
               <Image
                 alt="card"
-                src="/images/favicon.png"
+                src="/images/favicon.webp"
                 width={50}
                 height={50}
+                priority
               />
             </div>
             {canClose && (
@@ -77,9 +78,10 @@ const Card = ({
             >
               <Image
                 alt="card"
-                src="/images/favicon.png"
+                src="/images/favicon.webp"
                 width={50}
                 height={50}
+                priority
               />
             </div>
           </div>

@@ -69,11 +69,11 @@ const Home = () => {
             <div className="container-fluid px-0 mx-0 w-100">
               <div className="col-3 ps-2 mt-2 d-none d-sm-block">
                 <Image
-                  src="/images/logo-project.png"
+                  src="/images/logo-project.webp"
                   width={208}
                   height={40}
                   alt="logo"
-                  loading="eager"
+                  priority
                 />
               </div>
 
@@ -156,11 +156,11 @@ const Home = () => {
               </div>
               <div className="col-sm-5 py-3">
                 <Image
-                  src="/images/in-progress.png"
+                  src="/images/in-progress.webp"
                   alt="Poker Planning"
                   width={500}
                   height={257}
-                  loading="eager"
+                  priority
                 />
               </div>
               <div
@@ -174,11 +174,11 @@ const Home = () => {
             >
               <div className="col-sm-5 offset-sm-1 py-3">
                 <Image
-                  src="/images/versus.png"
+                  src="/images/versus.webp"
                   alt="VS Room"
                   width={381}
                   height={272}
-                  loading="eager"
+                  priority
                 />
               </div>
               <div className="col-sm-5 py-3">
@@ -216,11 +216,11 @@ const Home = () => {
               </div>
               <div className="col-sm-5 py-3">
                 <Image
-                  src="/images/points-achieved.png"
+                  src="/images/points-achieved.webp"
                   alt="Poker Planning"
                   width={500}
                   height={331}
-                  loading="eager"
+                  priority
                 />
               </div>
               <div
@@ -234,11 +234,11 @@ const Home = () => {
             >
               <div className="col-sm-5 offset-sm-1 py-3">
                 <Image
-                  src="/images/coffee-time.png"
+                  src="/images/coffee-time.webp"
                   alt="VS Room"
                   width={500}
                   height={330}
-                  loading="eager"
+                  priority
                 />
               </div>
               <div className="col-sm-5 py-3">
@@ -277,11 +277,11 @@ const Home = () => {
               </div>
               <div className="col-sm-5 py-3">
                 <Image
-                  src="/images/speed-up.png"
+                  src="/images/speed-up.webp"
                   alt="Poker Planning"
                   width={500}
                   height={321}
-                  loading="eager"
+                  priority
                 />
               </div>
               <div
@@ -295,11 +295,11 @@ const Home = () => {
             >
               <div className="col-sm-5 offset-sm-1 py-3">
                 <Image
-                  src="/images/github.png"
+                  src="/images/github.webp"
                   alt="VS Room"
                   width={500}
                   height={284}
-                  loading="eager"
+                  priority
                 />
               </div>
               <div className="col-sm-5 py-3">
@@ -351,11 +351,11 @@ const Home = () => {
               </div>
               <div className="col-sm-5 py-3">
                 <Image
-                  src="/images/cookies.png"
+                  src="/images/cookies.webp"
                   alt="Poker Planning"
                   width={500}
                   height={329}
-                  loading="eager"
+                  priority
                 />
               </div>
             </div>

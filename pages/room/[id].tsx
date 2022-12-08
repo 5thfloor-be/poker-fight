@@ -333,11 +333,11 @@ const Room = ({ roomId }: RoomProps) => {
                 ))
             ) : (
               <Image
-                src="/images/perfect.png"
+                src="/images/perfect.webp"
                 alt="Poker Planning"
                 width={333}
                 height={85}
-                loading="eager"
+                priority
               />
             )}
           </div>

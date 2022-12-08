@@ -2,15 +2,14 @@ import { NextPage } from "next";
 import { FaLinkedinIn } from "react-icons/fa";
 import Image from "next/image";
 import styles from "../../styles/Footer.module.css";
-import {useContext} from "react";
-import {UserContext} from "../../context/UserContext";
+import { useContext } from "react";
+import { UserContext } from "../../context/UserContext";
 
 const Footer: NextPage = () => {
-
   const { isRoomActive } = useContext(UserContext);
 
   return (
-    <div className={isRoomActive?`d-none d-sm-block`:''}>
+    <div className={isRoomActive ? `d-none d-sm-block` : ""}>
       <footer className={styles.container}>
         <div className="text-bg-dark pt-2 mx-0 ps-2">
           <div className="container">
@@ -53,10 +52,11 @@ const Footer: NextPage = () => {
                     >
                       <Image
                         className="text-white"
-                        src="/images/5thFloor-logo-white.png"
+                        src="/images/5thFloor-logo-white.webp"
                         layout="fill"
                         objectFit="contain"
                         alt="logo"
+                        priority
                       />
                     </a>
                   </div>

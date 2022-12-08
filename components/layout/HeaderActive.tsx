@@ -18,8 +18,6 @@ const HeaderActive = () => {
     setWidthScreen(window.innerWidth);
   }, []);
 
-
-
   return (
     <>
       {room && room.id && (
@@ -30,10 +28,11 @@ const HeaderActive = () => {
           >
             <div className="col-8 offset-2 ps-1 pt-2 pt-sm-1 col-sm-3 offset-sm-0">
               <Image
-                src="/images/logo-project.png"
+                src="/images/logo-project.webp"
                 width={300}
                 height={60}
                 alt="logo"
+                priority
               />
             </div>
 
@@ -92,9 +91,7 @@ const HeaderActive = () => {
               )}
             </div>
             <div className="d-none d-sm-block px-3 col-sm-1">
-              {isRoomActive && (
-                <QuitButton />
-              )}
+              {isRoomActive && <QuitButton />}
             </div>
           </div>
         </div>
