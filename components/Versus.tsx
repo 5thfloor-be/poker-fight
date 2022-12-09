@@ -1,6 +1,5 @@
 import type { NextPage } from "next";
 import React, { useContext, useEffect, useState } from "react";
-import Image from "next/image";
 import { useRouter } from "next/router";
 import { io } from "socket.io-client";
 import { Role } from "../pages/api/model/user";
@@ -9,8 +8,7 @@ import { Button, Modal } from "react-bootstrap";
 import { Deck } from "./Deck";
 import { UserContext } from "../context/UserContext";
 import FooterActiveMobile from "./layout/FooterActiveMobile";
-import styles from "../styles/Versus.module.css";
-import versus from "../public/images/versus.webp";
+import Fighters from "./Fighters";
 
 const Versus: NextPage = () => {
   const [widthScreen, setWidthScreen] = useState(0);
@@ -18,21 +16,10 @@ const Versus: NextPage = () => {
   const [stateSocket, setStateSocket] = useState();
   const router = useRouter();
   const roomId = router.query.id;
-  const { user, setUser, setRoom, room } = useContext(UserContext);
+  const { user, room } = useContext(UserContext);
   const [showOtherScoreModal, setShowOtherScoreModal] = useState(false);
   const [othercard, setOthercard] = useState(0);
   const [reload, setReload] = useState(false);
-
-  const fighters: string[] = [
-    "/images/versus/1.webp",
-    "/images/versus/2.webp",
-    "/images/versus/3.webp",
-    "/images/versus/4.webp",
-    "/images/versus/5.webp",
-    "/images/versus/6.webp",
-    "/images/versus/7.webp",
-    "/images/versus/8.webp",
-  ];
 
   useEffect(() => {
     setWidthScreen(window.innerWidth);
@@ -92,148 +79,25 @@ const Versus: NextPage = () => {
     socket.emit("redo_vote", { roomId });
   };
 
-  function getUserName(userId: string) {
-    return (
-      room?.users.filter((u) => u.id === userId).pop()?.name || "Anonymous"
-    );
-  }
-
   const cancel = () => setShowOtherScoreModal(false);
-
-  function getFighters(side: String) {
-    let cards = room?.currentVotes.filter((vote) => vote.vote !== -1);
-
-    let highVal = highest();
-    let lowVal = lowest();
-
-    let leftCards = cards?.filter((it) => it.vote == lowVal);
-    let rightCards = cards?.filter((it) => it.vote == highVal);
-
-    let otherVoters = cards?.filter(
-      (it) => it.vote != lowVal && it.vote != highVal
-    );
-
-    /* On récupère l'image du fighter */
-    let i1 = Math.floor(Math.random() * 8);
-    let i2 = Math.floor(Math.random() * 8);
-    if (i1 === i2) {
-      i2 = i1 === fighters.length - 1 ? 0 : i1 + 1;
-    }
-    let fighter1: string = fighters[i1];
-    let fighter2: string = fighters[i2];
-
-    if (side == "right") {
-      return (
-        <>
-          <div className={`${styles.blocfighter}`}>
-            <Image
-              className={`${styles.flipX}`}
-              src={fighter1}
-              layout="responsive"
-              objectFit="contain"
-              alt="Fighter"
-              height={widthScreen > 576 ? "100px" : "200px"}
-              width={widthScreen > 576 ? "100px" : "100px"}
-            />
-            <div className={`${styles.centered}`}>{highVal}</div>
-          </div>
-          <div className="container text-center">
-            {rightCards?.map((item, index) => (
-              <p key={index} className="text-white fw-bold my-0">
-                {getUserName(item.userId)}
-              </p>
-            ))}
-          </div>
-        </>
-      );
-    } else if (side == "left") {
-      return (
-        <>
-          <div className={`${styles.blocfighter}`}>
-            <Image
-              src={fighter2}
-              layout="responsive"
-              objectFit="contain"
-              alt="Fighter"
-              height={widthScreen > 576 ? "100px" : "200px"}
-              width={widthScreen > 576 ? "100px" : "100px"}
-            />
-            <div className={`${styles.centered}`}>{lowVal}</div>
-          </div>
-          <div className="container text-center">
-            {leftCards?.map((item, index) => (
-              <p key={index} className="text-white fw-bold my-0">
-                {getUserName(item.userId)}
-              </p>
-            ))}
-          </div>
-        </>
-      );
-    } else {
-      return (
-        <>
-          {/* On applique le scroll auto si Mobile ou plus de 4 éléments */}
-          <div className={`${styles.scrollcontainer}`}>
-            <div
-              className={
-                widthScreen < 576 || (otherVoters && otherVoters.length > 4)
-                  ? `${styles.scrolltext}`
-                  : ""
-              }
-            >
-              <div className="container text-center">
-                {otherVoters?.map((item, index) => (
-                  <span key={index} className="text-white fw-bold my-0 mx-3">
-                    <span className="border border-white rounded px-2 py-1 me-2">
-                      {item.vote}
-                    </span>
-                    {getUserName(item.userId)}
-                  </span>
-                ))}
-              </div>
-            </div>
-          </div>
-        </>
-      );
-    }
-  }
 
   return (
     <>
       <div
         className="container px-sm-3"
-        style={widthScreen < 576 ? { paddingBottom: 80 } : { paddingBottom: 0 }}
+        style={
+          widthScreen < 576 ? { paddingBottom: 100 } : { paddingBottom: 80 }
+        }
       >
-        <div className="row text-center text-white pt-0 pt-sm-3">
+        <div className="row text-center text-white pt-0 pt-sm-2">
           <h1
             style={{ fontSize: "50px", fontWeight: "bold" }}
-            className="mx-0 pt-sm-3 pb-1"
+            className="mx-0 pt-sm-1 pb-1"
           >
             LET&apos;S FIGHT !
           </h1>
         </div>
-        <div className="row playingMat py-2 px-0 p-sm-3 m-2 mt-3">
-          <div className="col-4 px-0 px-sm-3">
-            <div>{getFighters("left")}</div>
-          </div>
-          <div className="col-4 px-0 my-auto">
-            <Image
-              className="text-white"
-              src={versus}
-              layout="responsive"
-              objectFit="contain"
-              alt="logo"
-              height={widthScreen > 576 ? "200px" : "272px"}
-              width={widthScreen > 576 ? "400px" : "381px"}
-            />
-          </div>
-          <div className="col-4 px-0 px-sm-3">
-            <div>{getFighters("right")}</div>
-          </div>
-          <div className="col-12 pt-sm-3 px-2 text-white text-center">
-            {getFighters("othervoters")}
-          </div>
-        </div>
+        <Fighters />
 
         {/* Partie texte explicatif */}
         <div className="row">
