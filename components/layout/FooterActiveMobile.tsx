@@ -102,9 +102,10 @@ const FooterActiveMobile: NextPage = () => {
               </div>
               {/* Bouton Pause Café */}
               <div className="col-2 pt-1 px-0 ">
-                {room.roomOptions.coffeeBreakAllowed && (
-                  <CoffeBreak user={user} socket={socket} room={room} />
-                )}
+                {room.roomOptions.coffeeBreakAllowed &&
+                  room.state === States.VOTING && (
+                    <CoffeBreak user={user} socket={socket} room={room} />
+                  )}
               </div>
               {/* Deck central */}
               <div className="col-4">
@@ -169,7 +170,7 @@ const FooterActiveMobile: NextPage = () => {
                   >
                     5th Floor Open Source Project
                   </Dropdown.Item>
-                  <Dropdown.Item className="text-center" >
+                  <Dropdown.Item className="text-center">
                     <QuitButton />
                   </Dropdown.Item>
                 </DropdownButton>
