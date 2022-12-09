@@ -20,6 +20,7 @@ import { JoinRoomReturn } from "../api/socket";
 import Image from "next/image";
 import ModalGoalScore from "../../components/ModalGoalScore";
 import { matomo } from "../_app";
+import perfect from "../../public/images/perfect.webp";
 
 type RoomProps = {
   roomId: any;
@@ -334,11 +335,10 @@ const Room = ({ roomId }: RoomProps) => {
                 ))
             ) : (
               <Image
-                src="/images/perfect.webp"
+                src={perfect}
                 alt="Poker Planning"
                 width={333}
                 height={85}
-                priority
               />
             )}
           </div>

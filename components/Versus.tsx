@@ -19,7 +19,6 @@ const Versus: NextPage = () => {
   const { user, room } = useContext(UserContext);
   const [showOtherScoreModal, setShowOtherScoreModal] = useState(false);
   const [othercard, setOthercard] = useState(0);
-  const [reload, setReload] = useState(false);
 
   useEffect(() => {
     setWidthScreen(window.innerWidth);
@@ -55,14 +54,12 @@ const Versus: NextPage = () => {
   const forceHigh = () => {
     console.debug("Force highest : ", highest());
     socket.emit("validate", { roomId: roomId, finalVote: highest() });
-    setReload(true);
     console.debug("Validate: Add points and change status room to voting");
   };
 
   const forceLow = () => {
     console.debug("Force lowest : ", lowest());
     socket.emit("validate", { roomId: roomId, finalVote: lowest() });
-    setReload(true);
     console.debug("Validate: Add points and change status room to voting");
   };
 
@@ -70,7 +67,6 @@ const Versus: NextPage = () => {
     setShowOtherScoreModal(false);
     console.debug("Force Other : ", other);
     socket.emit("validate", { roomId: roomId, finalVote: other });
-    setReload(true);
     console.debug("Validate: Add points and change status room to voting");
   };
 
