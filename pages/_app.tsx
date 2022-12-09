@@ -31,9 +31,22 @@ export function matomo(analytics: Analytics) {
     if (document.getElementById(analytics) === null) {
         const matomoUrl = process.env.NEXT_PUBLIC_MATOMO_URL;
         const matomoSiteId = process.env.NEXT_PUBLIC_MATOMO_SITE_ID;
+        let trackingUrl = process.env.NEXT_PUBLIC_LINK_URL;
+
+        trackingUrl += analytics === 'analyticsRoom' ?
+            '/room' :
+            analytics === 'analyticsJoin' ?
+                '/join' :
+                analytics === 'analyticsError' ?
+                    '/error-page' :
+                    '';
+
         console.debug('matomoUrl :', matomoUrl);
         console.debug('matomoSiteId :', matomoSiteId);
+        console.debug('trackingUrl :', trackingUrl);
+
         var _paq = (window._paq = window._paq || []);
+        _paq.push(['setCustomUrl', trackingUrl]);
         _paq.push(["trackPageView"]);
         _paq.push(["enableLinkTracking"]);
         (function () {
