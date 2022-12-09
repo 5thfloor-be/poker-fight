@@ -15,7 +15,7 @@ const QuitButton = () => {
     const [show, setShow] = useState(false);
 
     const quit = () => {
-        let socket = io({transports: ["websocket"]});
+        let socket = io();
         socket.emit("remove_user", {
             userId: user.id,
             roomId: room?.id
