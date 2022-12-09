@@ -33,13 +33,17 @@ export function matomo(analytics: Analytics) {
         const matomoSiteId = process.env.NEXT_PUBLIC_MATOMO_SITE_ID;
         let trackingUrl = process.env.NEXT_PUBLIC_LINK_URL;
 
-        trackingUrl += analytics === 'analyticsRoom' ?
-            '/room' :
-            analytics === 'analyticsJoin' ?
-                '/join' :
-                analytics === 'analyticsError' ?
-                    '/error-page' :
-                    '';
+        switch (analytics) {
+            case 'analyticsJoin':
+                trackingUrl += '/join';
+                break;
+            case 'analyticsRoom':
+                trackingUrl += '/room';
+                break;
+            case 'analyticsError':
+                trackingUrl += '/error-page';
+                break;
+        }
 
         console.debug('matomoUrl :', matomoUrl);
         console.debug('matomoSiteId :', matomoSiteId);
