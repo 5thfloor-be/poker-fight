@@ -76,7 +76,13 @@ const Home = () => {
           <nav className="navbar fixed-top navbar-black bg-black w-100 py-1">
             <div className="container-fluid px-0 mx-0 w-100">
               <div className="col-3 ps-2 mt-2 d-none d-sm-block">
-                <Image src={logoProject} width={208} height={40} alt="logo" />
+                <Image
+                  loading="eager"
+                  src={logoProject}
+                  width={208}
+                  height={40}
+                  alt="logo"
+                />
               </div>
 
               <div className="col-5 col-sm-3 px-2">
@@ -158,6 +164,7 @@ const Home = () => {
               </div>
               <div className="col-sm-5 py-3">
                 <Image
+                  loading="eager"
                   src={inProgress}
                   alt="Poker Planning"
                   width={500}
@@ -174,7 +181,13 @@ const Home = () => {
               style={widthScreen < 576 ? { paddingTop: 0 } : { paddingTop: 70 }}
             >
               <div className="col-sm-5 offset-sm-1 py-3">
-                <Image src={versus} alt="VS Room" width={381} height={272} />
+                <Image
+                  loading="eager"
+                  src={versus}
+                  alt="VS Room"
+                  width={381}
+                  height={272}
+                />
               </div>
               <div className="col-sm-5 py-3">
                 <p
@@ -211,6 +224,7 @@ const Home = () => {
               </div>
               <div className="col-sm-5 py-3">
                 <Image
+                  loading="eager"
                   src={pointsAchieved}
                   alt="Points Achieved"
                   width={500}
@@ -228,6 +242,7 @@ const Home = () => {
             >
               <div className="col-sm-5 offset-sm-1 py-3">
                 <Image
+                  loading="eager"
                   src={coffeeTime}
                   alt="Coffee Time"
                   width={500}
@@ -269,7 +284,13 @@ const Home = () => {
                 </p>
               </div>
               <div className="col-sm-5 py-3">
-                <Image src={speedUp} alt="Speed Up" width={500} height={321} />
+                <Image
+                  loading="eager"
+                  src={speedUp}
+                  alt="Speed Up"
+                  width={500}
+                  height={321}
+                />
               </div>
               <div
                 className="col-4 offset-4 border-white border-top"
@@ -281,7 +302,13 @@ const Home = () => {
               style={widthScreen < 576 ? { paddingTop: 0 } : { paddingTop: 70 }}
             >
               <div className="col-sm-5 offset-sm-1 py-3">
-                <Image src={gitHub} alt="GitHub" width={500} height={284} />
+                <Image
+                  loading="eager"
+                  src={gitHub}
+                  alt="GitHub"
+                  width={500}
+                  height={284}
+                />
               </div>
               <div className="col-sm-5 py-3">
                 <p
@@ -331,7 +358,13 @@ const Home = () => {
                 </p>
               </div>
               <div className="col-sm-5 py-3">
-                <Image src={cookies} alt="Cookies" width={500} height={329} />
+                <Image
+                  loading="eager"
+                  src={cookies}
+                  alt="Cookies"
+                  width={500}
+                  height={329}
+                />
               </div>
             </div>
           </div>

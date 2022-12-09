@@ -32,7 +32,13 @@ const ErrorPage = () => {
       <div className="row align-content-center justify-content-center mt-3">
         <div className="col-12 text-white text-center">
           <a onClick={() => goHome()}>
-            <Image src={logoProject} width={300} height={60} alt="logo" />
+            <Image
+              loading="eager"
+              src={logoProject}
+              width={300}
+              height={60}
+              alt="logo"
+            />
           </a>
         </div>
       </div>
