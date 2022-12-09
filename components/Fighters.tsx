@@ -8,13 +8,23 @@ import fighter5 from "../public/images/versus/5.webp";
 import fighter6 from "../public/images/versus/6.webp";
 import fighter7 from "../public/images/versus/7.webp";
 import fighter8 from "../public/images/versus/8.webp";
-import Image from "next/image";
+import Image, { StaticImageData } from "next/image";
 import { UserContext } from "../context/UserContext";
 import styles from "../styles/Versus.module.css";
+import UserVote from "../pages/api/model/userVote";
 
 const Fighters = () => {
   const { room } = useContext(UserContext);
   const [widthScreen, setWidthScreen] = useState(0);
+
+  const [leftCards, setLeftCards] = useState<UserVote[]>();
+  const [rightCards, setRightCards] = useState<UserVote[]>();
+
+  const [otherVoters, setOtherVoters] = useState<UserVote[]>();
+
+  const [fighterMath1, setFighterMath1] = useState<StaticImageData>();
+  const [fighterMath2, setFighterMath2] = useState<StaticImageData>();
+
   const fightersImages = [
     fighter1,
     fighter2,
@@ -52,43 +62,51 @@ const Fighters = () => {
     );
   }
 
-  let cards = room?.currentVotes.filter((vote) => vote.vote !== -1);
+  useEffect(() => {
+    let cards = room?.currentVotes.filter((vote) => vote.vote !== -1);
 
-  let highVal = highest();
-  let lowVal = lowest();
+    let highVal = highest();
+    let lowVal = lowest();
 
-  let leftCards = cards?.filter((it) => it.vote == lowVal);
-  let rightCards = cards?.filter((it) => it.vote == highVal);
+    setLeftCards(cards?.filter((it) => it.vote == lowVal));
+    setRightCards(cards?.filter((it) => it.vote == highVal));
 
-  let otherVoters = cards?.filter(
-    (it) => it.vote != lowVal && it.vote != highVal
-  );
+    setOtherVoters(
+      cards?.filter((it) => it.vote != lowVal && it.vote != highVal)
+    );
 
-  /* On récupère l'image du fighter */
-  let i1 = Math.floor(Math.random() * 8);
-  let i2 = Math.floor(Math.random() * 8);
+    /* On récupère l'image du fighter */
+    let i1 = Math.floor(Math.random() * 8);
+    let i2 = Math.floor(Math.random() * 8);
 
-  if (i1 === i2) {
-    i2 = i1 === fightersImages.length - 1 ? 0 : i1 + 1;
-  }
+    if (i1 === i2) {
+      i2 = i1 === fightersImages.length - 1 ? 0 : i1 + 1;
+    }
 
-  let fighterMath1 = fightersImages[i1];
-  let fighterMath2 = fightersImages[i2];
+    setFighterMath1(fightersImages[i1]);
+    setFighterMath2(fightersImages[i2]);
+
+    console.log("i1" + i1);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <>
       <div className="row playingMat py-2 px-0 p-sm-3 m-2 mt-3">
         <div className="col-4 px-0 px-sm-3">
           <div className={`${styles.blocfighter}`}>
-            <Image
-              src={fighterMath2}
-              layout="responsive"
-              objectFit="contain"
-              alt="Fighter"
-              height={widthScreen > 576 ? "100px" : "200px"}
-              width={widthScreen > 576 ? "100px" : "100px"}
-            />
-            <div className={`${styles.centered}`}>{lowVal}</div>
+            {fighterMath2 && (
+              <Image
+                src={fighterMath2}
+                layout="responsive"
+                objectFit="contain"
+                alt="Fighter"
+                height={widthScreen > 576 ? "100px" : "200px"}
+                width={widthScreen > 576 ? "100px" : "100px"}
+              />
+            )}
+            <div className={`${styles.centered}`}>{lowest()}</div>
           </div>
           <div className="container text-center px-0">
             {leftCards?.map((item, index) => (
@@ -113,16 +131,18 @@ const Fighters = () => {
 
         <div className="col-4 px-0 px-sm-3">
           <div className={`${styles.blocfighter}`}>
-            <Image
-              className={`${styles.flipX}`}
-              src={fighterMath1}
-              layout="responsive"
-              objectFit="contain"
-              alt="Fighter"
-              height={widthScreen > 576 ? "100px" : "200px"}
-              width={widthScreen > 576 ? "100px" : "100px"}
-            />
-            <div className={`${styles.centered}`}>{highVal}</div>
+            {fighterMath1 && (
+              <Image
+                className={`${styles.flipX}`}
+                src={fighterMath1}
+                layout="responsive"
+                objectFit="contain"
+                alt="Fighter"
+                height={widthScreen > 576 ? "100px" : "200px"}
+                width={widthScreen > 576 ? "100px" : "100px"}
+              />
+            )}
+            <div className={`${styles.centered}`}>{highest()}</div>
           </div>
           <div className="container text-center px-0">
             {rightCards?.map((item, index) => (

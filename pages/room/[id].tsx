@@ -1,25 +1,25 @@
-import {useRouter} from "next/router";
-import {useContext, useEffect, useState} from "react";
+import { useRouter } from "next/router";
+import { useContext, useEffect, useState } from "react";
 import Card from "../../components/Card";
-import User, {Role} from "../api/model/user";
-import RoomModel, {States} from "../api/model/room";
-import {Deck} from "../../components/Deck";
+import User, { Role } from "../api/model/user";
+import RoomModel, { States } from "../api/model/room";
+import { Deck } from "../../components/Deck";
 import Modal from "react-bootstrap/Modal";
-import {Button} from "react-bootstrap";
-import {UserContext} from "../../context/UserContext";
-import {io, Socket} from "socket.io-client";
+import { Button } from "react-bootstrap";
+import { UserContext } from "../../context/UserContext";
+import { io, Socket } from "socket.io-client";
 import CoffeBreak from "../../components/CoffeBreak";
 import Spectators from "../../components/Spectators";
-import {BsEyeglasses} from "react-icons/bs";
+import { BsEyeglasses } from "react-icons/bs";
 import ModalSpectators from "../../components/ModalSpectators";
 import Buzzer from "../../components/Buzzer";
 import FooterActiveMobile from "../../components/layout/FooterActiveMobile";
 import Versus from "../../components/Versus";
 import ScrumMasterVotingToolbar from "../../components/ScrumMasterVotingToolbar";
-import {JoinRoomReturn} from "../api/socket";
+import { JoinRoomReturn } from "../api/socket";
 import Image from "next/image";
 import ModalGoalScore from "../../components/ModalGoalScore";
-import {matomo} from "../_app";
+import { matomo } from "../_app";
 
 type RoomProps = {
   roomId: any;
@@ -54,7 +54,6 @@ const Room = ({ roomId }: RoomProps) => {
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
 
-
   /* Dans le cas si pas d'utilisateur redirect vers la Join Room */
   useEffect(() => {
     if (!user.name) {
@@ -63,11 +62,11 @@ const Room = ({ roomId }: RoomProps) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-
   useEffect(() => {
     if (!stateSocket && user.name.length > 0) {
       joinRoomFunction();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -130,6 +129,7 @@ const Room = ({ roomId }: RoomProps) => {
         console.debug("reconnect - end");
       });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [stateSocket]);
 
   useEffect(() => {
@@ -168,8 +168,8 @@ const Room = ({ roomId }: RoomProps) => {
           router.push("/");
         }
       });
-    } // eslint-disable-next-line react-hooks/exhaustive-deps
-
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [stateSocket, user]);
 
   const updateSelection = (chosenVote: number) => {
@@ -185,7 +185,10 @@ const Room = ({ roomId }: RoomProps) => {
   };
   // get room from server
   const startVoting = () => {
-    console.debug("emit : start voting: Change status room to voting", stateSocket);
+    console.debug(
+      "emit : start voting: Change status room to voting",
+      stateSocket
+    );
     stateSocket?.emit("start_voting", { roomId }, (r: any) => setRoom(r));
   };
 
@@ -255,7 +258,10 @@ const Room = ({ roomId }: RoomProps) => {
   };
 
   const removeUser = (userToRemove: User) => {
-    stateSocket?.emit("remove_user", { roomId: room.id, userId: userToRemove.id });
+    stateSocket?.emit("remove_user", {
+      roomId: room.id,
+      userId: userToRemove.id,
+    });
   };
 
   const getStatusText = () => {
