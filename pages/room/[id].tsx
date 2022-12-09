@@ -39,8 +39,7 @@ const Room = ({ roomId }: RoomProps) => {
   }
 
   const router = useRouter();
-  const { user, setUser, setRoom, room, setIsRoomActive } =
-    useContext(UserContext);
+  const { user, setUser, setRoom, room, setIsRoomActive } = useContext(UserContext);
   const [cardValues, setCardValues] = useState<any>([]);
   const [stateSocket, setStateSocket] = useState<Socket>();
   const [selectedVote, setSelectedVote] = useState(-1);
@@ -140,7 +139,7 @@ const Room = ({ roomId }: RoomProps) => {
         setRoom(data);
         setShow(false);
         if (data?.state === States.FIGHTING) {
-          <Versus />;
+          <Versus socket={stateSocket}/>;
         }
       });
       stateSocket.on("start_voting", (data: any) => {
@@ -230,7 +229,7 @@ const Room = ({ roomId }: RoomProps) => {
   };
 
   if (room?.state === States.FIGHTING) {
-    return <Versus />;
+    return <Versus socket={stateSocket}/>;
   }
 
   if (!room) {

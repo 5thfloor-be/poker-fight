@@ -1,7 +1,7 @@
 import type { NextPage } from "next";
 import React, { useContext, useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { io } from "socket.io-client";
+import {io, Socket} from "socket.io-client";
 import { Role } from "../pages/api/model/user";
 import ScrumMasterActions from "./ScrumMasterActions";
 import { Button, Modal } from "react-bootstrap";
@@ -10,10 +10,12 @@ import { UserContext } from "../context/UserContext";
 import FooterActiveMobile from "./layout/FooterActiveMobile";
 import Fighters from "./Fighters";
 
-const Versus: NextPage = () => {
+interface VersusProps{
+  socket: Socket|undefined
+}
+
+const Versus = ({socket}:VersusProps) => {
   const [widthScreen, setWidthScreen] = useState(0);
-  let socket: any;
-  const [stateSocket, setStateSocket] = useState();
   const router = useRouter();
   const roomId = router.query.id;
   const { user, room } = useContext(UserContext);
@@ -23,13 +25,6 @@ const Versus: NextPage = () => {
   useEffect(() => {
     setWidthScreen(window.innerWidth);
   }, []);
-
-  if (stateSocket) {
-    socket = stateSocket;
-  } else {
-    socket = io({ transports: ["websocket"] });
-    setStateSocket(socket);
-  }
 
   const updateSelection = (chosenVote: number) => {
     setOthercard(chosenVote);
@@ -53,26 +48,26 @@ const Versus: NextPage = () => {
 
   const forceHigh = () => {
     console.debug("Force highest : ", highest());
-    socket.emit("validate", { roomId: roomId, finalVote: highest() });
+    socket?.emit("validate", { roomId: roomId, finalVote: highest() });
     console.debug("Validate: Add points and change status room to voting");
   };
 
   const forceLow = () => {
     console.debug("Force lowest : ", lowest());
-    socket.emit("validate", { roomId: roomId, finalVote: lowest() });
+    socket?.emit("validate", { roomId: roomId, finalVote: lowest() });
     console.debug("Validate: Add points and change status room to voting");
   };
 
   const forceOther = (other: number) => {
     setShowOtherScoreModal(false);
     console.debug("Force Other : ", other);
-    socket.emit("validate", { roomId: roomId, finalVote: other });
+    socket?.emit("validate", { roomId: roomId, finalVote: other });
     console.debug("Validate: Add points and change status room to voting");
   };
 
   const redoVote = () => {
     console.debug("Redo vote : ");
-    socket.emit("redo_vote", { roomId });
+    socket?.emit("redo_vote", { roomId });
   };
 
   const cancel = () => setShowOtherScoreModal(false);
