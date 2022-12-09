@@ -52,6 +52,7 @@ const Footer: NextPage = () => {
                       rel="noreferrer"
                     >
                       <Image
+                        loading="eager"
                         className="text-white"
                         src={logo}
                         layout="fill"

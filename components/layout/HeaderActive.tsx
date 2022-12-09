@@ -27,7 +27,13 @@ const HeaderActive = () => {
             style={widthScreen < 576 ? { paddingTop: 0 } : { paddingTop: 30 }}
           >
             <div className="col-8 offset-2 ps-1 pt-2 pt-sm-1 col-sm-3 offset-sm-0">
-              <Image src={logoProject} width={300} height={60} alt="logo" />
+              <Image
+                loading="eager"
+                src={logoProject}
+                width={300}
+                height={60}
+                alt="logo"
+              />
             </div>
 
             <div className="col-12 col-sm-4 mx-0 px-0 pt-sm-2 d-none d-sm-block">
