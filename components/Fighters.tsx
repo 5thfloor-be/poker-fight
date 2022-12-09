@@ -18,14 +18,14 @@ const Fighters = () => {
   const [fighterMath2, setFighterMath2] = useState<string>();
 
   const fightersImages: string[] = [
-    "../public/images/versus/1.webp",
-    "../public/images/versus/2.webp",
-    "../public/images/versus/3.webp",
-    "../public/images/versus/4.webp",
-    "../public/images/versus/5.webp",
-    "../public/images/versus/6.webp",
-    "../public/images/versus/7.webp",
-    "../public/images/versus/8.webp",
+    "/images/versus/1.webp",
+    "/images/versus/2.webp",
+    "/images/versus/3.webp",
+    "/images/versus/4.webp",
+    "/images/versus/5.webp",
+    "/images/versus/6.webp",
+    "/images/versus/7.webp",
+    "/images/versus/8.webp",
   ];
 
   useEffect(() => {
