@@ -55,30 +55,30 @@ const Fighters = () => {
   }
 
   useEffect(() => {
-    let cards = room?.currentVotes.filter((vote) => vote.vote !== -1);
+    if (!fighterMath1 && !fighterMath2) {
+      let cards = room?.currentVotes.filter((vote) => vote.vote !== -1);
 
-    let highVal = highest();
-    let lowVal = lowest();
+      let highVal = highest();
+      let lowVal = lowest();
 
-    setLeftCards(cards?.filter((it) => it.vote == lowVal));
-    setRightCards(cards?.filter((it) => it.vote == highVal));
+      setLeftCards(cards?.filter((it) => it.vote == lowVal));
+      setRightCards(cards?.filter((it) => it.vote == highVal));
 
-    setOtherVoters(
-      cards?.filter((it) => it.vote != lowVal && it.vote != highVal)
-    );
+      setOtherVoters(
+        cards?.filter((it) => it.vote != lowVal && it.vote != highVal)
+      );
 
-    /* On récupère l'image du fighter */
-    let i1 = Math.floor(Math.random() * 8);
-    let i2 = Math.floor(Math.random() * 8);
+      /* On récupère l'image du fighter */
+      let i1 = Math.floor(Math.random() * 8);
+      let i2 = Math.floor(Math.random() * 8);
 
-    if (i1 === i2) {
-      i2 = i1 === fightersImages.length - 1 ? 0 : i1 + 1;
+      if (i1 === i2) {
+        i2 = i1 === fightersImages.length - 1 ? 0 : i1 + 1;
+      }
+
+      setFighterMath1(fightersImages[i1]);
+      setFighterMath2(fightersImages[i2]);
     }
-
-    setFighterMath1(fightersImages[i1]);
-    setFighterMath2(fightersImages[i2]);
-
-    console.log("i1" + i1);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
