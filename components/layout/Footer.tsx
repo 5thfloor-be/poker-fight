@@ -18,7 +18,7 @@ const Footer: NextPage = () => {
                 <div className="row">
                   <div className="d-none d-lg-block">
                     <p>
-                      info@5thfloor.be -{" "}
+                      poker-fight@5thfloor.be -{" "}
                       <a
                         className="text-decoration-none text-reset"
                         href="https://www.linkedin.com/company/5th-floor-software"
