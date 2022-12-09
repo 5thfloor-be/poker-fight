@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import { useContext } from "react";
 import { UserContext } from "../../context/UserContext";
 import { matomo } from "../_app";
+import logoProject from "../../public/images/logo-project.webp";
 
 const errorMessages = new Map<ErrorCode, String>([
   [ErrorCode.TOO_MANY_VOTERS, "Sorry, the room is full (already 9 voters)."],
@@ -31,13 +32,7 @@ const ErrorPage = () => {
       <div className="row align-content-center justify-content-center mt-3">
         <div className="col-12 text-white text-center">
           <a onClick={() => goHome()}>
-            <Image
-              src="/images/logo-project.webp"
-              width={300}
-              height={60}
-              alt="logo"
-              priority
-            />
+            <Image src={logoProject} width={300} height={60} alt="logo" />
           </a>
         </div>
       </div>

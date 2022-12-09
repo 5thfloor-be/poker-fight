@@ -4,6 +4,7 @@ import Image from "next/image";
 import styles from "../../styles/Footer.module.css";
 import { useContext } from "react";
 import { UserContext } from "../../context/UserContext";
+import logo from "../../public/images/5thFloor-logo-white.webp";
 
 const Footer: NextPage = () => {
   const { isRoomActive } = useContext(UserContext);
@@ -52,11 +53,10 @@ const Footer: NextPage = () => {
                     >
                       <Image
                         className="text-white"
-                        src="/images/5thFloor-logo-white.webp"
+                        src={logo}
                         layout="fill"
                         objectFit="contain"
                         alt="logo"
-                        priority
                       />
                     </a>
                   </div>

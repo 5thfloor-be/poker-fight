@@ -46,7 +46,6 @@ const Credits = (props: CreditsProps) => {
                       src="/images/team.webp"
                       width={800}
                       height={779}
-                      priority
                     />
                     <div className="w-100 text-center mt-3">
                       <a
@@ -60,7 +59,6 @@ const Credits = (props: CreditsProps) => {
                           src="/images/team/michael.png"
                           width={80}
                           height={80}
-                          priority
                         />
                         <p>
                           <span className="ms-3">
@@ -82,7 +80,6 @@ const Credits = (props: CreditsProps) => {
                           src="/images/team/rachel.png"
                           width={80}
                           height={80}
-                          priority
                         />
                         <p>
                           <span className="ms-3">
@@ -104,7 +101,6 @@ const Credits = (props: CreditsProps) => {
                           src="/images/team/jerry.png"
                           width={80}
                           height={80}
-                          priority
                         />
                         <p>
                           <span className="ms-3">
@@ -126,7 +122,6 @@ const Credits = (props: CreditsProps) => {
                           src="/images/team/thibault.png"
                           width={80}
                           height={80}
-                          priority
                         />
                         <p>
                           <span className="ms-3">
@@ -148,7 +143,6 @@ const Credits = (props: CreditsProps) => {
                           src="/images/team/gabriel.png"
                           width={80}
                           height={80}
-                          priority
                         />
                         <p>
                           <span className="ms-3">
@@ -170,7 +164,6 @@ const Credits = (props: CreditsProps) => {
                           src="/images/team/esthefany.png"
                           width={80}
                           height={80}
-                          priority
                         />
                         <p>
                           <span className="ms-3">
@@ -192,7 +185,6 @@ const Credits = (props: CreditsProps) => {
                           src="/images/team/mathieu.png"
                           width={80}
                           height={80}
-                          priority
                         />
                         <p>
                           <span className="ms-3">
@@ -214,7 +206,6 @@ const Credits = (props: CreditsProps) => {
                           src="/images/team/alexandre.png"
                           width={80}
                           height={80}
-                          priority
                         />
                         <p>
                           <span className="ms-3">
@@ -236,7 +227,6 @@ const Credits = (props: CreditsProps) => {
                           src="/images/team/renaud.png"
                           width={80}
                           height={80}
-                          priority
                         />
                         <p>
                           <span className="ms-3">
@@ -258,7 +248,6 @@ const Credits = (props: CreditsProps) => {
                           src="/images/team/noemie.png"
                           width={80}
                           height={80}
-                          priority
                         />
                         <p>
                           <span className="ms-3">
@@ -280,7 +269,6 @@ const Credits = (props: CreditsProps) => {
                           src="/images/team/luc.png"
                           width={80}
                           height={80}
-                          priority
                         />
                         <p>
                           <span className="ms-3">
@@ -300,7 +288,6 @@ const Credits = (props: CreditsProps) => {
                       src="/images/pizza.webp"
                       width={800}
                       height={440}
-                      priority
                     />
                     <p className="mt-3 pt-3">
                       <span>...and Retro!</span>
@@ -310,7 +297,6 @@ const Credits = (props: CreditsProps) => {
                       src="/images/retro.webp"
                       width={800}
                       height={512}
-                      priority
                     />
                     <p className="mt-3 pt-3">
                       <span>

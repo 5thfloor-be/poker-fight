@@ -3,8 +3,8 @@ import { useRouter } from "next/router";
 import { useContext, useEffect, useState } from "react";
 import { MdOutlineCheck } from "react-icons/md";
 import { UserContext } from "../../context/UserContext";
-import { IoExitOutline } from "react-icons/io5";
 import QuitButton from "../QuitButton";
+import logoProject from "../../public/images/logo-project.webp";
 
 const HeaderActive = () => {
   const { isRoomActive, setIsRoomActive, user, setUser, room } =
@@ -27,13 +27,7 @@ const HeaderActive = () => {
             style={widthScreen < 576 ? { paddingTop: 0 } : { paddingTop: 30 }}
           >
             <div className="col-8 offset-2 ps-1 pt-2 pt-sm-1 col-sm-3 offset-sm-0">
-              <Image
-                src="/images/logo-project.webp"
-                width={300}
-                height={60}
-                alt="logo"
-                priority
-              />
+              <Image src={logoProject} width={300} height={60} alt="logo" />
             </div>
 
             <div className="col-12 col-sm-4 mx-0 px-0 pt-sm-2 d-none d-sm-block">

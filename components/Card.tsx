@@ -4,6 +4,7 @@ import { MdAccountCircle } from "react-icons/md";
 import { Badge, OverlayTrigger, Popover } from "react-bootstrap";
 import { Placement } from "react-bootstrap/types";
 import { MdCancel } from "react-icons/md";
+import favicon from "../public/images/favicon.webp";
 
 export interface CardProps {
   value?: number;
@@ -51,13 +52,7 @@ const Card = ({
         >
           <div className="row h-25">
             <div className="d-none d-sm-block col-sm-6 px-2">
-              <Image
-                alt="card"
-                src="/images/favicon.webp"
-                width={50}
-                height={50}
-                priority
-              />
+              <Image alt="card" src={favicon} width={50} height={50} />
             </div>
             {canClose && (
               <div className="col-12 col-sm-6 text-end pe-0">
@@ -76,13 +71,7 @@ const Card = ({
             <div
               className={`d-none d-sm-block col-6 px-2 ${styles.logoBottom}`}
             >
-              <Image
-                alt="card"
-                src="/images/favicon.webp"
-                width={50}
-                height={50}
-                priority
-              />
+              <Image alt="card" src={favicon} width={50} height={50} />
             </div>
           </div>
         </div>
