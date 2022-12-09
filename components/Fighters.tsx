@@ -96,6 +96,7 @@ const Fighters = () => {
                 alt="Fighter"
                 height={widthScreen > 576 ? "100px" : "200px"}
                 width={widthScreen > 576 ? "100px" : "100px"}
+                loading="eager"
               />
             )}
             <div className={`${styles.centered}`}>{lowest()}</div>
@@ -118,6 +119,7 @@ const Fighters = () => {
             alt="logo"
             height={widthScreen > 576 ? "200px" : "272px"}
             width={widthScreen > 576 ? "400px" : "381px"}
+            loading="eager"
           />
         </div>
 
@@ -132,6 +134,7 @@ const Fighters = () => {
                 alt="Fighter"
                 height={widthScreen > 576 ? "100px" : "200px"}
                 width={widthScreen > 576 ? "100px" : "100px"}
+                loading="eager"
               />
             )}
             <div className={`${styles.centered}`}>{highest()}</div>

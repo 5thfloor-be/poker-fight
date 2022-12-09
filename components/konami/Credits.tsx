@@ -42,6 +42,7 @@ const Credits = (props: CreditsProps) => {
                     </p>
 
                     <Image
+                      loading="eager"
                       alt="Team"
                       src="/images/team.webp"
                       width={800}
@@ -55,6 +56,7 @@ const Credits = (props: CreditsProps) => {
                         rel="noreferrer"
                       >
                         <Image
+                          loading="eager"
                           alt="Michael"
                           src="/images/team/michael.png"
                           width={80}
@@ -76,6 +78,7 @@ const Credits = (props: CreditsProps) => {
                         rel="noreferrer"
                       >
                         <Image
+                          loading="eager"
                           alt="Rachel"
                           src="/images/team/rachel.png"
                           width={80}
@@ -97,6 +100,7 @@ const Credits = (props: CreditsProps) => {
                         rel="noreferrer"
                       >
                         <Image
+                          loading="eager"
                           alt="Jerry"
                           src="/images/team/jerry.png"
                           width={80}
@@ -118,6 +122,7 @@ const Credits = (props: CreditsProps) => {
                         rel="noreferrer"
                       >
                         <Image
+                          loading="eager"
                           alt="Thibault"
                           src="/images/team/thibault.png"
                           width={80}
@@ -139,6 +144,7 @@ const Credits = (props: CreditsProps) => {
                         rel="noreferrer"
                       >
                         <Image
+                          loading="eager"
                           alt="Gabriel"
                           src="/images/team/gabriel.png"
                           width={80}
@@ -160,6 +166,7 @@ const Credits = (props: CreditsProps) => {
                         rel="noreferrer"
                       >
                         <Image
+                          loading="eager"
                           alt="Esthefany"
                           src="/images/team/esthefany.png"
                           width={80}
@@ -181,6 +188,7 @@ const Credits = (props: CreditsProps) => {
                         rel="noreferrer"
                       >
                         <Image
+                          loading="eager"
                           alt="Mathieu"
                           src="/images/team/mathieu.png"
                           width={80}
@@ -202,6 +210,7 @@ const Credits = (props: CreditsProps) => {
                         rel="noreferrer"
                       >
                         <Image
+                          loading="eager"
                           alt="Alexandre"
                           src="/images/team/alexandre.png"
                           width={80}
@@ -223,6 +232,7 @@ const Credits = (props: CreditsProps) => {
                         rel="noreferrer"
                       >
                         <Image
+                          loading="eager"
                           alt="Renaud"
                           src="/images/team/renaud.png"
                           width={80}
@@ -244,6 +254,7 @@ const Credits = (props: CreditsProps) => {
                         rel="noreferrer"
                       >
                         <Image
+                          loading="eager"
                           alt="Noémie"
                           src="/images/team/noemie.png"
                           width={80}
@@ -265,6 +276,7 @@ const Credits = (props: CreditsProps) => {
                         rel="noreferrer"
                       >
                         <Image
+                          loading="eager"
                           alt="Luc"
                           src="/images/team/luc.png"
                           width={80}
@@ -284,6 +296,7 @@ const Credits = (props: CreditsProps) => {
                       <span>A project made out of Pizzas...</span>
                     </p>
                     <Image
+                      loading="eager"
                       alt="Pizza"
                       src="/images/pizza.webp"
                       width={800}
@@ -293,6 +306,7 @@ const Credits = (props: CreditsProps) => {
                       <span>...and Retro!</span>
                     </p>
                     <Image
+                      loading="eager"
                       alt="Retro"
                       src="/images/retro.webp"
                       width={800}
