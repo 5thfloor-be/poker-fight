@@ -21,7 +21,7 @@ const CreateRoom = (props: CreateRoomProps) => {
   const [errorLetters, setErrorLetters] = useState("");
   const router = useRouter();
 
-  const socket = io({ transports: ["websocket"] });
+  const socket = io();
 
   /* All params of the future Room */
   const [roomSettings, setRoomSettings] = useState({

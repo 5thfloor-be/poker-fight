@@ -26,7 +26,7 @@ const SocketHandler = (req: IncomingMessage, res: any) => {
     console.log('res.socket?.server : ', res.socket?.server);
 
     const io = new Server(res.socket?.server, {
-      transports: ["websocket"],
+     
       pingTimeout: 600000,
       pingInterval: 600000,
       upgradeTimeout: 300000

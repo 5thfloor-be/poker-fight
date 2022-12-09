@@ -78,7 +78,7 @@ const Room = ({ roomId }: RoomProps) => {
   }, [stateSocket]);
 
   const joinRoomFunction = () => {
-    const socket = io({ transports: ["websocket"] });
+    const socket = io();
     console.debug("debug");
     setStateSocket(socket);
     socket?.emit(
