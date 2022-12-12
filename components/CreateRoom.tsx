@@ -21,15 +21,13 @@ const CreateRoom = (props: CreateRoomProps) => {
   const [errorLetters, setErrorLetters] = useState("");
   const router = useRouter();
 
-  const socket = io();
-
   /* All params of the future Room */
   const [roomSettings, setRoomSettings] = useState({
     cardValues: ["1", "2", "3", "5", "8", "13"],
     targetPoints: "",
-    coffeeBreakAllowed: false,
+    coffeeBreakAllowed: true,
     revealTimer: "",
-    buzzerAllowed: false,
+    buzzerAllowed: true,
   });
 
   const colors = new Map<string, string>([
@@ -60,6 +58,8 @@ const CreateRoom = (props: CreateRoomProps) => {
   };
 
   const createRoom = () => {
+    const socket = io();
+
     socket.emit("create_room", roomSettings, (data: any) => {
       console.debug("data", data);
 
@@ -76,8 +76,6 @@ const CreateRoom = (props: CreateRoomProps) => {
 
       setIsRoomActive(true);
     });
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   };
 
   const cancel = () => props.setShowCreateRoom(false);
@@ -159,7 +157,7 @@ const CreateRoom = (props: CreateRoomProps) => {
                       className="form-check-label text-white ps-2"
                       htmlFor="voting-toggle"
                     >
-                      Can vote (check the box if the Scrum Master can vote too)
+                      Can vote (check the box if the facilitator can vote too)
                     </label>
                   </div>
                 </div>
@@ -303,54 +301,6 @@ const CreateRoom = (props: CreateRoomProps) => {
                 </label>
               </div>
             </div>
-            {/*<div className="row pt-3">
-              <div className="col-3 col-sm-2 offset-sm-3 text-end">
-                <input
-                  id="timer"
-                  className="rounded p-2"
-                  type="text"
-                  placeholder="Value"
-                  value={roomSettings.revealTimer}
-                  pattern="[0-9]{1,3}"
-                  title="Numbers only"
-                  maxLength={3}
-                  size={1}
-                  onChange={(e) => {
-                    setRoomSettings({
-                      ...roomSettings,
-                      revealTimer: e.target.value,
-                    });
-                  }}
-                  onKeyPress={(event) => {
-                    if (!/[0-9]/.test(event.key)) {
-                      event.preventDefault();
-                      setErrorLetters("Only numbers accepted");
-                    } else {
-                      setErrorLetters("");
-                    }
-                  }}
-                />
-                {roomSettings.revealTimer.length > 0 && (
-                  <MdCancel
-                    className="ms-2"
-                    color="red"
-                    size={"26"}
-                    onClick={() => {
-                      setRoomSettings({
-                        ...roomSettings,
-                        revealTimer: "",
-                      });
-                    }}
-                  />
-                )}
-              </div>
-              <div className="col-9 col-sm-6 text-start">
-                <span className="form-label ps-2">
-                  Automatically reveal the votes after X seconds. If empty no
-                  countdown
-                </span>
-              </div>
-            </div>*/}
             <div className="row pt-3">
               <div className="col-4 col-sm-2 offset-sm-3 form-switch text-end">
                 <input
