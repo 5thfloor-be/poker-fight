@@ -1,10 +1,11 @@
-import React, {useContext, useEffect, useState} from "react";
-import {Button, ToggleButton, ToggleButtonGroup,} from "react-bootstrap";
-import {MdAccountCircle, MdCode, MdOutlineKeyboard, MdOutlineTagFaces,} from "react-icons/md";
-import {CirclePicker} from "react-color";
-import {useRouter} from "next/router";
-import {Role} from "../pages/api/model/user";
-import {UserContext} from "../context/UserContext";
+import React, { useContext, useEffect, useState } from "react";
+import { Button, ToggleButton, ToggleButtonGroup } from "react-bootstrap";
+import { MdAccountCircle, MdCode, MdOutlineTagFaces } from "react-icons/md";
+import { GiPokerHand } from "react-icons/gi";
+import { CirclePicker } from "react-color";
+import { useRouter } from "next/router";
+import { Role } from "../pages/api/model/user";
+import { UserContext } from "../context/UserContext";
 
 type JoinRoomProps = {
   roomId?: string;
@@ -24,7 +25,7 @@ const JoinRoom = (props: JoinRoomProps) => {
   }, []);
 
   useEffect(() => {
-    setRoomId(props.roomId || '');
+    setRoomId(props.roomId || "");
   }, [props.roomId]);
 
   const colors = new Map<string, string>([
@@ -158,7 +159,7 @@ const JoinRoom = (props: JoinRoomProps) => {
                     user.role === Role.VOTING_SCRUM_MASTER) &&
                   user.roomId === roomId ? (
                     <div className="text-center text-white mt-3">
-                      <h3>You are the Scrum Master of this Room</h3>
+                      <h3>You are the facilitator of this Room</h3>
                     </div>
                   ) : (
                     <ToggleButtonGroup
@@ -177,8 +178,8 @@ const JoinRoom = (props: JoinRoomProps) => {
                             : { backgroundColor: "transparent" }
                         }
                       >
-                        <MdOutlineKeyboard className="me-3" size={28} />
-                        Developer
+                        <GiPokerHand className="me-3" size={28} />
+                        Voter
                       </ToggleButton>
                       <MdCode className="mx-3 mt-2" size={26} color={"white"} />
                       <ToggleButton
