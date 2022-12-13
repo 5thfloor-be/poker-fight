@@ -16,6 +16,7 @@ import Dropdown from "react-bootstrap/Dropdown";
 import DropdownButton from "react-bootstrap/DropdownButton";
 import { IoExitOutline } from "react-icons/io5";
 import QuitButton from "../QuitButton";
+import ModalPrivacy from "../ModalPrivacy";
 
 const FooterActiveMobile: NextPage = () => {
   const { isRoomActive, setIsRoomActive, user, setUser, room } =
@@ -25,6 +26,7 @@ const FooterActiveMobile: NextPage = () => {
 
   const [selectedVote, setSelectedVote] = useState(-1);
   const [stateSocket, setStateSocket] = useState();
+  const [showPrivacy, setShowPrivacy] = useState(false);
 
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
@@ -164,6 +166,11 @@ const FooterActiveMobile: NextPage = () => {
                   >
                     5th Floor Open Source Project
                   </Dropdown.Item>
+                  <Dropdown.Item>
+                    <span onClick={() => setShowPrivacy(!showPrivacy)}>
+                      Privacy Policy
+                    </span>
+                  </Dropdown.Item>
                   <Dropdown.Item className="text-center">
                     <QuitButton />
                   </Dropdown.Item>
@@ -206,6 +213,9 @@ const FooterActiveMobile: NextPage = () => {
               </div>
             </Modal.Footer>
           </Modal>
+          {showPrivacy && (
+            <ModalPrivacy setShowPrivacy={(val) => setShowPrivacy(val)} />
+          )}
         </footer>
       )}
     </>

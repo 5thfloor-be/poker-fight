@@ -26,7 +26,7 @@ const HeaderActive = () => {
             className="row text-center"
             style={widthScreen < 576 ? { paddingTop: 0 } : { paddingTop: 30 }}
           >
-            <div className="col-8 offset-2 ps-1 pt-2 pt-sm-1 col-sm-3 offset-sm-0">
+            <div className="col-8 offset-2 ps-1 pt-2 pt-sm-1 col-sm-3 offset-sm-1">
               <Image
                 loading="eager"
                 src={logoProject}

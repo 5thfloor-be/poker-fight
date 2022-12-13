@@ -53,15 +53,15 @@ a {
   }
 }
 
-.playingMat{
-  border-left: .3rem #FFFF0066 solid;
-  border-right: .3rem #FFFF0066 solid;
+.playingMat {
+  border-left: 0.3rem #ffff0066 solid;
+  border-right: 0.3rem #ffff0066 solid;
   border-radius: 1em;
-  background-color:  #FFFF0015;
+  background-color: #ffff0015;
 }
 
-.roomStatus{
+.roomStatus {
   border-radius: 1em;
-  background-color:  #FFFFFF22;
+  background-color: #ffffff22;
   color: white;
 }
