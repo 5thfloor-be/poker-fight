@@ -33,12 +33,14 @@ export function matomo(analytics: Analytics) {
         const matomoSiteId = process.env.NEXT_PUBLIC_MATOMO_SITE_ID;
         const env = process.env.NODE_ENV;
         const appEnv = process.env.APP_ENV;
+        const _appEnv = process.env._APP_ENV;
         let trackingUrl = window?.location?.href;
 
         console.debug('matomoUrl :', matomoUrl);
         console.debug('matomoSiteId :', matomoSiteId);
         console.debug('env :', env);
         console.debug('appEnv :', appEnv);
+        console.debug('_appEnv :', _appEnv);
 
         var _paq = (window._paq = window._paq || []);
         _paq.push(['setCustomUrl', trackingUrl]);
