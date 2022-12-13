@@ -1,0 +1,70 @@
+steps:
+  - name: 'gcr.io/cloud-builders/git'
+    secretEnv: ['SSH_KEY']
+    entrypoint: 'bash'
+    args:
+      - -c
+      - |
+        echo "$$SSH_KEY" >> /root/.ssh/id_rsa
+        chmod 400 /root/.ssh/id_rsa
+        cp known_hosts.github /root/.ssh/known_hosts
+    volumes:
+      - name: 'ssh'
+        path: /root/.ssh
+  - name: 'gcr.io/cloud-builders/git'
+    args: [ 'fetch', '--unshallow', 'git@github.com:5thfloor-be/poker-fight' ]
+    volumes:
+      - name: 'ssh'
+        path: /root/.ssh
+  - name: 'gcr.io/cloud-builders/git'
+    entrypoint: '/bin/sh'
+    args:
+      - -c
+      - git rev-list --count master && echo $(git rev-list --count master) > VERSION
+    volumes:
+      - name: 'ssh'
+        path: /root/.ssh
+  - name: 'node'
+    id: 'npm install'
+    entrypoint: 'npm'
+    args: [ 'install' ]
+  - name: 'node'
+    id: 'npm build'
+    entrypoint: 'npm'
+    args: ['run', 'build']
+  - name: 'gcr.io/cloud-builders/docker'
+    id: 'build docker image'
+    entrypoint: '/bin/sh'
+    args:
+      - -c
+      - docker build -t ${_DOCKER_IMAGE}:$(cat /workspace/VERSION) .
+  - name: 'gcr.io/cloud-builders/docker'
+    id: 'push docker image'
+    entrypoint: '/bin/sh'
+    args:
+      - -c
+      - docker push ${_DOCKER_IMAGE}:$(cat /workspace/VERSION)
+
+  # Deploy container image to Cloud Run
+    #- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    #id: 'deploy to gcloud run'
+    #entrypoint: 'gcloud'
+      #args:
+      #- 'run'
+      #- 'deploy'
+      #- 'pocker-fight-app'
+      #- '--image'
+      #- ${_DOCKER_IMAGE}:$(_VERSION)
+      #- '--region'
+      #- 'europe-west1'
+
+options:
+  substitution_option: 'ALLOW_LOOSE'
+  machineType: 'E2_HIGHCPU_8'
+substitutions:
+  _DOCKER_IMAGE: 'eu.gcr.io/poker-fight/pocker-fight-app'
+availableSecrets:
+  secretManager:
+    - versionName: projects/poker-fight/secrets/github-secret/versions/latest
+      env: 'SSH_KEY'
+

@@ -31,11 +31,12 @@ export function matomo(analytics: Analytics) {
     if (document.getElementById(analytics) === null) {
         const matomoUrl = process.env.NEXT_PUBLIC_MATOMO_URL;
         const matomoSiteId = process.env.NEXT_PUBLIC_MATOMO_SITE_ID;
+        const env = process.env.NODE_ENV;
         let trackingUrl = window?.location?.href;
 
         console.debug('matomoUrl :', matomoUrl);
         console.debug('matomoSiteId :', matomoSiteId);
-        console.debug('trackingUrl :', trackingUrl);
+        console.debug('env :', env);
 
         var _paq = (window._paq = window._paq || []);
         _paq.push(['setCustomUrl', trackingUrl]);
