@@ -34,7 +34,7 @@ const ModalPrivacy = (props: PrivacyProps) => {
                   Personal Data collected for the following purposes and using
                   the following services:
                 </p>
-                <p className="fs-6">
+                <p className="fs-6 ms-3">
                   <TbDeviceDesktopAnalytics size={40} className="me-2" />
                   Analytics
                 </p>

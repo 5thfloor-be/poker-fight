@@ -135,10 +135,10 @@ const Home = () => {
                 <span className="d-none d-sm-block">
                   A new experience in
                   <br />
-                  Agility World !
+                  Agile World!
                 </span>
                 <span className="d-sm-none d-block">
-                  A new experience in Agility World !
+                  A new experience in Agile World!
                 </span>
               </p>
             </div>
@@ -156,7 +156,7 @@ const Home = () => {
                   }}
                 >
                   Discover a new voting system for your Poker Planning, with fun
-                  and innovative features. And it&apos;s mobile first !
+                  and innovative features. And it&apos;s mobile first!
                 </p>
               </div>
               <div className="col-sm-5 py-3">
@@ -215,8 +215,9 @@ const Home = () => {
                     fontWeight: "600",
                   }}
                 >
-                  You can decide to set a goal for every session with a number
-                  of points to achieve.
+                  Set a goal for your estimation session with a target number of
+                  points to reach. Poker-Fight will visualise the team&apos;s
+                  progress towards the goal during the planning session.
                 </p>
               </div>
               <div className="col-sm-5 py-3">
@@ -254,9 +255,9 @@ const Home = () => {
                     fontWeight: "600",
                   }}
                 >
-                  It&apos;s coffee time ! Activate that option and let the
-                  people asking a little break if the meeting starts to get
-                  long...
+                  It&apos;s coffee time! Let participants ask for a coffee break
+                  when focus and energy is getting low. Triggered as soon as the
+                  majority of participants asks for a break!
                 </p>
               </div>
               <div
@@ -276,8 +277,8 @@ const Home = () => {
                     fontWeight: "600",
                   }}
                 >
-                  Maybe it&apos;s time to accelerate the discussion ? Activate
-                  that function and everyone can speed up the pace.
+                  Need to accelerate the discussion? Hit the speedometer and
+                  make the team pick up the pace.
                 </p>
               </div>
               <div className="col-sm-5 py-3">
