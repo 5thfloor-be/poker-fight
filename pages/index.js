@@ -9,7 +9,7 @@ import Image from "next/image";
 import { MdAccountCircle } from "react-icons/md";
 import EditProfile from "../components/EditProfile";
 import { matomo } from "./_app";
-import logoProject from "../public/images/logo-project.webp";
+import logoProject from "../public/images/logo-project-noel.webp";
 import inProgress from "../public/images/in-progress.webp";
 import versus from "../public/images/versus.webp";
 import pointsAchieved from "../public/images/points-achieved.webp";
