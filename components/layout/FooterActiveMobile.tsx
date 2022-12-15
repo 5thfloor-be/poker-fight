@@ -14,7 +14,6 @@ import CoffeBreak from "../CoffeBreak";
 import Buzzer from "../Buzzer";
 import Dropdown from "react-bootstrap/Dropdown";
 import DropdownButton from "react-bootstrap/DropdownButton";
-import { IoExitOutline } from "react-icons/io5";
 import QuitButton from "../QuitButton";
 import ModalPrivacy from "../ModalPrivacy";
 
@@ -70,6 +69,16 @@ const FooterActiveMobile: NextPage = () => {
       : undefined;
   };
 
+  const getVoters = () => {
+    if (!room) {
+      return [];
+    }
+
+    return room.users.filter(
+      (u) => u.role === Role.VOTING_SCRUM_MASTER || u.role === Role.DEV
+    );
+  };
+
   /* Si la room est undefined */
   if (!room) {
     return <></>;
@@ -99,7 +108,8 @@ const FooterActiveMobile: NextPage = () => {
               {/* Bouton Pause Café */}
               <div className="col-2 pt-1 px-0 ">
                 {room.roomOptions.coffeeBreakAllowed &&
-                  room.state === States.VOTING && (
+                  room.state !== States.FIGHTING &&
+                  getVoters().length > 1 && (
                     <CoffeBreak user={user} socket={socket} room={room} />
                   )}
               </div>

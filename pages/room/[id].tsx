@@ -385,9 +385,10 @@ const Room = ({ roomId }: RoomProps) => {
             {/* Version PC du Deck */}
             <div className="row justify-content-center">
               <div className="col-1 d-none d-sm-block px-0 my-auto">
-                {room.roomOptions.coffeeBreakAllowed && (
-                  <CoffeBreak user={user} socket={stateSocket} room={room} />
-                )}
+                {room.roomOptions.coffeeBreakAllowed &&
+                  getVoters().length > 1 && (
+                    <CoffeBreak user={user} socket={stateSocket} room={room} />
+                  )}
 
                 {room.roomOptions.buzzerAllowed &&
                   room.state === States.VOTING && (
