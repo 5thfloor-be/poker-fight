@@ -6,6 +6,7 @@ import User, {isScrumMaster, Role} from "./model/user";
 import { ErrorCode } from "./model/ErrorCode";
 import { createClient } from "redis";
 import { createAdapter } from "@socket.io/redis-adapter";
+import { Emitter } from "@socket.io/redis-emitter";
 
 const rooms: Map<string, Room> = new Map();
 
@@ -35,20 +36,17 @@ const SocketHandler = (req: IncomingMessage, res: any) => {
     console.log(`Connecting redis adapter to : redis://${process.env.REDIS_HOST}:${process.env.REDIS_PORT}`)
     const pubClient = createClient({ url: `redis://${process.env.REDIS_HOST}:${process.env.REDIS_PORT}` });
     const subClient = pubClient.duplicate();
+    const emitter = new Emitter(createClient({ url: `redis://${process.env.REDIS_HOST}:${process.env.REDIS_PORT}` }));
 
     Promise.all([pubClient.connect(), subClient.connect()]).then(() => {
       console.log('Redis clients connected')
       io.adapter(createAdapter(pubClient, subClient));
       io.listen(3000);
-      //Trying some debugging of redis adapter, should be removed
-      io.of("/").adapter.on('room_state_update', data => console.debug('Redis adapter received room state update ', data));
-      io.of("/").adapter.on('create-room', data => console.debug('Redis adapter received room creation ', data));
-      io.of("/").adapter.on('join-room', data => console.debug('Redis adapter received join room ', data));
     }).catch((reason: any) => {
       console.error('An error occurred connecting to redis : ', reason)
     });
 
-    configIO(io);
+    configIO(io, emitter);
     res.socket.server.io = io;
   }
   res.end();
@@ -59,7 +57,16 @@ const sendHeartbeat = (socket: Server) => {
   socket.emit("ping", {beat: 1});
 };
 
-function configIO(io: Server) {
+function configIO(io: Server, emitter: Emitter) {
+
+  //Trying some debugging of redis adapter, should be removed
+  // io.of("/").adapter.on('room_state_update', data => console.debug('Redis adapter received room state update ', data));
+  // io.of("/").adapter.on('create-room', data => console.debug('Redis adapter received room creation ', data));
+  // io.of("/").adapter.on('join-room', data => console.debug('Redis adapter received join room ', data));
+  io.on('server_room_state_update', (data: Room) => {
+    rooms.set(data.id, data);
+  })
+
   io.on("connection", (socket) => {
 
     setTimeout(() => sendHeartbeat(io), 20 * 1000);
@@ -154,6 +161,10 @@ function configIO(io: Server) {
       room.registerOnChangeCallback((room: Room) => {
         console.log(`room state update sent${JSON.stringify(room)}`);
         io.to(roomId).emit("room_state_update", room);
+      });
+      room.registerOnChangeCallback((room: Room) => {
+        console.log(`server side - room state update sent${JSON.stringify(room)}`);
+        emitter.serverSideEmit("server_room_state_update", room);
       });
       rooms.set(roomId, room);
 
