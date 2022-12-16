@@ -41,10 +41,9 @@ const SocketHandler = (req: IncomingMessage, res: any) => {
       io.adapter(createAdapter(pubClient, subClient));
       io.listen(3000);
       //Trying some debugging of redis adapter, should be removed
-      subClient.on('room_state_update', data => console.debug('Redis subclient received room state update ', data));
-      subClient.on('create-room', data => console.debug('Redis subclient received room creation ', data));
-      subClient.on('join-room', data => console.debug('Redis subclient received join room ', data));
-      pubClient.on('room_state_update', data => console.debug('Redis pubclient emits room state update ', data));
+      io.of("/").adapter.on('room_state_update', data => console.debug('Redis adapter received room state update ', data));
+      io.of("/").adapter.on('create-room', data => console.debug('Redis adapter received room creation ', data));
+      io.of("/").adapter.on('join-room', data => console.debug('Redis adapter received join room ', data));
     }).catch((reason: any) => {
       console.error('An error occurred connecting to redis : ', reason)
     });
