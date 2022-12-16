@@ -40,6 +40,9 @@ const SocketHandler = (req: IncomingMessage, res: any) => {
       console.log('Redis clients connected')
       io.adapter(createAdapter(pubClient, subClient));
       io.listen(3000);
+      //Trying some debugging of redis adapter, should be removed
+      subClient.on('room_state_update', data => console.debug('Redis subclient received room state update ', data));
+      pubClient.on('room_state_update', data => console.debug('Redis pubclient emits room state update ', data));
     }).catch((reason: any) => {
       console.error('An error occurred connecting to redis : ', reason)
     });
