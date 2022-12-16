@@ -64,7 +64,9 @@ function configIO(io: Server, emitter: Emitter) {
   // io.of("/").adapter.on('create-room', data => console.debug('Redis adapter received room creation ', data));
   // io.of("/").adapter.on('join-room', data => console.debug('Redis adapter received join room ', data));
   io.on('server_room_state_update', (data: Room) => {
+    console.log('server room state update received', data)
     rooms.set(data.id, data);
+    io.to(data.id).emit('room_state_update', data);
   })
 
   io.on("connection", (socket) => {
