@@ -6,7 +6,6 @@ import User, {isScrumMaster, Role} from "./model/user";
 import { ErrorCode } from "./model/ErrorCode";
 import { createClient } from "redis";
 import { createAdapter } from "@socket.io/redis-adapter";
-import { Emitter } from "@socket.io/redis-emitter";
 
 const rooms: Map<string, Room> = new Map();
 
@@ -23,7 +22,6 @@ const SocketHandler = (req: IncomingMessage, res: any) => {
     console.log("Socket is already running");
   } else {
     console.log("Socket is initializing");
-    console.log("Log after initialize");
 
     console.log('res.socket?.server : ', res.socket?.server);
 
@@ -37,7 +35,6 @@ const SocketHandler = (req: IncomingMessage, res: any) => {
     console.log(`Connecting redis adapter to : redis://${process.env.REDIS_HOST}:${process.env.REDIS_PORT}`)
     const pubClient = createClient({ url: `redis://${process.env.REDIS_HOST}:${process.env.REDIS_PORT}` });
     const subClient = pubClient.duplicate();
-    const emitter = new Emitter(createClient({ url: `redis://${process.env.REDIS_HOST}:${process.env.REDIS_PORT}` }));
 
     Promise.all([pubClient.connect(), subClient.connect()]).then(() => {
       console.log('Redis clients connected')
@@ -47,7 +44,7 @@ const SocketHandler = (req: IncomingMessage, res: any) => {
       console.error('An error occurred connecting to redis : ', reason)
     });
 
-    configIO(io, emitter);
+    configIO(io);
     res.socket.server.io = io;
   }
   res.end();
@@ -58,18 +55,7 @@ const sendHeartbeat = (socket: Server) => {
   socket.emit("ping", {beat: 1});
 };
 
-function configIO(io: Server, emitter: Emitter) {
-
-  //Trying some debugging of redis adapter, should be removed
-  // io.of("/").adapter.on('room_state_update', data => console.debug('Redis adapter received room state update ', data));
-  // io.of("/").adapter.on('create-room', data => console.debug('Redis adapter received room creation ', data));
-  // io.of("/").adapter.on('join-room', data => console.debug('Redis adapter received join room ', data));
-  io.on('server_room_state_update', (data: Room) => {
-    console.log('server room state update received', data)
-    rooms.set(data.id, data);
-    io.to(data.id).emit('room_state_update', data);
-  })
-
+function configIO(io: Server) {
   io.on("connection", (socket) => {
 
     setTimeout(() => sendHeartbeat(io), 20 * 1000);
@@ -164,9 +150,6 @@ function configIO(io: Server, emitter: Emitter) {
       room.registerOnChangeCallback((room: Room) => {
         console.log(`room state update sent${JSON.stringify(room)}`);
         io.to(roomId).emit("room_state_update", room);
-
-        console.log(`server room state update sent ${JSON.stringify(room)}`);
-        emitter.serverSideEmit("server_room_state_update", room);
       });
       rooms.set(roomId, room);
 
