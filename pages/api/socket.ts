@@ -38,7 +38,7 @@ const SocketHandler = (req: IncomingMessage, res: any) => {
     });
     const subClient = pubClient.duplicate();
 
-    Promise.all([pubClient.connect(), subClient.connect()])
+    /*Promise.all([pubClient.connect(), subClient.connect()])
       .then(() => {
         console.log("Redis clients connected");
         io.adapter(createAdapter(pubClient, subClient));
@@ -46,7 +46,7 @@ const SocketHandler = (req: IncomingMessage, res: any) => {
       })
       .catch((reason: any) => {
         console.error("An error occurred connecting to redis : ", reason);
-      });
+      });*/
 
     configIO(io);
     res.socket.server.io = io;
