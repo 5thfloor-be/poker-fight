@@ -2,7 +2,7 @@ import { IncomingMessage } from "http";
 import { v4 as uuid } from "uuid";
 import { Server } from "socket.io";
 import Room from "./model/room";
-import User, {isScrumMaster, Role} from "./model/user";
+import User, { isScrumMaster, Role } from "./model/user";
 import { ErrorCode } from "./model/ErrorCode";
 import { createClient } from "redis";
 import { createAdapter } from "@socket.io/redis-adapter";
@@ -16,37 +16,48 @@ export interface JoinRoomReturn {
 }
 
 const SocketHandler = (req: IncomingMessage, res: any) => {
-  
-  console.log('Starting server with environment variables : ', process.env);
-
+  console.log("Starting server with environment variables : ", process.env);
   if (res?.socket?.server.io) {
     console.log("Socket is already running");
   } else {
     console.log("Socket is initializing");
     console.log("Log after initialize");
-
-    console.log('res.socket?.server : ', res.socket?.server);
-
+    console.log("res.socket?.server : ", res.socket?.server);
+    // Create the socket.io server
     const io = new Server(res.socket?.server, {
-
       pingTimeout: 600000,
       pingInterval: 600000,
-      upgradeTimeout: 300000
+      upgradeTimeout: 300000,
     });
-
-    console.log(`Connecting redis adapter to : redis://${process.env.REDIS_HOST}:${process.env.REDIS_PORT}`)
-    const pubClient = createClient({ url: `redis://${process.env.REDIS_HOST}:${process.env.REDIS_PORT}` });
+    // Create Redis clients
+    console.log(
+      `Connecting redis adapter to : redis://${process.env.REDIS_HOST}:${process.env.REDIS_PORT}`
+    );
+    const pubClient = createClient({
+      url: `redis://${process.env.REDIS_HOST}:${process.env.REDIS_PORT}`,
+    });
     const subClient = pubClient.duplicate();
-    const emitter = new Emitter(createClient({ url: `redis://${process.env.REDIS_HOST}:${process.env.REDIS_PORT}` }));
+    // create Redis adapter and connect it to the io instance
+    const adapter = createAdapter(pubClient, subClient);
+    io.adapter(adapter);
+    // create Redis emitter and start listening to the io instance
+    const emitter = new Emitter(
+      createClient({
+        url: `redis://${process.env.REDIS_HOST}:${process.env.REDIS_PORT}`,
+      })
+    );
 
-    Promise.all([pubClient.connect(), subClient.connect()]).then(() => {
-      console.log('Redis clients connected')
-      io.adapter(createAdapter(pubClient, subClient));
-      io.listen(3000);
-    }).catch((reason: any) => {
-      console.error('An error occurred connecting to redis : ', reason)
-    });
+    // You should also handle promise rejections correctly
+    Promise.all([pubClient.connect(), subClient.connect()])
+      .then(() => {
+        console.log("Redis clients connected");
+        io.listen(3000);
+      })
+      .catch((reason: any) => {
+        console.error("An error occurred connecting to redis : ", reason);
+      });
 
+    // do whatever you want with the emitter and io instances
     configIO(io, emitter);
     res.socket.server.io = io;
   }
@@ -55,23 +66,21 @@ const SocketHandler = (req: IncomingMessage, res: any) => {
 
 const sendHeartbeat = (socket: Server) => {
   setTimeout(() => sendHeartbeat(socket), 20 * 1000);
-  socket.emit("ping", {beat: 1});
+  socket.emit("ping", { beat: 1 });
 };
 
 function configIO(io: Server, emitter: Emitter) {
-
   //Trying some debugging of redis adapter, should be removed
   // io.of("/").adapter.on('room_state_update', data => console.debug('Redis adapter received room state update ', data));
   // io.of("/").adapter.on('create-room', data => console.debug('Redis adapter received room creation ', data));
   // io.of("/").adapter.on('join-room', data => console.debug('Redis adapter received join room ', data));
-  io.on('server_room_state_update', (data: Room) => {
-    console.log('server room state update received', data)
+  io.on("server_room_state_update", (data: Room) => {
+    console.log("server room state update received", data);
     rooms.set(data.id, data);
-    io.to(data.id).emit('room_state_update', data);
-  })
+    io.to(data.id).emit("room_state_update", data);
+  });
 
   io.on("connection", (socket) => {
-
     setTimeout(() => sendHeartbeat(io), 20 * 1000);
     socket.on("pong", () => {});
 
@@ -105,7 +114,7 @@ function configIO(io: Server, emitter: Emitter) {
         return;
       }
       if (
-          room?.users.filter((user) => user.id === data.userInfo.id).length === 0
+        room?.users.filter((user) => user.id === data.userInfo.id).length === 0
       ) {
         const user = { ...data.userInfo, id: uuid() };
         userIdTemp = user.id;
@@ -129,19 +138,19 @@ function configIO(io: Server, emitter: Emitter) {
     });
     socket.on("remove_user", (data) => {
       console.log(`${data.userId} is removed `, data);
-      const userRemoved= rooms.get(data.roomId)?.removeUser(data.userId);
+      const userRemoved = rooms.get(data.roomId)?.removeUser(data.userId);
       io.to(data.roomId).emit("user_removed", { userId: data.userId });
-      if(userRemoved && isScrumMaster(userRemoved)){
-        rooms.get(data.roomId)?.users.forEach( u =>{
-            if(u.id !== data.userId){
-              io.to(data.roomId).emit("user_removed", { userId: u.id });
-            }
-        })
+      if (userRemoved && isScrumMaster(userRemoved)) {
+        rooms.get(data.roomId)?.users.forEach((u) => {
+          if (u.id !== data.userId) {
+            io.to(data.roomId).emit("user_removed", { userId: u.id });
+          }
+        });
       }
     });
 
     socket.on("leave_room", (data) => {
-      console.log('user leaving room')
+      console.log("user leaving room");
       socket.leave(data.roomId);
     });
 
@@ -166,7 +175,9 @@ function configIO(io: Server, emitter: Emitter) {
         io.to(roomId).emit("room_state_update", room);
       });
       room.registerOnChangeCallback((room: Room) => {
-        console.log(`server side - room state update sent${JSON.stringify(room)}`);
+        console.log(
+          `server side - room state update sent${JSON.stringify(room)}`
+        );
         emitter.serverSideEmit("server_room_state_update", room);
       });
       rooms.set(roomId, room);

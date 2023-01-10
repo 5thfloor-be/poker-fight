@@ -55,7 +55,7 @@ const Home = () => {
                   and innovative features."
         />
         <link rel="icon" href="/favicon.ico" />
-        <link rel="manifest" href="public/manifest.json" />
+        <link rel="manifest" href="/public/manifest.json" />
       </Head>
 
       {showLoading && isRoomActive && (
