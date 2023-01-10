@@ -55,7 +55,12 @@ const Home = () => {
                   and innovative features."
         />
         <link rel="icon" href="/favicon.ico" />
-        <link rel="manifest" href="/public/manifest.json" />
+        <link rel="manifest" href="/manifest.json" />
+
+        {/* This sets logo in Apple smatphones. */}
+        <link rel="apple-touch-icon" href="/favicon.png" />
+        {/* This sets the color of url bar in Apple smatphones. */}
+        <meta name="apple-mobile-web-app-status-bar" content="#ffffff" />
       </Head>
 
       {showLoading && isRoomActive && (
