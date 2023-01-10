@@ -4,7 +4,7 @@ import { useContext, useEffect, useState } from "react";
 import { MdOutlineCheck } from "react-icons/md";
 import { UserContext } from "../../context/UserContext";
 import QuitButton from "../QuitButton";
-import logoProject from "../../public/images/logo-project-noel.webp";
+import logoProject from "../../public/images/logo-project-happy.webp";
 
 const HeaderActive = () => {
   const { isRoomActive, setIsRoomActive, user, setUser, room } =

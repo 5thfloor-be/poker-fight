@@ -1,0 +1,15 @@
+{
+  "short_name": "Poker-Fight",
+  "name": "Poker-Fight.com",
+  "icons": [
+    {
+      "src": "/images/favicon.png",
+      "type": "image/png",
+      "sizes": "162x162"
+    }
+  ],
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#000000"
+}
