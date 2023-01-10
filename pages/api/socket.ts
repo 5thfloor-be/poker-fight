@@ -6,7 +6,6 @@ import User, { isScrumMaster, Role } from "./model/user";
 import { ErrorCode } from "./model/ErrorCode";
 import { createClient } from "redis";
 import { createAdapter } from "@socket.io/redis-adapter";
-import { Emitter } from "@socket.io/redis-emitter";
 
 const rooms: Map<string, Room> = new Map();
 
@@ -17,19 +16,20 @@ export interface JoinRoomReturn {
 
 const SocketHandler = (req: IncomingMessage, res: any) => {
   console.log("Starting server with environment variables : ", process.env);
+
   if (res?.socket?.server.io) {
     console.log("Socket is already running");
   } else {
     console.log("Socket is initializing");
-    console.log("Log after initialize");
+
     console.log("res.socket?.server : ", res.socket?.server);
-    // Create the socket.io server
+
     const io = new Server(res.socket?.server, {
       pingTimeout: 600000,
       pingInterval: 600000,
       upgradeTimeout: 300000,
     });
-    // Create Redis clients
+
     console.log(
       `Connecting redis adapter to : redis://${process.env.REDIS_HOST}:${process.env.REDIS_PORT}`
     );
@@ -37,28 +37,18 @@ const SocketHandler = (req: IncomingMessage, res: any) => {
       url: `redis://${process.env.REDIS_HOST}:${process.env.REDIS_PORT}`,
     });
     const subClient = pubClient.duplicate();
-    // create Redis adapter and connect it to the io instance
-    const adapter = createAdapter(pubClient, subClient);
-    io.adapter(adapter);
-    // create Redis emitter and start listening to the io instance
-    const emitter = new Emitter(
-      createClient({
-        url: `redis://${process.env.REDIS_HOST}:${process.env.REDIS_PORT}`,
-      })
-    );
 
-    // You should also handle promise rejections correctly
     Promise.all([pubClient.connect(), subClient.connect()])
       .then(() => {
         console.log("Redis clients connected");
+        io.adapter(createAdapter(pubClient, subClient));
         io.listen(3000);
       })
       .catch((reason: any) => {
         console.error("An error occurred connecting to redis : ", reason);
       });
 
-    // do whatever you want with the emitter and io instances
-    configIO(io, emitter);
+    configIO(io);
     res.socket.server.io = io;
   }
   res.end();
@@ -69,17 +59,7 @@ const sendHeartbeat = (socket: Server) => {
   socket.emit("ping", { beat: 1 });
 };
 
-function configIO(io: Server, emitter: Emitter) {
-  //Trying some debugging of redis adapter, should be removed
-  // io.of("/").adapter.on('room_state_update', data => console.debug('Redis adapter received room state update ', data));
-  // io.of("/").adapter.on('create-room', data => console.debug('Redis adapter received room creation ', data));
-  // io.of("/").adapter.on('join-room', data => console.debug('Redis adapter received join room ', data));
-  io.on("server_room_state_update", (data: Room) => {
-    console.log("server room state update received", data);
-    rooms.set(data.id, data);
-    io.to(data.id).emit("room_state_update", data);
-  });
-
+function configIO(io: Server) {
   io.on("connection", (socket) => {
     setTimeout(() => sendHeartbeat(io), 20 * 1000);
     socket.on("pong", () => {});
@@ -173,12 +153,6 @@ function configIO(io: Server, emitter: Emitter) {
       room.registerOnChangeCallback((room: Room) => {
         console.log(`room state update sent${JSON.stringify(room)}`);
         io.to(roomId).emit("room_state_update", room);
-      });
-      room.registerOnChangeCallback((room: Room) => {
-        console.log(
-          `server side - room state update sent${JSON.stringify(room)}`
-        );
-        emitter.serverSideEmit("server_room_state_update", room);
       });
       rooms.set(roomId, room);
 
