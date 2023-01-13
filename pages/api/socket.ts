@@ -4,8 +4,8 @@ import Room from "./model/room";
 import { isScrumMaster, Role } from "./model/user";
 import { ErrorCode } from "./model/ErrorCode";
 import { Server } from "socket.io";
-import { createAdapter } from "@socket.io/redis-adapter";
 import { createClient } from "redis";
+import { createAdapter } from "@socket.io/redis-adapter";
 
 const rooms: Map<string, Room> = new Map();
 
@@ -31,14 +31,14 @@ const SocketHandler = (req: IncomingMessage, res: any) => {
     });
 
     const pubClient = createClient({
-      /*  url: `redis://${process.env.REDIS_HOST}:${process.env.REDIS_PORT}`, */
-      url: `redis://10.96.221.35:6379`,
+      url: `redis://${process.env.REDIS_HOST}:${process.env.REDIS_PORT}`,
     });
     const subClient = pubClient.duplicate();
 
     Promise.all([pubClient.connect(), subClient.connect()]).then(() => {
       io.adapter(createAdapter(pubClient, subClient));
       io.listen(3000);
+      console.log("Listening on port 3000...");
     });
 
     configIO(io);
