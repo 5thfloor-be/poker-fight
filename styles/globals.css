@@ -65,3 +65,25 @@ a {
   background-color: #ffffff22;
   color: white;
 }
+
+/* Create the shimmer animation */
+@keyframes shimmer {
+  0% {
+    border-color: rgba(255, 215, 0, 0.3);
+  }
+
+  50% {
+    border-color: gold;
+  }
+
+  100% {
+    border-color: rgba(255, 215, 0, 0.3);
+  }
+}
+
+/* Add the shimmer animation and gold border to the button */
+.border-gold-shimmer {
+  border: 1px solid gold;
+  animation: shimmer 3.5s infinite;
+  transition: border-color 0.5s ease-in-out;
+}

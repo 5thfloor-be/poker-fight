@@ -25,6 +25,7 @@ const UserContextProvider = (props: any) => {
     name: "",
     color: "#ffffff",
     role: "",
+    webapp: true,
   });
   const [isRoomActive, setIsRoomActive] = useState(false);
   const [room, setRoom] = useState<Room>();
@@ -33,14 +34,14 @@ const UserContextProvider = (props: any) => {
 
   useEffect(() => {
     const saved = localStorage.getItem("USER");
-    if(saved){
+    if (saved) {
       initailValue = JSON.parse(saved ? saved : "");
       setUser(initailValue);
     }
   }, []);
 
   useEffect(() => {
-    console.debug('Setting user to local storage ', user)
+    console.debug("Setting user to local storage ", user);
     localStorage.setItem("USER", JSON.stringify(user));
   }, [user]);
 

@@ -6,7 +6,7 @@ import { useKonamiCode } from "../components/konami/useKonamiCode";
 import Credits from "../components/konami/Credits";
 import { useRouter } from "next/router";
 import Image from "next/image";
-import { MdAccountCircle } from "react-icons/md";
+import { MdAccountCircle, MdOutlineCheck, MdCancel } from "react-icons/md";
 import EditProfile from "../components/EditProfile";
 import { matomo } from "./_app";
 import logoProject from "../public/images/logo-project-happy.webp";
@@ -23,7 +23,7 @@ const Home = () => {
     matomo("analytics");
   }
 
-  const { user, isRoomActive } = useContext(UserContext);
+  const { user, setUser, isRoomActive } = useContext(UserContext);
   const [showCreateRoom, setShowCreateRoom] = useState(false);
   const [showLoading, setShowLoading] = useState(false);
   const [showCredits, setShowCredits] = useState(false);
@@ -31,6 +31,35 @@ const Home = () => {
   const [showEditProfile, setShowEditProfile] = useState(false);
   const konami = useKonamiCode();
   const router = useRouter();
+
+  const [supportsPwa, setSupportsPwa] = useState(false);
+  const [prompt, setPrompt] = useState(null);
+
+  useEffect(() => {
+    // Check if the browser supports PWA
+    if (window.matchMedia("(display-mode: standalone)").matches) {
+      setSupportsPwa(true);
+    }
+
+    // Check if the PWA install prompt is available
+    window.addEventListener("beforeinstallprompt", (event) => {
+      event.preventDefault();
+      setPrompt(event);
+    });
+  }, []);
+
+  const installPwa = async () => {
+    // Show the PWA install prompt
+    if (prompt) {
+      prompt.prompt();
+      const outcome = await prompt.userChoice;
+      if (outcome.outcome === "accepted") {
+        console.log("PWA installation accepted");
+      } else {
+        console.log("PWA installation rejected");
+      }
+    }
+  };
 
   useEffect(() => {
     setWidthScreen(window.innerWidth);
@@ -76,6 +105,30 @@ const Home = () => {
         <main
           style={widthScreen < 576 ? { paddingTop: 50 } : { paddingTop: 70 }}
         >
+          {user.webapp && supportsPwa && (
+            <div className="container d-block d-sm-none p-2 pb-0 mt-2 border border-white rounded">
+              <div className="row">
+                <div className="col-8">
+                  <p>Add a shortcut to the web app ?</p>
+                </div>
+
+                <div className="col-2">
+                  <button className="btn btn-primary py-0" onClick={installPwa}>
+                    <MdOutlineCheck className="me-1 mb-1" />
+                  </button>
+                </div>
+                <div className="col-2 ps-0">
+                  <button
+                    className="btn btn-danger py-0"
+                    onClick={() => setUser({ ...user, webapp: false })}
+                  >
+                    <MdCancel className="me-1 mb-1" />
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+
           <nav className="navbar fixed-top navbar-black bg-black w-100 py-1">
             <div className="container-fluid px-0 mx-0 w-100">
               <div className="col-3 ps-2 mt-2 d-none d-sm-block">
@@ -92,7 +145,7 @@ const Home = () => {
                 {/* Bouton Create Room et Join Room */}
                 <button
                   type="button"
-                  className="btn btn-outline-primary fs-6 w-100 fw-bold"
+                  className="btn btn-outline-primary fs-6 w-100 fw-bold border-gold-shimmer"
                   onClick={() => handleCreateRoom()}
                 >
                   CREATE ROOM
@@ -102,7 +155,7 @@ const Home = () => {
               <div className="col-5 col-sm-3 px-2">
                 <button
                   type="button"
-                  className="btn btn-outline-success fs-6 w-100 fw-bold"
+                  className="btn btn-outline-success fs-6 w-100 fw-bold border-gold-shimmer"
                   onClick={() => router.push("/join")}
                 >
                   JOIN ROOM
@@ -129,6 +182,16 @@ const Home = () => {
           </nav>
 
           <div className="container bg-black mx-0 mw-100">
+            <div className="row mt-3 text-center d-block d-sm-none">
+              <Image
+                loading="eager"
+                src={logoProject}
+                width={416}
+                height={80}
+                alt="logo"
+              />
+            </div>
+
             <div className="row mt-3">
               <p
                 style={{

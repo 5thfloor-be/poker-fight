@@ -30,23 +30,20 @@ const SocketHandler = (req: IncomingMessage, res: any) => {
       upgradeTimeout: 300000,
     });
 
-    console.log(
-      `Connecting redis adapter to : redis://${process.env.REDIS_HOST}:${process.env.REDIS_PORT}`
-    );
     const pubClient = createClient({
       url: `redis://${process.env.REDIS_HOST}:${process.env.REDIS_PORT}`,
     });
     const subClient = pubClient.duplicate();
 
-    /*Promise.all([pubClient.connect(), subClient.connect()])
+    Promise.all([pubClient.connect(), subClient.connect()])
       .then(() => {
-        console.log("Redis clients connected");
+        console.log("Redis connection established");
         io.adapter(createAdapter(pubClient, subClient));
         io.listen(3000);
       })
-      .catch((reason: any) => {
-        console.error("An error occurred connecting to redis : ", reason);
-      });*/
+      .catch((err) => {
+        console.log("Error connecting to Redis: ", err);
+      });
 
     configIO(io);
     res.socket.server.io = io;
@@ -87,6 +84,7 @@ function configIO(io: Server) {
       let userIdTemp = data.userInfo.id;
 
       console.log(`${socket.id} is joining room ${data.roomId}`);
+
       socket.join(data.roomId);
       let room = rooms.get(data.roomId);
       if (!room) {
