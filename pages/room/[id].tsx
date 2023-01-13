@@ -383,7 +383,7 @@ const Room = ({ roomId }: RoomProps) => {
         <div className="row my-3 mx-1 actionsArea">
           <>
             {/* Version PC du Deck */}
-            <div className="row justify-content-center">
+            <div className="row justify-content-center mb-3 pb-3">
               <div className="col-1 d-none d-sm-block px-0 my-auto">
                 {room.roomOptions.coffeeBreakAllowed &&
                   getVoters().length > 1 && (

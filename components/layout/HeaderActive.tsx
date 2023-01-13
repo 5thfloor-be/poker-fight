@@ -73,9 +73,9 @@ const HeaderActive = () => {
                 </div>
               )}
             </div>
-            <div className="d-none d-sm-block col-sm-3 ps-5  pt-2">
+            <div className="d-none d-sm-block col-sm-3 ps-5 pt-2">
               {isRoomActive && room && room.roomOptions.targetPoints && (
-                <div className="text-center">
+                <div className="text-center pt-2">
                   <button
                     className={
                       room.currentPoints >= room.roomOptions.targetPoints
