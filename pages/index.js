@@ -105,7 +105,7 @@ const Home = () => {
         <main
           style={widthScreen < 576 ? { paddingTop: 50 } : { paddingTop: 70 }}
         >
-          {user.webapp && supportsPwa && (
+          {user.webapp && !supportsPwa && (
             <div className="container d-block d-sm-none p-2 pb-0 mt-2 border border-white rounded">
               <div className="row">
                 <div className="col-8">
