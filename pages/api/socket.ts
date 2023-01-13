@@ -36,9 +36,8 @@ const SocketHandler = (req: IncomingMessage, res: any) => {
     const subClient = pubClient.duplicate();
 
     Promise.all([pubClient.connect(), subClient.connect()]).then(() => {
-      io.adapter(createAdapter(pubClient, subClient));
+      io.adapter(createAdapter(pubClient, subClient) as any);
       io.listen(3000);
-      console.log("Listening on port 3000...");
     });
 
     configIO(io);
