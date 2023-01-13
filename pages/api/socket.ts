@@ -1,11 +1,11 @@
 import { IncomingMessage } from "http";
 import { v4 as uuid } from "uuid";
-import { Server } from "socket.io";
 import Room from "./model/room";
-import User, { isScrumMaster, Role } from "./model/user";
+import { isScrumMaster, Role } from "./model/user";
 import { ErrorCode } from "./model/ErrorCode";
-import { createClient } from "redis";
+import { Server } from "socket.io";
 import { createAdapter } from "@socket.io/redis-adapter";
+import { createClient } from "redis";
 
 const rooms: Map<string, Room> = new Map();
 
@@ -31,19 +31,15 @@ const SocketHandler = (req: IncomingMessage, res: any) => {
     });
 
     const pubClient = createClient({
-      url: `redis://${process.env.REDIS_HOST}:${process.env.REDIS_PORT}`,
+      /*  url: `redis://${process.env.REDIS_HOST}:${process.env.REDIS_PORT}`, */
+      url: `redis://10.96.221.35:6379`,
     });
     const subClient = pubClient.duplicate();
 
-    Promise.all([pubClient.connect(), subClient.connect()])
-      .then(() => {
-        console.log("Redis connection established");
-        io.adapter(createAdapter(pubClient, subClient));
-        io.listen(3000);
-      })
-      .catch((err) => {
-        console.log("Error connecting to Redis: ", err);
-      });
+    Promise.all([pubClient.connect(), subClient.connect()]).then(() => {
+      io.adapter(createAdapter(pubClient, subClient));
+      io.listen(3000);
+    });
 
     configIO(io);
     res.socket.server.io = io;
