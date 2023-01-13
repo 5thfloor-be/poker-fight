@@ -38,7 +38,7 @@ const HeaderActive = () => {
 
             <div className="col-12 col-sm-4 mx-0 px-0 pt-sm-2 d-none d-sm-block">
               {isRoomActive && (
-                <div className="input-group w100">
+                <div className="input-group w100 pt-2">
                   <input
                     disabled
                     className="text-center rounded-2 form-control mx-1 mx-sm-3"
@@ -90,7 +90,7 @@ const HeaderActive = () => {
                 </div>
               )}
             </div>
-            <div className="d-none d-sm-block px-3 col-sm-1">
+            <div className="d-none d-sm-block px-3 col-sm-1 pt-2">
               {isRoomActive && <QuitButton />}
             </div>
           </div>
