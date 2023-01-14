@@ -1,5 +1,6 @@
 export enum ErrorCode {
   TOO_MANY_VOTERS,
   ROOM_NOT_EXISTS,
-  ROOM_CLOSED
+  ROOM_CLOSED,
+  ROOM_ALREADY_EXISTS,
 }

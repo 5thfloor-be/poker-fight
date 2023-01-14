@@ -10,6 +10,7 @@ const errorMessages = new Map<ErrorCode, String>([
   [ErrorCode.TOO_MANY_VOTERS, "Sorry, the room is full (already 9 voters)."],
   [ErrorCode.ROOM_NOT_EXISTS, "Sorry, the room number doesn't exist."],
   [ErrorCode.ROOM_CLOSED, "The room has been closed."],
+  [ErrorCode.ROOM_ALREADY_EXISTS, "The room alreday exists."],
 ]);
 
 const ErrorPage = () => {
