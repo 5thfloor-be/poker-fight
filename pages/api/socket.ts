@@ -9,10 +9,6 @@ import { createAdapter } from "@socket.io/redis-adapter";
 
 const rooms: Map<string, Room> = new Map();
 
-let redisClient: any = createClient({
-  url: `redis://${process.env.REDIS_HOST}:${process.env.REDIS_PORT}`,
-});
-
 export interface JoinRoomReturn {
   id: string;
   error: number;
@@ -82,41 +78,27 @@ function configIO(io: Server) {
     socket.on("join_room", (data, listener) => {
       let userIdTemp = data.userInfo.id;
 
-      // Check if room already exists in Redis
-      redisClient.get(
-        data.roomId,
-        (err: Error | null, result: string | null) => {
-          if (err) {
-            listener({ id: null, error: ErrorCode.ROOM_NOT_EXISTS });
-            return;
-          }
-          let room: Room;
-          if (result) {
-            room = JSON.parse(result);
-          } else {
-            listener({ id: null, error: ErrorCode.ROOM_NOT_EXISTS });
-            return;
-          }
-          // Add user to room
-          if (
-            room?.users.filter((user) => user.id === data.userInfo.id)
-              .length === 0
-          ) {
-            const user = { ...data.userInfo, id: uuid() };
-            userIdTemp = user.id;
-            if (room?.isFull() && user?.role === Role.DEV) {
-              listener({ id: null, error: ErrorCode.TOO_MANY_VOTERS });
-              return;
-            }
-            room.users.push(user);
-            // Update room in Redis
-            redisClient.set(data.roomId, JSON.stringify(room));
-          }
-          // Join socket to room
-          socket.join(data.roomId);
-          listener({ id: userIdTemp, error: null });
+      console.log(`${socket.id} is joining room ${data.roomId}`);
+
+      socket.join(data.roomId);
+      let room = rooms.get(data.roomId);
+      if (!room) {
+        listener({ id: null, error: ErrorCode.ROOM_NOT_EXISTS });
+        return;
+      }
+      if (
+        room?.users.filter((user) => user.id === data.userInfo.id).length === 0
+      ) {
+        const user = { ...data.userInfo, id: uuid() };
+        userIdTemp = user.id;
+        if (room?.isFull() && user?.role === Role.DEV) {
+          listener({ id: null, error: ErrorCode.TOO_MANY_VOTERS });
+          return;
         }
-      );
+
+        room?.addUser(user);
+      }
+      listener({ id: userIdTemp, error: null });
     });
 
     socket.on("join_socket", (data) => {
@@ -141,64 +123,33 @@ function configIO(io: Server) {
     });
 
     socket.on("leave_room", (data) => {
-      // Get room from Redis
-      redisClient.get(
-        data.roomId,
-        (err: Error | null, result: string | null) => {
-          if (err) {
-            return;
-          }
-          let room: Room;
-          if (result) {
-            room = JSON.parse(result);
-          } else {
-            return;
-          }
-          // Remove user from room
-          room.users = room.users.filter((user) => user.id !== data.userId);
-          // Update room in Redis
-          redisClient.set(data.roomId, JSON.stringify(room));
-          // Leave socket from room
-          socket.leave(data.roomId);
-        }
-      );
+      console.log("user leaving room");
+      socket.leave(data.roomId);
     });
 
     socket.on("create_room", (data, listener) => {
       console.log(`Creating room with data `, data);
 
-      // Generate unique room ID
       let roomIdTemp = Math.floor(Math.random() * 100000);
-      while (roomIdTemp === 0 || roomIdTemp < 10000) {
+
+      while (
+        !!rooms.get(roomIdTemp.toString()) ||
+        roomIdTemp === 0 ||
+        roomIdTemp < 10000
+      ) {
         roomIdTemp = Math.floor(Math.random() * 100000);
       }
+
       const roomId = roomIdTemp.toString();
 
-      // Check if room already exists in Redis
-      redisClient.get(
-        data.roomId,
-        (err: Error | null, result: string | null) => {
-          if (err) {
-            listener({ error: ErrorCode.ROOM_NOT_EXISTS });
-            return;
-          }
-          if (result) {
-            listener({ error: ErrorCode.ROOM_ALREADY_EXISTS });
-            return;
-          }
-          // Create new room
-          const room = new Room(roomId, data);
-          room.registerOnChangeCallback((room: Room) => {
-            console.log(`room state update sent${JSON.stringify(room)}`);
-            io.to(roomId).emit("room_state_update", room);
-          });
+      const room = new Room(roomId, data);
+      room.registerOnChangeCallback((room: Room) => {
+        console.log(`room state update sent${JSON.stringify(room)}`);
+        io.to(roomId).emit("room_state_update", room);
+      });
+      rooms.set(roomId, room);
 
-          // Add room to Redis
-          redisClient.set(roomId, JSON.stringify(room));
-
-          listener(room);
-        }
-      );
+      listener(room);
     });
 
     socket.on("vote", (data, listener) => {
