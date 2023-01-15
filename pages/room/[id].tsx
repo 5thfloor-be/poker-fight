@@ -4,8 +4,6 @@ import Card from "../../components/Card";
 import User, { Role } from "../api/model/user";
 import RoomModel, { States } from "../api/model/room";
 import { Deck } from "../../components/Deck";
-import Modal from "react-bootstrap/Modal";
-import { Button } from "react-bootstrap";
 import { UserContext } from "../../context/UserContext";
 import { io, Socket } from "socket.io-client";
 import CoffeBreak from "../../components/CoffeBreak";
@@ -51,10 +49,6 @@ const Room = ({ roomId }: RoomProps) => {
     setWidthScreen(window.innerWidth);
   }, []);
 
-  //modal
-  const [show, setShow] = useState(false);
-  const handleClose = () => setShow(false);
-
   /* Dans le cas si pas d'utilisateur redirect vers la Join Room */
   useEffect(() => {
     if (!user.name) {
@@ -80,54 +74,42 @@ const Room = ({ roomId }: RoomProps) => {
 
   const joinRoomFunction = () => {
     const socket = io();
-    console.debug("debug");
     setStateSocket(socket);
     socket?.emit(
       "join_room",
       { roomId, userInfo: user },
       (data: JoinRoomReturn) => {
-        console.debug("[id] : emit : join room user : ", data);
         if (data.error !== null) {
           router.push(`/error-page/${data.error}`);
         }
         setUser({ ...user, id: data.id });
+        socket?.emit("get_room", { roomId }, (room: RoomModel) => {
+          setRoom(room);
+          setCardValues(room?.roomOptions.cardValues);
+        });
       }
     );
-    socket?.emit("get_room", { roomId: roomId }, (room: RoomModel) => {
-      console.debug("emit : get room user : ", user);
-      setRoom(room);
-      setCardValues(room?.roomOptions.cardValues);
-    });
   };
   useEffect(() => {
     if (stateSocket) {
-      stateSocket.on("ping", () => {
-        stateSocket?.emit("pong", {});
-      });
+      stateSocket.on("ping", () => stateSocket?.emit("pong", {}));
 
       stateSocket.on("connect", () => {
-        console.debug("connected - start");
         stateSocket.emit("join_socket", { roomId });
-        console.debug("connected - end");
       });
 
       stateSocket.on("disconnect", (err: string) => {
-        console.debug("server disconnected: ", err);
         if (
           err === "io server disconnect" ||
           "transport error" ||
           "transport close" ||
           "io client disconnect"
         ) {
-          console.debug("server disconnected: trying to connect");
-          // Reconnect manually if the disconnection was initiated by the server
           stateSocket.connect();
         }
       });
       stateSocket.on("reconnect", () => {
-        console.debug("reconnect - start");
         stateSocket.emit("join_socket", { roomId });
-        console.debug("reconnect - end");
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -136,34 +118,24 @@ const Room = ({ roomId }: RoomProps) => {
   useEffect(() => {
     if (stateSocket) {
       stateSocket.on("reveal", (data: any) => {
-        console.debug("received : reveal", data);
         setRoom(data);
-        setShow(false);
         if (data?.state === States.FIGHTING) {
           <Versus socket={stateSocket} />;
         }
       });
       stateSocket.on("start_voting", (data: any) => {
-        console.debug("received : start voting", data);
         setSelectedVote(-1);
         setRoom(data);
       });
       stateSocket.on("room_state_update", (r: RoomModel) => {
-        console.debug("received : room state update received ", r);
         setRoom(r);
         if (r?.state === States.STARTING || r?.state === States.VOTING) {
           router.push("/room/" + roomId);
         }
       });
       stateSocket.on("user_removed", (data: any) => {
-        console.debug(
-          `received : user removed ${JSON.stringify(
-            data
-          )}, current user = ${JSON.stringify(user)}`
-        );
         if (data.userId === user.id) {
-          console.log("emit : leave front", { roomId: roomId });
-          stateSocket.emit("leave_room", { roomId: roomId });
+          stateSocket.emit("leave_room", { roomId });
           setIsRoomActive(false);
           setUser({ ...user, role: "", id: "" });
           router.push("/");
@@ -175,33 +147,21 @@ const Room = ({ roomId }: RoomProps) => {
 
   const updateSelection = (chosenVote: number) => {
     setSelectedVote(chosenVote);
-    setShow(false);
-    stateSocket?.emit(
-      "vote",
-      { roomId: roomId, userId: user?.id, vote: chosenVote },
-      (room: any) => {
-        console.debug("room in listener : ", room);
-      }
-    );
+    stateSocket?.emit("vote", { roomId, userId: user?.id, vote: chosenVote });
   };
+
   // get room from server
   const startVoting = () => {
-    console.debug(
-      "emit : start voting: Change status room to voting",
-      stateSocket
-    );
     stateSocket?.emit("start_voting", { roomId }, (r: any) => setRoom(r));
   };
 
   const reveal = () => {
-    console.debug("emit : reveal: Change status room to voted");
     stateSocket?.emit("reveal", { roomId }, (r: any) => {
       setRoom(r);
     });
   };
 
   const redoVote = () => {
-    console.debug("emit : redo vote: Change status vote to voting");
     stateSocket?.emit("redo_vote", { roomId }, (r: any) => {
       setRoom(r);
     });
@@ -210,7 +170,7 @@ const Room = ({ roomId }: RoomProps) => {
   const validate = () => {
     stateSocket?.emit(
       "validate",
-      { roomId: roomId, finalVote: room?.wondrousVote },
+      { roomId, finalVote: room?.wondrousVote },
       (r: any) => {
         setRoom(r);
       }
@@ -218,15 +178,8 @@ const Room = ({ roomId }: RoomProps) => {
   };
 
   const getVoteByUserId = (userId: string) => {
-    return room?.currentVotes
-      .filter((userVote) => userVote.userId === userId)
-      .at(0)?.vote
-      ? Number(
-          room?.currentVotes
-            .filter((userVote) => userVote.userId === userId)
-            .at(0)?.vote
-        )
-      : undefined;
+    return room?.currentVotes.find((userVote) => userVote.userId === userId)
+      ?.vote;
   };
 
   if (room?.state === States.FIGHTING) {
@@ -436,35 +389,6 @@ const Room = ({ roomId }: RoomProps) => {
           </>
         </div>
 
-        <Modal size="lg" centered={true} contentClassName="bg-dark" show={show}>
-          <Modal.Header style={{ border: "none" }}>
-            <Modal.Title className="w-100">
-              <p className="text-white text-center">CHOOSE CARD</p>
-            </Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <div className="container">
-              <div className="row">
-                <Deck deck={cardValues} updateSelection={updateSelection} />
-              </div>
-            </div>
-          </Modal.Body>
-          <Modal.Footer style={{ border: "none" }}>
-            <div className="container">
-              <div className="row">
-                <div className="sm-6">
-                  <Button
-                    className="w-100 mb-3"
-                    variant="danger"
-                    onClick={handleClose}
-                  >
-                    CANCEL
-                  </Button>
-                </div>
-              </div>
-            </div>
-          </Modal.Footer>
-        </Modal>
         <FooterActiveMobile />
       </div>
     </div>
