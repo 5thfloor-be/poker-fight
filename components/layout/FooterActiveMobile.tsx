@@ -94,11 +94,12 @@ const FooterActiveMobile: NextPage = () => {
               <div className="col-2 px-0" style={{ marginTop: "20px" }}>
                 {room && room.roomOptions.targetPoints && (
                   <div
-                    className={
-                      room.currentPoints >= room.roomOptions.targetPoints
-                        ? "text-success"
-                        : "text-white"
-                    }
+                    style={{
+                      color:
+                        room.currentPoints >= room.roomOptions.targetPoints
+                          ? "gold"
+                          : "white",
+                    }}
                   >
                     {room.currentPoints ? room.currentPoints : 0}/
                     {room.roomOptions.targetPoints}
@@ -165,6 +166,14 @@ const FooterActiveMobile: NextPage = () => {
                   <Dropdown.Item
                     onClick={() => {
                       navigator.clipboard.writeText(urlValue);
+
+                      if (typeof window._paq !== "undefined") {
+                        window._paq.push([
+                          "trackEvent",
+                          "Bouton",
+                          "Mobile Copy Link",
+                        ]);
+                      }
                     }}
                   >
                     Copy URL Room :{" "}
@@ -173,6 +182,15 @@ const FooterActiveMobile: NextPage = () => {
                   <Dropdown.Item
                     href="https://5thfloor.be/fr/poker-fight/"
                     target="_blank"
+                    onClick={() => {
+                      if (typeof window._paq !== "undefined") {
+                        window._paq.push([
+                          "trackEvent",
+                          "Bouton",
+                          "Mobile 5th Floor Link",
+                        ]);
+                      }
+                    }}
                   >
                     5th Floor Open Source Project
                   </Dropdown.Item>

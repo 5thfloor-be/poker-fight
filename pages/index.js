@@ -6,7 +6,8 @@ import { useKonamiCode } from "../components/konami/useKonamiCode";
 import Credits from "../components/konami/Credits";
 import { useRouter } from "next/router";
 import Image from "next/image";
-import { MdAccountCircle, MdOutlineCheck, MdCancel } from "react-icons/md";
+import { MdAccountCircle } from "react-icons/md";
+import { GiEasterEgg } from "react-icons/gi";
 import EditProfile from "../components/EditProfile";
 import { matomo } from "./_app";
 import logoProject from "../public/images/logo-project-happy.webp";
@@ -92,7 +93,7 @@ const Home = () => {
                 {/* Bouton Create Room et Join Room */}
                 <button
                   type="button"
-                  className="btn btn-outline-primary fs-6 w-100 fw-bold border-gold-shimmer"
+                  className="btn btn-outline-primary fs-6 w-100 fw-bold border-neon-gold"
                   onClick={() => handleCreateRoom()}
                 >
                   CREATE ROOM
@@ -102,8 +103,13 @@ const Home = () => {
               <div className="col-5 col-sm-3 px-2">
                 <button
                   type="button"
-                  className="btn btn-outline-success fs-6 w-100 fw-bold border-gold-shimmer"
-                  onClick={() => router.push("/join")}
+                  className="btn btn-outline-success fs-6 w-100 fw-bold border-neon-gold"
+                  onClick={() => {
+                    router.push("/join");
+                    if (typeof window._paq !== "undefined") {
+                      window._paq.push(["trackEvent", "Bouton", "Join Room"]);
+                    }
+                  }}
                 >
                   JOIN ROOM
                 </button>
@@ -114,6 +120,13 @@ const Home = () => {
                   color={user ? user.color : "#ffffff"}
                   onClick={() => {
                     setShowEditProfile(!showEditProfile);
+                    if (typeof window._paq !== "undefined") {
+                      window._paq.push([
+                        "trackEvent",
+                        "Bouton",
+                        "Profile Edit",
+                      ]);
+                    }
                   }}
                   size={widthScreen < 576 ? 40 : 60}
                   style={{ cursor: "pointer" }}
@@ -127,6 +140,35 @@ const Home = () => {
               </div>
             </div>
           </nav>
+
+          {/* Easter Egg version Mobile */}
+          <div
+            className="easter-egg-mobile d-block d-sm-none"
+            onClick={() => setShowCredits(true)}
+          >
+            <GiEasterEgg
+              className="easter-egg-icon"
+              onClick={() => {
+                if (typeof window._paq !== "undefined") {
+                  window._paq.push(["trackEvent", "Bouton", "Credits Mobile"]);
+                }
+              }}
+            />
+          </div>
+          {/* Easter Egg version PC */}
+          <div
+            className="easter-egg d-none d-sm-block"
+            onClick={() => setShowCredits(true)}
+          >
+            <GiEasterEgg
+              className="easter-egg-icon"
+              onClick={() => {
+                if (typeof window._paq !== "undefined") {
+                  window._paq.push(["trackEvent", "Bouton", "Credits PC"]);
+                }
+              }}
+            />
+          </div>
 
           <div className="container bg-black mx-0 mw-100">
             <div className="row mt-3 text-center d-block d-sm-none">

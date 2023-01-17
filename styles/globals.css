@@ -66,24 +66,58 @@ a {
   color: white;
 }
 
-/* Create the shimmer animation */
-@keyframes shimmer {
+/* Add the neon animation and gold color to the button border */
+.border-neon-gold {
+  border: 2px solid gold;
+  animation: neon 2s ease-in-out infinite alternate;
+}
+
+/* Create the neon animation */
+@keyframes neon {
   0% {
-    border-color: rgba(255, 215, 0, 0.3);
+    box-shadow: 0 0 00px gold;
   }
-
-  50% {
-    border-color: gold;
-  }
-
+  /*   50% {
+    box-shadow: 0 0 10px gold;
+  } */
   100% {
-    border-color: rgba(255, 215, 0, 0.3);
+    box-shadow: 0 0 20px gold;
   }
 }
 
-/* Add the shimmer animation and gold border to the button */
-.border-gold-shimmer {
-  border: 1px solid gold;
-  animation: shimmer 3.5s infinite;
-  transition: border-color 0.5s ease-in-out;
+.easter-egg {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  cursor: pointer;
+  z-index: 999;
+}
+
+.easter-egg-mobile {
+  position: fixed;
+  bottom: 4em;
+  left: 90%;
+  transform: translateX(-50%);
+  cursor: pointer;
+  z-index: 1;
+}
+
+.easter-egg-icon {
+  color: gold;
+  font-size: 70px;
+  background-color: transparent;
+  animation: shine 5s ease-in-out infinite;
+}
+
+@keyframes shine {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.1;
+  }
+  100% {
+    opacity: 1;
+  }
 }

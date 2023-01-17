@@ -57,6 +57,14 @@ const HeaderActive = () => {
                         setTimeout(() => {
                           setShowAlert(showAlert);
                         }, 1500);
+
+                        if (typeof window._paq !== "undefined") {
+                          window._paq.push([
+                            "trackEvent",
+                            "Bouton",
+                            "PC Copy Link",
+                          ]);
+                        }
                       }}
                     >
                       COPY URL
@@ -79,9 +87,19 @@ const HeaderActive = () => {
                   <button
                     className={
                       room.currentPoints >= room.roomOptions.targetPoints
-                        ? "btn btn-success rounded-2 form-control fw-bold opacity-100"
-                        : "btn btn-outline-success text-white rounded-2 form-control fw-bold opacity-100"
+                        ? "btn text-success rounded-2 form-control fw-bold opacity-100"
+                        : "btn btn-outline-success text-white rounded-2 form-control fw-bold opacity-100 border-neon-gold"
                     }
+                    style={{
+                      background:
+                        room.currentPoints >= room.roomOptions.targetPoints
+                          ? "linear-gradient(to right, gold 0%, gold 50%, gold 100%)"
+                          : "",
+                      backgroundColor:
+                        room.currentPoints >= room.roomOptions.targetPoints
+                          ? ""
+                          : "rgba(255, 255, 255, 0.4)",
+                    }}
                     disabled
                   >
                     SCORE : {room.currentPoints ? room.currentPoints : 0} /{" "}

@@ -31,6 +31,15 @@ const Footer: NextPage = () => {
                         href="https://www.linkedin.com/company/5th-floor-software"
                         target="_blank"
                         rel="noreferrer"
+                        onClick={() => {
+                          if (typeof window._paq !== "undefined") {
+                            window._paq.push([
+                              "trackEvent",
+                              "Bouton",
+                              "PC LinkedIn",
+                            ]);
+                          }
+                        }}
                       >
                         <span
                           className="p-1"
@@ -67,6 +76,15 @@ const Footer: NextPage = () => {
                       href="https://5thfloor.be/fr/poker-fight/"
                       target="_blank"
                       rel="noreferrer"
+                      onClick={() => {
+                        if (typeof window._paq !== "undefined") {
+                          window._paq.push([
+                            "trackEvent",
+                            "Bouton",
+                            "PC 5th Floor Link",
+                          ]);
+                        }
+                      }}
                     >
                       <Image
                         loading="eager"
